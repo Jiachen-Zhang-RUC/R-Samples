@@ -1,0 +1,521 @@
+---
+title: "第12组_代码文档"
+author: "张嘉辰"
+date: "2021年1月14日"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+    self_contained: true
+    code_folding: show
+    toc: 3
+    number_sections: false
+editor_options: 
+  chunk_output_type: console
+---
+
+#1.读取数据
+
+由于省份和民族对幸福感的影响具有不确定性，且不易于解释，
+
+所以我们去掉了解释变量中的省份和民族。
+
+```{r warning=FALSE, message=FALSE}
+data_ori <- read.csv("D:/data/happiness_data.csv", header = TRUE)
+#因变量happiness
+happiness <- data_ori[,2]
+#去掉id、因变量happiness、解释变量中的省份和民族
+data_ori <- data_ori[-c(1,2,4,7)]
+```
+
+#2.因子分析
+
+由于原数据的解释变量数较多（29个），而且变量之间多数存在实际意义上的关联，所以考虑进行因子分析。
+
+##2.1 KMO检验与Bartlett 的球形检验
+
+首先进行KMO检验与Bartlett 的球形检验，计算相关系数矩阵的行列式，以确认数据是否适合进行因子分析。
+
+###2.1.2 KMO检验
+
+```{r warning=FALSE, message=FALSE}
+library(psych)
+KMO(data_ori)
+```
+
+所有变量的KMO统计量都大于0.5，且大多数变量的KMO统计量大于0.7，这表明因子分析是适宜的。
+
+###2.1.2 Bartlett 的球形检验
+
+```{r warning=FALSE, message=FALSE}
+library(psych)
+cortest.bartlett(data_ori)$p.value
+```
+
+p=0，说明因子分析是合适的。
+
+###2.1.3 相关系数矩阵的行列式
+
+```{r warning=FALSE, message=FALSE}
+#相关系数矩阵
+traMatrix <- cor(data_ori)
+#相关系数矩阵的行列式
+det(traMatrix)
+```
+
+相关系数矩阵的行列式=0.0007646131>0.00001，也说明因子分析是合适的。
+
+##2.2 确定选择的因子个数
+
+###2.2.1 碎石图
+
+绘制碎石图，确定选择的因子个数。
+
+```{r warning=FALSE, message=FALSE}
+library(psych)
+pc1 <- principal(data_ori, nfactors=20, rotate="none")
+#碎石图
+plot(pc1$values, type="b", xlab = "序数", ylab = "特征根")
+abline(h=1, col = "red")
+```
+
+通过碎石图我们可以看到，选择8个或9个因子是比较合适的。
+
+###2.2.2 Parallel analysis
+
+```{r warning=FALSE, message=FALSE}
+parallel = fa.parallel(data_ori, fm = "pa", fa = "fa")
+print(parallel)
+```
+
+Parallel analysis建议选择9个因子，但是经过尝试，考虑到变量的实际意义，我们最终选择了8个因子进行因子分析。
+
+
+##2.3 因子分析
+
+使用PCA方法，通过`psych`包中的`principal()`函数进行因子分析。
+
+```{r warning=FALSE, message=FALSE}
+#选择8个因子进行因子分析
+pc <- principal(data_ori, nfactors=8, rotate="varimax")
+#只显示权重loadings大于0.3的
+print.psych(pc, cut = 0.3, sort = TRUE)
+#绘制累计方差贡献率的折线图
+plot(pc$Vaccounted[5,], xlab = "因子", ylab = "累计方差贡献率", type = "b")
+```
+
+结合因子载荷矩阵和解释变量的实际意义，我们认为选择8个因子是合适的。
+
+进一步地，我们结合实际将8个因子分别命名如下：
+
+RC3：社会群体（其值越大，表示受访者所处的地区的城市化程度越高，受访者的学历越高）
+
+RC2：经济层级（其值越大，表示受访者的经济上的相对地位较高）
+
+RC1：社会阅历（其值越大，表示受访者的年龄越大，工作经历越丰富）
+
+RC4：体型特征（其值越大，表示受访者身高、体重不属于太高或太矮、太胖或太瘦）
+
+RC6：身心健康（其值越大，表示受访者的身体和心理上更健康）
+
+RC5：宗教信仰（其值越大，表示受访者可能有宗教信仰，或更经常参加宗教活动）
+
+RC8：经济水平（其值越大，表示受访者的经济水平越高，收入越高）
+
+RC7：社交娱乐（其值越大，表示受访者更经常参与社交和娱乐活动）
+
+##2.4 计算8个因子的值
+
+```{r warning=FALSE, message=FALSE}
+library(dplyr)
+#RC3：社会群体
+RC3 <- select(data_ori, survey_type, hukou, edu, learn, political)
+#权重
+w3 <- c(-0.73, 0.71, 0.67, 0.60, 0.50)
+social_group <- apply(data.frame(mapply(`*`,RC3,w3,SIMPLIFY=FALSE)), 1, sum)
+
+#RC2：经济层级
+#inc_ability表示对收入满意度，其值越小表示对收入越满意
+RC2 <- select(data_ori, family_status, status_peer, class, inc_ability, status_3_before, equity)
+#权重
+w2 <- c(0.70, -0.69, 0.61, -0.61, -0.49, 0.45)
+economic_class <- apply(data.frame(mapply(`*`,RC2,w2,SIMPLIFY=FALSE)), 1, sum)
+
+#RC1：社会阅历
+RC1 <- select(data_ori, edu, learn, age2015, marital, work_exper)
+#权重
+w1 <- c(-0.45, -0.35, 0.82, 0.65, 0.63)
+social_experience <- apply(data.frame(mapply(`*`,RC1,w1,SIMPLIFY=FALSE)), 1, sum)
+
+#RC4：体型特征
+RC4 <- select(data_ori, gender, height_cm, weight_jin)
+#权重
+w4 <- c(-0.85, 0.85, 0.75)
+figure_shape <- apply(data.frame(mapply(`*`,RC4,w4,SIMPLIFY=FALSE)), 1, sum)
+
+#RC6：身心健康
+#health_problem和depression都是越大越健康
+RC6 <- select(data_ori, health_problem, health, depression)
+#权重
+w6 <- c(0.83, 0.77, 0.77)
+physipsych_health <- apply(data.frame(mapply(`*`,RC6,w6,SIMPLIFY=FALSE)), 1, sum)
+
+#RC5：宗教信仰
+RC5 <- select(data_ori, religion, religion_freq)
+#权重
+w5 <- c(0.91, -0.91)
+religious_belief <- apply(data.frame(mapply(`*`,RC5,w5,SIMPLIFY=FALSE)), 1, sum)
+
+#RC8：经济水平
+RC8 <- select(data_ori, family_income, income, house, car)
+#权重
+w8 <- c(0.66, 0.52, 0.52, -0.47)
+economic_level <- apply(data.frame(mapply(`*`,RC8,w8,SIMPLIFY=FALSE)), 1, sum)
+
+#RC7：社交娱乐
+RC7 <- select(data_ori, socialize, relax)
+#权重
+w7 <- c(0.73, 0.68)
+social_entertain <- apply(data.frame(mapply(`*`,RC7,w7,SIMPLIFY=FALSE)), 1, sum)
+```
+
+##2.4 信度检验——Cronbach’s alpha检验
+
+```{r warning=FALSE, message=FALSE}
+library(psych)
+#RC3：社会群体
+alpha(RC3, keys = c(-1, rep(1, 4)))
+#RC2：经济层级
+alpha(RC2, keys = c(1, -1, 1, -1, -1, 1))
+#RC1：社会阅历
+alpha(RC1, keys = c(rep(-1, 2), rep(1, 3)))
+#RC4：体型特征
+alpha(RC4, keys = c(-1, rep(1, 2)))
+#RC6：身心健康
+alpha(RC6, keys = c(rep(1, 3)))
+#RC5：宗教信仰
+alpha(RC5, keys = c(-1,1))
+#RC8：经济水平
+alpha(RC8, keys = c(rep(1, 3), -1))
+#RC7：社交娱乐
+alpha(RC7, keys = c(rep(1, 2)))
+```
+
+
+除RC8(经济水平)和RC7(社交娱乐)以外，其余6个因子都通过了检验，
+
+但是考虑到这里进行因子分析的目标是进行回归分析，后续还要进一步筛选变量，所以这里保留了8个因子。
+
+##2.5 在.csv文件中保存8个因子的值
+
+```{r warning=FALSE, message=FALSE}
+#8个因子的值
+factor8 <- data.frame(happiness, social_group, economic_class, social_experience, figure_shape, physipsych_health, religious_belief, economic_level, social_entertain)
+
+#将8个因子的值写入.csv文件中
+#write.csv(factor8, file = "D:/data/happy_factor8.csv")
+```
+
+#3.描述性统计
+
+##3.1 因变量：幸福感水平的分布
+
+###3.1.1 统计各幸福感人数占总人数比例
+
+```{r warning=FALSE, message=FALSE}
+#统计各幸福感人数占总人数比例
+library(plyr)
+freq <- ddply(factor8,.(happiness),function(x){sum(x$happiness)/sum(factor8$happiness)})
+y=paste0(format(100*freq[,2],digits=2),'%')
+library(ggplot2)
+factor8_plot <- factor8
+#调整因子顺序
+factor8_plot$happiness <- factor(factor8_plot$happiness,levels = c(1,2,3,4,5))
+```
+
+###3.1.2 柱状图
+
+```{r warning=FALSE, message=FALSE}
+#作幸福感的频数柱状图
+p0<-ggplot(data=factor8_plot,aes(x=happiness))+
+  geom_bar(aes(fill=happiness))+
+  labs(x="幸福感", y = "频数")+
+  scale_fill_manual(values=paste0(colorRampPalette(c("yellow","red"))(5),'6f'))+
+  geom_text(aes(label=as.character(..y..)),stat="count",vjust=-0.3)+
+  theme(panel.grid.major =element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(),axis.line = element_line(colour = "black"))
+p0
+```
+
+从图中可以看到：
+
+1.数据左偏；
+
+2.绝大多数的人幸福感为4，占样本总数的63.37%；
+
+3.其次幸福感为5，3到1的人数递减；
+
+4.幸福感1的人很少，只占0.29%
+
+##3.2 自变量
+
+###3.2.1 经济层级
+
+```{r warning=FALSE, message=FALSE}
+#作经济层级与幸福感的小提琴图
+p2 <- ggplot(data = factor8_plot,aes(x = happiness,y = economic_class))+
+  geom_violin(fill = 'aliceblue')+
+  geom_boxplot(aes(fill = happiness),varwidth = TRUE) +
+  labs(x = "幸福感", y = "经济水平") +
+  scale_fill_manual(values = paste0(colorRampPalette(c("yellow","red"))(5),'6f')) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"))
+p2
+```
+
+从图中可以看到：
+
+1.幸福感明显随经济水平中位数递增，呈明显正相关关系；
+
+2.幸福感越高，数据越集中；
+
+3.幸福感4、5存在较多社会群体偏高或偏低的异常值；
+
+4.幸福感为1的人群经济水平呈现明显右偏，其余人群经济水平基本为对称分布
+
+###3.2.2 身心健康
+
+```{r warning=FALSE, message=FALSE}
+#作身心健康与幸福感的小提琴图
+p1 <- ggplot(data = factor8_plot, aes(x = happiness,y = physipsych_health))+
+  geom_violin(fill = 'aliceblue')+
+  geom_boxplot(aes(fill = happiness),varwidth = TRUE)+
+  labs(x = "幸福感", y = "身心健康")+
+  scale_fill_manual(values = paste0(colorRampPalette(c("yellow","red"))(5),'6f'))+
+  theme(panel.grid.major  = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"))
+p1
+```
+
+从图中可以看到：
+
+1.幸福感明显随身心健康中位数递增，呈明显正相关关系；
+
+2.数据分散，存在较多社会群体偏高或偏低的异常值；
+
+3.随幸福感增高，身心健康数据越为集中
+
+###3.2.3 经济水平
+
+```{r warning=FALSE, message=FALSE}
+n <- nrow(factor8)
+factor8_plot <- factor8
+#将幸福感分组，1、2为低幸福感，3、4为中幸福感，5为高幸福感
+for (i in 1:n){
+  if(factor8_plot$happiness[i]>4){
+    factor8_plot$level[i] <- "高幸福感"
+  }
+  else if(factor8_plot$happiness[i]>2){
+    factor8_plot$level[i] <- "中幸福感"
+  }
+  else{
+    factor8_plot$level[i] <- "低幸福感"
+  }
+}
+
+#将经济水平分组，100000以上为高经济水平，10000以下为低经济水平
+for (i in 1:n){
+  if(factor8_plot$economic_level[i]>100000){
+    factor8_plot$ecolevel[i] <- "高经济水平"
+  }
+  else if(factor8_plot$economic_level[i]<100000 && factor8_plot$economic_level[i]>10000){
+    factor8_plot$ecolevel[i] <- "中等经济水平"
+  }
+  else{
+    factor8_plot$ecolevel[i] <- "低经济水平"
+  }
+}
+
+#画棘状图
+factor8_plot$level <- factor(factor8_plot$level,levels = c("高幸福感","中幸福感","低幸福感"))
+factor8_plot$ecolevel <- factor(factor8_plot$ecolevel,levels = c("低经济水平","中等经济水平","高经济水平"))
+
+spineplot(factor8_plot$ecolevel,factor8_plot$level,main = "家庭收入与幸福感",xlab = "",ylab = "",col = c("yellow","orange","red"))
+```
+
+从图中可以看到：
+
+1.家庭收入越高，幸福感往往也越高，低收入家庭的人低幸福感的概率更大，高家庭收入的人高幸福感的概率更大；
+
+2.但仍然存在高家庭收入然而幸福感低的人和低家庭收入而幸福感高的人
+
+###3.2.4 宗教信仰
+
+```{r warning=FALSE, message=FALSE}
+#将宗教信仰分类
+for (i in 1:n){
+  if(factor8_plot$religious_belief[i]<=0){
+    factor8_plot$religious[i] <- "无宗教信仰"
+  }
+  else{
+    factor8_plot$religious[i] <- "有宗教信仰"
+  }
+}
+
+#画棘状图
+factor8_plot$religious <- as.factor(factor8_plot$religious)
+
+spineplot(factor8_plot$religious,factor8_plot$level,main = "宗教信仰与幸福感",xlab = "",ylab = "",col  = c("yellow","orange","red"))
+```
+
+从图中可以看到：
+
+1.有宗教信仰的人高幸福感的更多，低幸福感的更少；
+
+2.无宗教信仰的人占比较高
+
+#4.有序多分类逻辑回归
+
+##4.1 将数据标准化，划分测试集与训练集
+
+```{r warning=FALSE, message=FALSE}
+set.seed(123)
+factor8 <- read.csv('D:/data/happy_factor8.csv')
+
+library(MASS)
+#标准化处理
+factor8<-factor8[,-1]
+factor8[,2:9]<-scale(factor8[,2:9],center=T,scale=T)
+factor8$happiness<-factor(factor8$happiness)
+#划分训练集和测试集
+train_row<-sample(1:nrow(factor8),0.7*nrow(factor8))
+#训练集
+train_data<-factor8[train_row,]
+#测试集
+test_data<-factor8[-train_row,]
+```
+
+##4.2 回归拟合
+
+###4.2.1 全模型
+
+```{r warning=FALSE, message=FALSE}
+fit<-polr(happiness~.,data=train_data,weights = c())
+#查看情况
+summary(fit)
+#显著性检验
+drop1(fit,test="Chi") 
+```
+
+可以看到，并非所有变量都通过了显著性检验，接下来进行逐步回归筛选变量.
+
+###4.2.2 AIC模型
+
+```{r warning=FALSE, message=FALSE}
+aicfit <- step(fit,direction = 'both',trace = 0)
+summary(aicfit)
+#显著性检验
+drop1(aicfit,test="Chi") 
+```
+
+###4.2.3 BIC模型
+
+```{r warning=FALSE, message=FALSE}
+n=nrow(train_data)
+bicfit<-step(fit,direction = 'both',k=log(n),trace = 0)
+summary(bicfit)
+drop1(bicfit,test="Chi") #显著性检验
+```
+
+
+##4.3 计算AUC
+
+```{r warning=FALSE, message=FALSE}
+pre_prob <- predict.glm(fit,type = 'response')
+aic_pre_prob <- predict.glm(aicfit,type = 'response')
+bic_pre_prob <- predict.glm(bicfit,type = 'response')
+
+library(pROC)
+full_roc <- multiclass.roc(train_data$happiness,pre_prob)
+aic_roc <- multiclass.roc(train_data$happiness,aic_pre_prob)
+bic_roc <- multiclass.roc(train_data$happiness,bic_pre_prob)
+auc_compare <- c(full_roc$auc,aic_roc$auc,bic_roc$auc)
+names(auc_compare) <- c('full','aic','bic')
+auc_compare
+```
+
+综合考虑模型的复杂度和精度，选择BIC模型。
+
+即保留经济层级(economic_class)，社会阅历(social_experience)，身心健康(physipsych_health)，宗教信仰(religious_belief)，社交娱乐(social_entertain)作为最终模型变量，
+
+剔除体型特征(figure_shape)，社会群体(social_group)，经济水平(economic_level)，宗教信仰(region_charac)。
+
+##4.4 模型解读
+
+观察各项系数，
+
+经济层级更高、身心更健康、社会阅历更丰富、社交娱乐活动更多、有宗教信仰的的人更容易感到幸福；
+
+（且以上5个变量对幸福感的影响强度递减）
+
+##4.5 混淆矩阵和准确率
+
+```{r warning=FALSE, message=FALSE}
+train_predict <- predict(bicfit,type='class')
+confusion_matrix <- function(response,predictor)
+{
+  n <- table(response,predictor)
+  n <- rbind(n,table(predictor))
+  n <- cbind(n,as.table(c(table(response),sum(n[6,]))))
+  return(n)
+}
+accuracy <- function(n)
+{
+  accuracy <- sum(n[1,1]+n[2,2]+n[3,3]+n[4,4]+n[5,5])/n[6,6]
+}
+test_predict <- predict(bicfit,test_data)
+#混淆矩阵
+print('混淆矩阵：')
+train_matrix <- confusion_matrix(train_data$happiness,train_predict);train_matrix
+test_matrix <- confusion_matrix(test_data$happiness,test_predict);test_matrix
+#准确率
+print('训练集准确率：')
+#训练集准确率
+train_accuracy <- accuracy(train_matrix);train_accuracy
+print('测试集准确率：')
+#测试集准确率
+test_accuracy <- accuracy(test_matrix);test_accuracy
+```
+
+##4.6 训练集的人群划分
+
+根据幸福感水平的预测值划分人群，计算各类人群的平均幸福水平。
+
+```{r warning=FALSE, message=FALSE}
+#训练集
+train_data$predict_happiness <- train_predict
+train_data <- train_data[order(train_predict),]
+library(plyr)
+aver_happy <- ddply(train_data,.(predict_happiness),function(x){mean(as.numeric(x$happiness))})[,2]
+aver_happy <- round(aver_happy,2)
+names(aver_happy) <- c(1,2,3,4,5)
+average <- mean(as.numeric(train_data$happiness))
+bar <- barplot(rev(aver_happy),col=paste0(colorRampPalette(c("red","yellow"))(5),'6f'),xlab='预测幸福水平',ylab="实际幸福水平",main = '训练集人群划分')
+text(rev(bar),aver_happy-0.1,aver_happy)
+abline(h=average,col='black',lty=2)
+text(2.1,average+0.18,paste0("平均幸福水平=",format(average,digits = 3)))
+```
+
+最终模型可以有效地划分各类人群。
+
+#5.反思与不足
+
+```{r warning=FALSE, message=FALSE}
+#因变量happiness分布的柱状图
+barplot(table(as.numeric(factor8$happiness)),xlab='幸福感水平',main='',col=paste0(colorRampPalette(c("red","red"))(1),'6f'), ylab = "")
+```
+
+从直方图中可以看到，样本分布不均衡，主要集中在level4，
+
+这会对模型精度造成影响。
+

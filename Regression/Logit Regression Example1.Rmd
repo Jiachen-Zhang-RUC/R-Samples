@@ -1,0 +1,768 @@
+---
+title: "张嘉辰_2018201743_统计软件第5次作业"
+author: "张嘉辰"
+date: "2020年11月24日"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+    toc_float: true
+    number_sections: false
+    theme: lumen
+editor_options: 
+  chunk_output_type: console
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 4px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear Full;
+    -moz-transition: 0.1s linear Full;
+    transition: 0.1s linear Full;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: Full 0.1s ease-in-out;
+    -webkit-transition: Full 0.1s ease-in-out;
+    -moz-transition: Full 0.1s ease-in-out;
+    -ms-transition: Full 0.1s ease-in-out;
+    transition: Full 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 4px 0 0 0;
+    -webkit-border-radius: 4px 0 0 0;
+    border-radius: 4px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 4px 0 0;
+    -webkit-border-radius: 0 4px 0 0;
+    border-radius: 0 4px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 4px;
+    -webkit-border-radius: 0 0 0 4px;
+    border-radius: 0 0 0 4px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 4px 0;
+    -webkit-border-radius: 0 0 4px 0;
+    border-radius: 0 0 4px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+#任务一
+
+```{r warning=FALSE, message=FALSE}
+#读入数据
+chexian <- read.csv("D:/data/chexian.csv", header = TRUE)
+#查看数据
+summary(chexian)
+```
+
+#任务二
+
+```{r warning=FALSE, message=FALSE}
+#离散化
+#将离散化后的发动机引擎级别作为新的变量加入数据框chexian中
+chexian$EngLevel <- cut(chexian$EngSize, breaks = c(0.99, 1.6, 3.11), labels = c("普通级", "中高级"))
+#将是否出现变量转化为因子类型，且将两个水平命名为“未出险”和“出险”
+chexian$LossClass_fac <- factor(chexian$LossClass, levels = c(0, 1), labels = c("未出险", "出险"))
+#画出棘状图
+spineplot(x = chexian$EngLevel, y = chexian$LossClass_fac, xlab = "", ylab = "", main = "车辆级别（按引擎大小分）", col = c(7,8))
+
+```
+
+从图中看到，普通级车辆出险率更高。可以初步判断和车辆级别会影响出险行为，且普通的车辆更可能出险。
+
+棘状图中柱子的宽度代表样本量的大小。可以看到，中高级车辆的样本量比普通级的更大。
+
+#任务三
+
+```{r warning=FALSE, message=FALSE}
+
+#全模型
+logi_Full <- glm(LossClass_fac~EngLevel+AntiTFD+Garage+import+Owner+Age+exp+Gender+Marital+vAgeNew, data = chexian, family = binomial(link = logit))
+summary(logi_Full)
+
+#AIC模型
+logi_AIC <- step(logi_Full, k = 2)
+#AIC模型的估计结果
+summary(logi_AIC)
+
+#BIC模型
+logi_BIC <- step(logi_Full, k = log(nrow(chexian)))
+#BIC模型的估计结果
+summary(logi_BIC)
+
+#ROC曲线
+library(pROC)
+#使用全模型进行预测
+#第2至9列和第11至12列是自变量
+pred_Full <- predict(logi_Full, newdata = chexian[, c(2:9, 11:12)], type = "response")
+#全模型的ROC曲线
+roc_Full <- roc(chexian$LossClass ~ pred_Full, plot = FALSE, print.auc = FALSE)
+
+#使用AIC模型进行预测
+pred_AIC <- predict(logi_AIC, newdata = chexian[, c(2:9, 11:12)], type = "response")
+#AIC模型的ROC曲线
+roc_AIC <- roc(chexian$LossClass ~ pred_AIC, plot = FALSE, print.auc = FALSE)
+
+#使用BIC模型进行预测
+pred_BIC <- predict(logi_BIC, newdata = chexian[, c(2:9, 11:12)], type = "response")
+#BIC模型的ROC曲线
+roc_BIC <- roc(chexian$LossClass ~ pred_BIC, plot = FALSE, print.auc = FALSE)
+
+#把三个模型的ROC曲线画在一张图上
+plot(roc_Full, main = "三个模型的ROC曲线对比")
+par(new = TRUE)
+#通过线形区分三个模型的ROC曲线
+plot(roc_AIC, lty = 2)
+par(new = TRUE)
+plot(roc_BIC, lty = 3)
+#添加图例
+legend("bottomright",  c("Full", "AIC", "BIC"),
+       lty=c(1, 2, 3))
+
+#auc值保留四位小数
+auc_df <- data.frame(round(c(roc_Full$auc, roc_AIC$auc, roc_BIC$auc),4))
+row.names(auc_df) <- c("全模型", "AIC模型", "BIC模型")
+colnames(auc_df) <- c("auc")
+knitr::kable(auc_df, format = "html")
+```
+
+全模型包括的自变量有10个：驾驶人年龄（Age）、驾驶人驾龄（exp）、驾驶人性别（Gender）、驾驶人婚姻状况（Marital）、汽车车龄（vAgeNew）、发动机引擎大小（EngSize）、是否进口（import）、所有者性质（owner）、固定车位（Garage）、防盗装置（AntiTFD）
+
+AIC模型包括的自变量有7个：驾驶人驾龄（exp）、驾驶人性别（Gender）、汽车车龄（vAgeNew）、发动机引擎大小（EngSize）、是否进口（import）、所有者性质（owner）、固定车位（Garage）
+
+BIC模型包括的自变量有4个：驾驶人驾龄（exp）、汽车车龄（vAgeNew）、发动机引擎大小（EngSize）、所有者性质（owner）
+
+
+AUC值反映了模型的预测精度，通常认为AUC值较大的模型预测精度更高。
+
+可以看到，BIC模型的AUC值最小，而全模型和AIC模型的AUC值接近。因此，在保证模型精度较高的前提下，根据简洁性原则，选择AIC模型。
+
+#任务四
+
+选择AIC模型。
+
+
+```{r warning=FALSE, message=FALSE}
+#最佳阈值
+thre_AIC <- as.numeric(coords(roc_AIC, "best", ret="threshold", transpose = FALSE))
+
+#画出AIC模型的ROC曲线，在图中显示最佳阈值和AUC值
+#参数print.auc.x和print.auc.y用于调整图中AUC值的显示位置
+plot(roc_AIC, print.thres="best", print.auc = TRUE, print.auc.x = 0.3,  print.auc.y = 0.4, main = "AIC模型的ROC曲线")
+
+library(caret)
+#构建混淆矩阵
+#positive定义为出险
+conf_matr <- t(confusionMatrix(data = factor(as.integer(pred_AIC>thre_AIC), levels = c(0,1), labels = c("未出险", "出险")), reference = chexian[,13], dnn = c("预测值", "真实值"), positive='出险')$table)
+#在混淆矩阵中添加行和与列和
+conf_matr <- addmargins(conf_matr)
+knitr::kable(conf_matr, format = "html")
+```
+
+$AUC=0.624>0.5$，说明模型较好；
+
+最佳阈值为0.318，此时的灵敏度和特异度均较高。
+
+可以从混淆矩阵中计算得到，
+
+整体错判率为$\frac{(1024+572)}{4233}=37.7%$
+
+抓住坏蛋的概率$TPR=\frac{633}{1205}=52.5%>50%$
+
+冤枉好人的概率$FPR=\frac{633}{1205}=33.8%<50%$
+
+模型的灵敏度$Sensitivity=TPR=52.5%>50%$
+
+模型的特异度$Specificity=1-FPR=66.2%>50%$
+
+说明模型的灵敏度和特异度均较好。
+
+
+
+#任务五
+
+
+```{r warning=FALSE, message=FALSE}
+#在chexian数据框中添加AIC模型预测的出险概率
+chexian$pred_AIC <- pred_AIC
+#第14列是pred_AIC
+#根据AIC模型预测的出险概率进行由高到低的排序
+chexian <- chexian[order(-chexian[, 14]), ]
+#将排序后的人群分为五等分
+chexian_group <- split(chexian, rep(1:5, length.out = nrow(chexian), each = floor(nrow(chexian)/5)))
+#每一组的人数
+group_num <- sapply(chexian_group, nrow)
+group_num
+#每一组实际出险的人数
+group_loss <- sapply(chexian_group, function(x) sum(x$LossClass))
+group_loss
+#每一组的实际出险概率
+group_loss_prob <- group_loss/group_num
+group_loss_prob
+#五组人群实际出现概率的平均值
+mean(group_loss_prob)
+#将每一组实际出险的概率转化为百分数
+label_perc <- paste(100*round(group_loss_prob, 2), "%", sep = "")
+##五种人群的标签
+risk_name <- c("高风险", "偏高", "中等", "偏低", "低风险")
+#画出五种人群实际出险率的柱状图，
+plot_group <- barplot(height=group_loss_prob, names=risk_name, col = heat.colors(5, alpha = 0.5), xlab = "人群划分", ylab = "出险率")
+#在每个柱子的上部添加实际出险率的百分数
+text(x = plot_group, y = group_loss_prob, label = label_perc, pos = 1,  col = "darkblue", cex = 1.5)
+#添加平均实际出险率的水平线
+abline(h = mean(group_loss_prob), lty = 2, lwd = 2)
+#添加平均出险率的文字
+text(x = plot_group[5], y = mean(group_loss_prob), label = c("平均出险率=28%"), pos = 3)
+```
+
+从图中可以看到，占比20%的高风险人群的实际出险率达到43%，而占比60%的人群的实际出险率都低于平均值。
+
+因此，可以根据影响出险的因素，来预测出险概率，区分高风险和低风险人群，从而制定基于驾驶行为的UBI车险产品。
+
+对风险较低，即出险率较低的驾驶人给予保费优惠，而对风险较低，即出险率较低的驾驶人适当提高保费。
+

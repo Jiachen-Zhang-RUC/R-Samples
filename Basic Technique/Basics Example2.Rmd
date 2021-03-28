@@ -1,0 +1,727 @@
+---
+title: "张嘉辰_2018201743_统计软件第1次作业"
+author: "Zhang Jiachen"
+date: "2020年9月21日"
+output: 
+  html_document:
+    toc: true # table of content true
+    toc_depth: 2  # upto three depths of headings (specified by #, ## and ###)
+    toc_float: true
+    number_sections: false
+    theme: lumen
+
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 5px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-radius: 6px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 6px;
+    -webkit-border-radius: 0 0 0 6px;
+    border-radius: 0 0 0 6px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 6px 0;
+    -webkit-border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+
+##任务一：将五位数字表示的日期转换为标准的日期形式
+五位数字指距离1970-01-01的天数。通过as.Date()中origin参数的设置，将其转化为标准的日期形式。
+```{r message=FALSE, warning = FALSE}
+as.Date(15693,origin='1970-1-1')
+```
+
+##任务二：计算工资的均值
+###第一步：将字符串转换为数字(单位：万元)
+
+####方法一：使用字符替换函数
+由于每个字符中的汉字均为万而且均在字符末尾，所以可以替换"万"为".0"，再将字符串转化为数字后进行计算。
+```{r message=FALSE, warning = FALSE}
+wage_char <- c("22万", "30万", "50万", "120万", "11万")
+#将字符"万"替换为".0"
+wage_numchar <- chartr(old = "万", new = ".0", wage_char) 
+#将元素为字符串的向量转化为元素为数字的向量
+wage_num1 <- as.numeric(wage_numchar)
+wage_num1
+```
+
+####方法二：取出"万"字前的子串
+由于原数据格式较为整齐，"万"字位于字符串的末尾，所以可以直接取出"万"字前的子串。
+```{r message=FALSE, warning = FALSE}
+wage_char <- c("22万", "30万", "50万", "120万", "11万")
+#取出"万"字前的子串
+wage_numchar <- substr(wage_char,1,nchar(wage_char)-1)
+#将元素为字符串的向量转化为元素为数字的向量
+wage_num2 <- as.numeric(wage_numchar)
+wage_num2
+```
+
+###第二步：求工资的均值(单位：元)
+
+```{r message=FALSE, warning = FALSE}
+#求均值并将单位改为元
+wage_ave <- mean(wage_num1)*10000
+print("工资均值:")
+print(wage_ave)
+```
+
+##任务三：电影数据初步处理
+读入数据后查看数据总体情况。
+```{r message=FALSE, warning = FALSE}
+#读入数据film.csv,数据存放在D盘
+a <- read.csv("D:\\film.csv")
+print("数据总体情况")
+#查看数据总体情况
+summary(a)
+#删除含缺失数据的行
+film_no_na <- na.omit(a)
+film_best <- film_no_na[which.max(film_no_na$"电影票房"), ]
+film_worst <- film_no_na[which.min(film_no_na$"电影票房"), ]
+print("票房最高纪录的观测：")
+film_best
+print("票房最低纪录的观测：")
+film_worst
+```
+
+##任务四：根据上映月份划分电影档期
+
+使用table()函数展示频数,同时对列顺序进行调整。
+```{r message=FALSE, warning = FALSE}
+label_film <- c("贺岁档",  "普通档","黄金1档", "暑期档", "黄金2档", "贺岁档")
+#根据上映月份将电影归档
+dangqi <- cut(film_no_na$"上映月份", breaks = c(0, 2, 4, 6, 9, 11, 13), labels = label_film, include.lowest = FALSE, right = TRUE)
+#用table()函数显示频数得到的结果顺序为("贺岁档",  "普通档","黄金1档", "暑期档", "黄金2档")，所以进行调整
+table1 <- as.table(c(table(dangqi)[1], table(dangqi)[3], table(dangqi)[5], table(dangqi)[2], table(dangqi)[4]))
+table1
+```
+
+##任务五：更改导演年代的因子水平
+
+使用cut()函数同时将导演年代为30和40的合并为"50以下"，同时使用ordered_result参数将导演年代的因子水平更改为有序的。
+
+因为数据较多,此处展示导演年代数据的前60行。
+```{r message=FALSE, warning = FALSE}
+
+label_director <- c("50以下", "50", "60", "70", "80")
+film_no_na$"导演年代" <- cut(as.numeric(film_no_na$"导演年代"), breaks = c(20, 40, 50, 60, 70, 80), labels = label_director, include.lowest = FALSE, right = TRUE, ordered_result = TRUE)
+#因为数据较多,此处展示前60行
+head(film_no_na$"导演年代",60)
+```
+
+
+
+##任务六：生成上映日期，将电影排序
+###第一步：生成上映日期
+
+生成上映日期有两种方式。
+
+####方法一：使用paste()函数将上映年份、月份、日期（"01")组合后，用as.Date()函数转换为Date类型
+
+因为数据较多,此处展示日期数据的前20行。
+```{r message=FALSE, warning = FALSE}
+Sys.setlocale("LC_TIME", "C")
+library(stringr)
+#将月份转换为两位数字,例如上映月份是9月,则将"9"转换为"09"
+month1 <- str_pad(film_no_na$"上映月份", 2, pad = "0")
+#将上映年份、月份、日期组合为date1,形如"2012-01-01"
+date1 <- paste(film_no_na$"上映年份", month1, "01", sep = "-")
+#转换为日期date_show
+date_show1 <- as.Date(date1)
+#因为数据较多,此处展示前20行
+head(date_show1,20)
+```
+
+####方法二：使用zoo包中的as.yearmon函数将日期转化为"%b %Y"的格式(例如"Jan 2012")，再使用as.Date()函数转化为标准日期形式(例如"2012-01-01")
+
+因为数据较多,此处展示日期数据的前20行。
+```{r message=FALSE, warning = FALSE}
+
+Sys.setlocale("LC_TIME", "C")
+
+date1 <- paste(film_no_na$上映年份, film_no_na$上映月份, sep = "-")
+
+library(zoo)
+
+date_2 <- as.yearmon(date1, format = "%Y-%m")
+date_show2 <- as.Date(date_2, format = "%b %Y")
+#因为数据较多,此处展示前20行
+head(date_show2,20)
+```
+
+###第二步：将数据集排序
+```{r message=FALSE, warning = FALSE}
+film1 <- cbind(film_no_na, date_show1)
+#film1[,24]为上映日期,film1[,4]为票房, film[,5]为电影类型
+#负号表示降序
+film_ordered <- film_no_na[order(film1[,24], -film1[,4], film1[,5]), ]
+#展示前10行
+head(film_ordered, 10)
+```
+
+

@@ -1,0 +1,738 @@
+---
+title: "张嘉辰_2018201743_统计软件第2次作业"
+author: "Zhang Jiachen"
+date: "2020年9月21日"
+output: 
+  html_document:
+    toc: true # table of content true
+    toc_depth: 2  # upto three depths of headings (specified by #, ## and ###)
+    toc_float: true
+    number_sections: false
+    theme: lumen
+
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 5px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-radius: 6px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 6px;
+    -webkit-border-radius: 0 0 0 6px;
+    border-radius: 0 0 0 6px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 6px 0;
+    -webkit-border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+##任务一 稀疏矩阵
+
+```{r message=FALSE, warning = FALSE}
+library(Matrix)
+#结点数为1000
+n <- 1000
+#得到n个服从均值为5的指数分布的整数，作为每一行的和
+options(digits=0)
+row_sum <- rexp(n, rate = 0.2)
+#将元素值为1的列的序号保存在col_notzero中
+col_notzero <- c()
+for(i in 1:n){
+#通过随机抽样，选出第i行中，值为1的元素所在的列
+#由于对角线上元素为0，所以避免抽到第i列
+  col_notzero <- c(col_notzero, sample(c(1:(i-1), (i+1):n), row_sum[i], replace = FALSE))
+}
+#将元素值为1的行的序号保存在row_notzero中
+row_notzero <- c()
+for(i in 1:n){
+#每一行都有row_sum[i]个元素值为1
+  row_notzero <- c(row_notzero, rep(i, row_sum[i]))
+}
+#构建稀疏矩阵，类型为dgTMatrix
+spM <- sparseMatrix(i = row_notzero, j = col_notzero, x = rep(1, length(row_notzero)), dims = c(n, n), giveCsparse=FALSE)
+#由于使用head()函数的输出结果不理想，此处使用summary()函数
+options(max.print= 18)
+summary(spM)
+
+#直方图
+#列和，即入度
+sum_c <- colSums(spM)
+
+#行和，即出度
+sum_r <- rowSums(spM)
+
+par(mfcol=c(1,2))
+#增加标题，去掉x轴的标签
+hist(sum_r, main = "出度分布直方图", xlab = "")
+hist(sum_c, main = "入度分布直方图", xlab = "")
+```
+
+##任务二 批量读取数据
+
+```{r message=FALSE, warning = FALSE}
+#读取同一目录下的所有文件
+#文件目录
+path <- "D:/data/chuzu" 
+#获取该路径下的文件名
+fileNames <- dir(path)
+#生成读取文件路径
+filePath <- sapply(fileNames, function(x){paste(path,x,sep='/')}) 
+#读取数据，结果为list
+data_list <- lapply(filePath, function(x){read.table(x, header=FALSE, sep=",")})
+#将data_list的所有元素合并在为一个数据框
+data_df <- do.call(rbind,data_list)
+colnames(data_df) <- c("序号","时间","经度","纬度")
+#显示合并后的数据框的行数、列数
+dim(data_df)
+```
+
+##任务三 读入、合并和展示数据
+
+```{r message=FALSE, warning = FALSE}
+
+#读入csv数据
+#用col.names()对列名进行重命名
+a <- read.csv("D:/data/课程列表.csv", header = TRUE, col.names = c("s.ctg", "b.ctg", "page.num", "url", "course.name", "teacher", "size", "real.price", "orig.price", "revenue"), stringsAsFactors = FALSE)
+b <- read.csv("D:/data/课程信息.csv", header = TRUE, col.names = c("url", "score", "people", "intro", "detail"), stringsAsFactors = FALSE)
+
+#去除重复值
+a <- a[!duplicated(a$url),]
+b <- b[!duplicated(b$url),]
+#按照"课程网址"将a和b进行合并
+dat <- merge(a,b,by = c("url"))
+#还原options()中max.print的默认值，使summary(dat)结果完整输出
+options(max.print=99999) 
+#展示数据
+summary(dat)
+```
+
+##任务四 按照类别分别统计
+
+```{r message=FALSE, warning = FALSE}
+#恢复初始设置
+library(settings)
+reset(options)
+#还原options()中digits的默认值
+options(digits = 7)
+#按照与任务三相同的方法得到数据框dat
+a <- read.csv("D:/data/课程列表.csv", header = TRUE, col.names = c("s.ctg", "b.ctg", "page.num", "url", "course.name", "teacher", "size", "real.price", "orig.price", "revenue"), stringsAsFactors = FALSE)
+b <- read.csv("D:/data/课程信息.csv", header = TRUE, col.names = c("url", "score", "people", "intro", "detail"), stringsAsFactors = FALSE)
+a <- a[!duplicated(a$url),]
+b <- b[!duplicated(b$url),]
+dat <- merge(a,b,by = c("url"))
+
+library(plyr)
+#使用ddply()函数进行分组统计
+#得到的N, Mean, Min, Max, Sum都是dataframe类型
+N <- ddply(dat, .(b.ctg), nrow)
+Mean <- ddply(dat, .(b.ctg), function(x){mean(x$size)})
+Min <- ddply(dat, .(b.ctg), function(x){min(x$real.price)})
+Max <- ddply(dat, .(b.ctg), function(x){max(x$real.price)})
+Sum <- ddply(dat, .(b.ctg), function(x){sum(x$revenue)})
+library(tidyverse)
+#使用tidyverse包中的reduce函数，将N,Mean,Min,Max,Sum这5个数据框按照共同的列"b.ctg"进行合并，得到dat_dsp
+dat_dsp <- list(N, Mean, Min, Max, Sum) %>% reduce(left_join, by = "b.ctg")
+#重新指定数据框dat_dsp的列名
+colnames(dat_dsp) <- c("b.ctg", "N", "Mean", "Min", "Max", "Sum")
+#取消最后一列的科学计数法表示
+options(scipen = 200)
+#还原options()中max.print的默认值
+options(max.print=99999) 
+head(dat_dsp)
+#以表格形式输出dat_dsp的前6行
+knitr::kable(head(dat_dsp), format = "html")
+```
+
+##任务五 构建iftopteach变量
+
+```{r message=FALSE, warning = FALSE}
+#按照与任务三相同的方法得到数据框dat
+a <- read.csv("D:/data/课程列表.csv", header = TRUE, col.names = c("s.ctg", "b.ctg", "page.num", "url", "course.name", "teacher", "size", "real.price", "orig.price", "revenue"), stringsAsFactors = FALSE)
+b <- read.csv("D:/data/课程信息.csv", header = TRUE, col.names = c("url", "score", "people", "intro", "detail"), stringsAsFactors = FALSE)
+a <- a[!duplicated(a$url),]
+b <- b[!duplicated(b$url),]
+dat <- merge(a,b,by = c("url"))
+#使用ddply()函数统计每位老师（或机构）的开课的数量，储存于N_teacher中
+library(plyr)
+N_teacher <- ddply(dat, .(teacher), nrow)
+#按照开课数量由大到小进行排序
+N_teacher_ordered <- N_teacher[order(N_teacher[,2], decreasing = TRUE), ]
+#选出开课数最多的10为老师，赋值为top_teacher
+top_teacher <- N_teacher_ordered[1:10,1]
+#输出开课数最多的10为老师
+top_teacher
+#初始化iftopteach变量
+iftopteach <- rep(0, nrow(dat))
+#如果老师属于开课最多的10位之一，则将这门课对应的iftopteach修改为1
+iftopteach <- ifelse(dat$teacher %in% top_teacher,1,0)
+dat1 <- cbind(dat, iftopteach)
+
+#由于数据量较大，只展示课程名和iftopteach变量的前15行
+knitr::kable(head(dat1[,c(5,15)], 15), format = "html")
+```
+
+

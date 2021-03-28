@@ -1,0 +1,933 @@
+---
+title: "张嘉辰_2018201743_统计软件第6次作业"
+author: "张嘉辰"
+date: "2020年12月1日"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+    toc_float: true
+    number_sections: false
+    theme: lumen
+editor_options: 
+  chunk_output_type: console
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 4px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 4px 0 0 0;
+    -webkit-border-radius: 4px 0 0 0;
+    border-radius: 4px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 4px 0 0;
+    -webkit-border-radius: 0 4px 0 0;
+    border-radius: 0 4px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 4px;
+    -webkit-border-radius: 0 0 0 4px;
+    border-radius: 0 0 0 4px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 4px 0;
+    -webkit-border-radius: 0 0 4px 0;
+    border-radius: 0 0 4px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+
+#任务一
+
+```{r warning=FALSE, message=FALSE}
+library(jiebaRD)
+library(jiebaR) 
+library(ggplot2)
+
+#读入数据
+com_data <- read.csv("D:/data/comments_infor.csv", header = TRUE, stringsAsFactors = FALSE)
+#提取数据中的评论所在列
+comments <- com_data[,5]
+#初始化分词器
+cutter <- worker(bylines = TRUE) 
+#去掉停用词，在停用词里加入了“买”、“手机”和“真的”等词
+stoppath <- "D:/data/stopwords.dat"
+cutter <- worker(bylines = TRUE,stop_word=stoppath) 
+#进行分词
+res_stop <- cutter[comments]
+#查看前6行的分词情况
+head(res_stop)
+```
+
+#任务二
+
+##1.从去掉了停用词的分词结果中直接选高频词
+
+首先从去掉了停用词的分词结果中，直接选出词频最高的前50个词，如下所示。
+
+```{r warning=FALSE, message=FALSE}
+#将res_stop从list转换为matrix格式
+text_stop <- lapply(res_stop,as.matrix)
+#将每行文本的分词结果逐一排列起来
+text_stop <- as.data.frame(do.call(rbind, text_stop), stringsAsFactors = FALSE)
+#提取高频词作为关键词
+#进行词频统计
+freq <- as.data.frame(table(text_stop),stringsAsFactors = FALSE) 
+#按词频个数降序排列           
+freq <- freq[order(-freq[,2]),]  
+#挑选前50个高频词                                
+top50 <- freq[1:50,]
+top50
+```
+
+
+##2.对分词结果按照词性进行筛选
+
+从去掉了停用词的分词结果中直接选出的50个词中，有一些不太有价值的词语，例如“月”，“第一次”等词。
+
+所以接下来对分词结果按照词性进行筛选。
+
+
+```{r warning=FALSE, message=FALSE}
+#提取每个词的词性
+cutter <- worker(bylines = TRUE, "tag" ,stop_word=stoppath) 
+res_tag <- cutter[comments] 
+tag <- lapply(res_tag,names)
+
+#按照词性进行筛选
+#将res_tag从list转换为matrix格式
+text <- lapply(res_tag,as.matrix)
+#将tag从list转换为matrix
+tag <- lapply(tag,as.matrix)
+#将每行文本的分词结果逐一排列起来
+text_all <- as.data.frame(do.call(rbind, text), stringsAsFactors = FALSE) 
+#将标注的词性结果逐一排列起来
+tag_all <- as.data.frame(do.call(rbind, tag), stringsAsFactors = FALSE)
+
+#对分词结果按照词性进行筛选
+#读入选取的词性
+choose_tags <- read.csv("D:/data/tags.csv", header = FALSE, stringsAsFactors = FALSE) 
+#找到词性所在列
+choose_tags <- as.matrix(choose_tags[,1])
+#找出tag中属于choose_tags中任意一个词性的小标
+tnum <- apply(choose_tags,1,function(x){return(which(tag_all[,1]==x))})
+#将tnum从list变为vector
+tnum <- unlist(tnum)
+#得到筛选后的tag和text
+tag_all2 <- tag_all[tnum,1]
+text_all2 <- text_all[tnum,1]
+
+#提取高频词作为关键词
+#进行词频统计
+freq <- as.data.frame(table(text_all2),stringsAsFactors = FALSE) 
+#按词频个数降序排列           
+freq <- freq[order(-freq[,2]),]  
+#挑选前50个高频词                                
+top50 <- freq[1:50,]
+top50
+```
+
+按照词性进行筛选后，去掉了例如“月”，“第一次”等词。但是，仍然有一些不太有价值或者意义模糊的词语，其中以一个字构成的词语居多，比如，“送”，“高”等词。
+
+另外，评论中出现“4”的频率较高。在数据comments_infor.csv中可以看到，出现“4”的原因是手机型号是360NS4，手机运行内存是4GB。这些信息是手机的信息，本身不含有明确的感情色彩。
+
+所以接下来对分词结果进行二次筛选，只选择长度大于一的词语，得到词频最高的前50个词如下所示。
+
+##3.只选择长度大于一的词语
+
+```{r warning=FALSE, message=FALSE}
+#对选出的词进行第二次筛选
+#找出每个词的长度
+Len <- nchar(text_all2)
+#选出长度大于1的词
+#找出长度大于1的词的下标
+num <- which(Len>1)
+#得到筛选后的tag和text
+tag_all3 <- tag_all2[num]
+text_all3 <- text_all2[num]
+
+#提取高频词作为关键词
+#进行词频统计
+freq <- as.data.frame(table(text_all3),stringsAsFactors = FALSE) 
+#按词频个数降序排列    
+freq <- freq[order(-freq[,2]),]
+#挑选前50个高频词                                
+top50 <- freq[1:50,]
+top50
+```
+
+可以看到，高频词中主要有以下几类：
+
+(1)手机性能和价格相关的词语
+
+例如："屏幕"，"电池"，"系统"，"外观"，"拍照"，"价格"，"性价比"，"手感"，"充电"，"质量"，"功能"，"发热"，"包装"，"运行"等；
+
+(2)平台服务相关的词语
+
+例如："物流"，"客服"，"快递"，"送货"，"服务"，"售后"等；
+
+(3)一些评价性的、感情色彩明确的词语，这些词语的含义比较接近
+
+正面的例如："不错"，"喜欢"，"好好"，"满意"，"好评"，"支持"，"漂亮"，"值得"，"好用"等；
+
+负面的例如："垃圾"，"差评"，"不好"等；
+
+(4)也有一些感情色彩不明确的词语，这些词语可能与评价是好评还是差评的关系不大
+
+例如："收到"，"评价"，"朋友"，"购买"等；
+
+(5)其他的词语，这里单独进行分析
+
+①"小米"
+
+手机品牌“小米”的出现频率也相对较高。推测小米品牌的手机是数据中的手机品牌（如360品牌、中兴品牌等）的主要竞争者，即两者可能价位和功能比较接近。查看原评论发现，提到"小米"的消费者大多数都是曾经使用过小米手机，并在评论中将购买的手机和小米手机进行了对比。
+
+因此建议品牌方可以通过强化与小米手机等竞争品牌的优势来扩大消费者市场。
+
+②"耳机"
+
+"耳机"一词的出现频率也相对较高。查看原评论发现，大多数提到"耳机"的评论是因为买手机时没有附送耳机配件，引起了部分消费者的不满。因此，建议商家可以考虑消费者对耳机的需求，在配件中增加耳机。
+
+③"希望"
+
+"希望"一词的出现的评论可能有用户对该手机的期待或建议等，建议商家可以对含有"希望"一词的评论进行单独分析，从中分析消费者需求，进而提升销量。
+
+
+#任务三
+
+函数`grepl()`返回TRUE或者FALSE，表示是否包含子串。
+
+```{r warning=FALSE, message=FALSE}
+#在高频词中找出“屏幕”，“电池”，“客服”，“物流”四个词的标号
+#将其命名为key_words
+#"|"表示或者
+key_words <- freq[which(freq$text_all3==c("屏幕")|freq$text_all3=="电池"|freq$text_all3=="客服"|freq$text_all3=="物流"),]
+
+library(stringr)
+library(plyr)
+library(dplyr)
+
+com_data$手机编号 <- factor(com_data$手机编号, levels = unique(com_data$手机编号), ordered = TRUE)
+
+phone_list <- split(com_data, com_data$手机编号)
+#函数grepl返回TRUE或者FALSE，表示是否存在该字符串
+screen <- sapply(phone_list, function(x) ((sum(grepl("屏幕", x$评论内容)))/nrow(x)))
+battery <- sapply(phone_list, function(x) ((sum(grepl("电池", x$评论内容)))/nrow(x)))
+custserve <-sapply(phone_list, function(x) ((sum(grepl("客服", x$评论内容)))/nrow(x)))
+delivery <-sapply(phone_list, function(x) ((sum(grepl("物流", x$评论内容)))/nrow(x)))
+
+freq_mat <- data.frame(screen, battery, custserve, delivery)
+
+con_reg <- data.frame(unique(com_data$手机编号), freq_mat)
+colnames(con_reg) <- c("手机编号", "屏幕", "电池", "客服", "物流")
+rownames(con_reg) <- 1:nrow(con_reg)
+#查看前6行
+head(con_reg)
+```
+
+#任务四
+
+```{r warning=FALSE, message=FALSE}
+phone_info <- read.csv("D:/data/phone_infor.csv", header = TRUE, stringsAsFactors = FALSE)
+#好评率
+good_freq <- phone_info$好评数/phone_info$总评论数
+
+#comments_infor的手机编号中，第165个手机编号10767563143在phone_infor中没有对应的信息，因此删掉freq_mat的第165行
+attach(phone_info)
+reg_data <- data.frame(good_freq, con_reg[-165, -1],  价格, 品牌, 屏幕尺寸, 指纹识别, GPS定位, 促销信息)
+detach(phone_info)
+reg_res <- lm(good_freq ~ 价格 + 品牌 + 屏幕尺寸 + 指纹识别 + GPS定位 + 促销信息 + 屏幕 + 电池 + 客服 + 物流, data = reg_data)
+#查看回归结果
+summary(reg_res)
+```
+
+回归结果分析：
+
+价格对好评率有显著影响；
+
+“屏幕”，“电池”，“客服”，“物流”四个词中，只有“电池”对好评率有显著的影响。
+
+而且，“电池”的系数为负，说明“电池”这一词语出现的次数越多，该手机的好评率越低。
+
+这可能是因为多数提到“电池”的评论都是因为对电池不够满意，即对电池不满意的顾客多于对电池满意的顾客。
+
+#任务五
+
+##1.提取包含“电池”的短句
+
+```{r warning=FALSE, message=FALSE}
+library(stringr)
+#按照标点符号“，。！？,”以及空格，进行分句处理
+senten <- strsplit(comments,split="，|。|！|？| |,")
+sen <- unlist(senten)
+#在所有句子中提取包含“电池”的短句
+batt_sen <- grep("电池",sen,value = TRUE)
+#查看前6个
+head(batt_sen)
+```
+
+##2.对所有包含“电池”的短句进行分词
+
+去掉停用词，对分词结果按照词性进行筛选，并且只选出超过一个字的词语。
+
+```{r warning=FALSE, message=FALSE}
+#分词
+#初始化分词器
+#去掉停用词
+stoppath <- "D:/data/stopwords.dat"
+#提取每个词的词性
+cutter <- worker(bylines = TRUE, "tag" ,stop_word=stoppath) 
+#进行分词
+res_tag_batt <- cutter[batt_sen] 
+tag_batt <- lapply(res_tag_batt,names)
+#按照词性进行筛选
+#将res_tag_batt从list转换为matrix格式
+text_batt <- lapply(res_tag_batt,as.matrix)
+#将tag_batt从list转换为matrix
+tag_batt <- lapply(tag_batt, as.matrix)
+#将每行文本的分词结果逐一排列起来
+text_all_batt <- as.data.frame(do.call(rbind, text_batt), stringsAsFactors = FALSE) 
+#将标注的词性结果逐一排列起来
+tag_all_batt <- as.data.frame(do.call(rbind, tag_batt), stringsAsFactors = FALSE)
+
+#对分词结果按照词性进行筛选
+#读入选取的词性
+choose_tags <- read.csv("D:/data/tags.csv", header = FALSE, stringsAsFactors = FALSE) 
+#找到词性所在列
+choose_tags <- as.matrix(choose_tags[,1])
+#找出tag中属于choose_tags中任意一个词性的小标
+tnum_batt <- apply(choose_tags,1,function(x){return(which(tag_all_batt[,1]==x))})
+#将tnum从list变为vector
+tnum_batt <- unlist(tnum_batt)
+#得到筛选后的tag和text
+tag_all_batt2 <- tag_all_batt[tnum_batt,1]
+text_all_batt2 <- text_all_batt[tnum_batt,1]
+
+#由于一个字构成的词语大多都意义比较模糊，所以只选出长度大于1的词语
+#找出每个词的长度
+Len_batt <- nchar(text_all_batt2)
+#选出长度大于1的词
+#找出长度大于1的词的下标
+num_batt <- which(Len_batt>1)
+#得到筛选后的tag和text
+tag_all_batt3 <- tag_all_batt2[num_batt]
+text_all_batt3 <- text_all_batt2[num_batt]
+
+#提取高频词作为关键词
+#进行词频统计
+freq_batt <- as.data.frame(table(text_all_batt3),stringsAsFactors = FALSE) 
+#按词频个数降序排列    
+freq_batt <- freq_batt[order(-freq_batt[,2]),]
+#挑选前50个高频词                                
+top50_batt <- freq_batt[1:50,]
+top50_batt
+```
+
+从和“电池”有关的高频词中可以看到，消费者对电池的主要关注点有：
+
+(1)电池的续航能力（耗电速度）
+
+体现在"耐用"，"续航"，"待机"，"时间"，"没电"，"耗电"，"够用"，"电池电量"，"小时"，"抗用"，"经用"，"不经用"，"太快"，"很快"，"消耗"，"掉电"等高频词中；
+
+(2)电池使用是否容易发热
+
+体现在"发热"等高频词中；
+
+(3)电池的充电速度
+
+体现在"充电"，"充满"等高频词中；
+
+(4)电池是否容易更换等售后服务
+
+体现在"更换"，"可换"，"能换"，"客服"等关键词中。
+
+#任务六
+
+选择“耐用”，“续航”,“待机”,“充电”这四个具体关注点。
+
+```{r warning=FALSE, message=FALSE}
+#所有评论的得分
+rate <- com_data$评论得分
+#包含“电池”的评论的得分
+rate_batt <- rate[grep("电池",comments, value = FALSE)]
+#包含“电池”和“耐用”的评论的得分
+rate_dura <- rate[grep("电池.*耐用|耐用.*电池",comments, value = FALSE)]
+#包含“电池”和“续航”的评论的得分
+rate_conti <- rate[grep("电池.*续航|续航.*电池",comments, value = FALSE)]
+#包含“电池”和“待机”的评论的得分
+rate_last <- rate[grep("电池.*待机|待机.*电池",comments, value = FALSE)]
+#包含“电池”和“充电”的评论的得分
+rate_char <- rate[grep("电池.*充电|充电.*电池",comments, value = FALSE)]
+
+#相应得分的平均值
+batt_rate_mean <- c(mean(rate_dura), mean(rate_conti), mean(rate_last), mean(rate_char), mean(rate_batt))
+
+batt_charac <- c("耐用", "续航", "待机", "充电", "电池")
+#画出柱状图
+barplot(height=batt_rate_mean, names=batt_charac, col = rainbow(5, alpha = 0.3), xlab = "", ylab = "平均分", ylim = c(0,5))
+#添加表示行业均值的水平线
+rate_all <- mean(com_data$评论得分)
+abline(h = rate_all)
+```
+
+
+可以看到，四个关注点的得分和电池的整体分数都比行业均值更低，表明消费者对电池不太满意，这也与回归中电池的回归系数为负是符合的。
+
+相比于电池的整体情况，“耐用”和“续航”的得分比“电池”更高，而“待机”和“充电”则更低。因此，消费者对电池的不满意主要集中在“待机”和“充电”方面，所以建议商家可以从“待机”和“充电”方面提升电池性能，进而提升消费者的满意度。
+
+

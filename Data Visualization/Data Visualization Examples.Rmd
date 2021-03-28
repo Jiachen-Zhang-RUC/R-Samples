@@ -1,0 +1,758 @@
+---
+title: "张嘉辰_2018201743_统计软件第3次作业"
+author: "张嘉辰"
+date: "2020年10月27日"
+output: 
+  html_document:
+    toc: true # table of content true
+    toc_depth: 2  # upto three depths of headings (specified by #, ## and ###)
+    toc_float: true
+    number_sections: false
+    theme: lumen
+
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 5px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-radius: 6px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 6px;
+    -webkit-border-radius: 0 0 0 6px;
+    border-radius: 0 0 0 6px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 6px 0;
+    -webkit-border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+
+#任务一 折线图
+
+```{r warning=FALSE, message=FALSE}
+data <- read.csv("D:/data/data.csv", header = TRUE, stringsAsFactors = FALSE)
+
+library(zoo)
+#读入后时间变量是整数类型，首先用as.character()将其转化为字符类型，再用zoo包中的as.yearmon()函数转化为yearmon类型
+month <- as.yearmon(as.character(data$时间), format = "%Y%m")
+#构建数据框，第一列为时间，第二列为产品销量
+sale_df <- data.frame(salemonth = data$时间, sale_amount = data$某产品销量)
+#按照时间排序，创建有序的时间序列对象（即zoo类型）
+#数据部分为产品销量sale_amount，索引部分为时间
+sale <- with(sale_df, zoo(sale_amount, order.by = month))
+
+#画出某产品销量的时序图，不显示x轴，type = "b"表示画出点线图
+plot(sale, xaxt = 'n', type = "b", xlab = "", ylab = "某产品销售量", main = "某产品销量时序图")
+
+#构建以月度为分割的x轴
+#将时间以1为步长进行划分，即得到以月分割的时间
+axis_year <- month[seq(1, length(month), by = 1)]
+#画出x轴，las=2表示坐标轴的标签文字为竖排
+axis(1, axis_year, format(axis_year, '%Y%m'), las = 2)
+#用红线标记出年份，红线的宽度为2
+abline(v = c(month[12], month[24]), col = "red", lwd = 2)
+
+
+#画出某产品销量的时序图，不显示x轴，type = "b"表示画出点线图
+plot(sale, xaxt = 'n', type = "b", xlab = "", ylab = "某产品销售量", main = "某产品销量时序图")
+#构建以季度为分割的x轴
+#将时间以3为步长进行划分，即得到以季度分割的时间
+axis_season <- month[seq(1, length(month), by = 3)]
+#画出x轴，las=2表示坐标轴的标签文字为竖排
+axis(1, axis_season, format(axis_year, '%Y%m')[seq(1, 36, by = 3)], las = 2)
+#用红线标记出年份，红线的宽度为2
+abline(v = c(month[12], month[24]), col = "red", lwd = 2)
+```
+
+#任务二 折线图
+
+```{r warning=FALSE, message=FALSE}
+data <- read.csv("D:/data/data.csv", header = TRUE, stringsAsFactors = FALSE)
+#读入后时间变量是整数类型，首先用as.character()将其转化为字符类型，再用zoo包中的as.yearmon()函数转化为yearmon类型
+month <- as.yearmon(as.character(data$时间), format = "%Y%m")
+
+#构建数据框，第一列为时间，第二列为当月新增贷款，第三列为某产品销量
+load_sale_df <- data.frame(time = data$时间, load = data$当月新增贷款, sale_amount = data$某产品销量)
+
+#画出某产品销量的时序图，不显示x轴，type = "b"表示画出点线图
+#对产品销量取对数
+plot(x = month, y = log(data$某产品销量), type = "b", ylim = c(4, 12), xaxt = "n", xlab = "", ylab = "对数销量", main = "当月新增贷款与某产品销量对比")
+#在上一张图的基础上，添加新的图形
+par(new = TRUE)
+#在上一张图上继续画出当月新增贷款的时序图，不显示x轴，type = "b"表示画出点线图
+#由于两个变量共用一个x轴，所以这里不显示y轴
+#对新增贷款取对数
+plot(x = month, y = log(data$当月新增贷款), type = "b", col = "red", ylim = c(4, 12), xaxt = "n", yaxt = "n", xlab = "", main = "", ylab = "")
+#添加图例
+legend("topleft", c("当月新增贷款", "某产品销量"),
+       col = c("red", "black"), lty = c(1, 1), cex = 0.7)
+
+#添加x轴
+#将时间以1为步长进行划分，即得到以月分割的时间
+axis_year <- month[seq(1, length(month), by = 1)]
+#画出x轴，las=2表示坐标轴的标签文字为竖排
+axis(1, axis_year, format(axis_year, '%Y%m'), las = 2)
+
+```
+
+
+#任务三 双坐标轴折线图
+
+双y轴的图形可以直接使用plotrix包中的twoord.plot()函数进行绘制，
+
+但是由于twoord.plot()函数无法去掉边框，画出的图与给出的范例略有差异，
+
+所以这里使用两次plot()函数分别对两个变量作图，通过设置par(new=TRUE)使两个变量的图叠加，手动添加右侧y轴。
+
+```{r warning=FALSE, message=FALSE}
+#画出当月新增贷款的时序图，不显示x轴，设置bty="n"表示不添加图形边框
+plot(x = month, y = data$当月新增贷款, type = "b", bty = "n", xaxt = "n", xlab = NA, ylab = "当月新增贷款", main = "当月新增贷款与房地产投资额对比")
+#在上一张图的基础上添加下一张图
+par(new = TRUE)
+#画出房地产开发投资额的时序图，点的类型为"*"，不显示x轴和y轴
+plot(x = month, y = data$房地产开发投资额, type = "b", pch="*", col = "red", axes=F, bty = "n", xlab=NA, ylab=NA)
+#添加右侧的y轴，颜色为红色
+axis(side = 4, col = "red", col.axis = "red")
+axis(1, axis_year, format(axis_year, '%Y%m'), las = 2)
+#添加图例
+legend("topleft", c("当月新增贷款", "房地产投资额"),
+       col = c("black", "red"), lty = c(1, 1), pch = c("o", "*"))
+```
+
+
+#任务四 plotly添加发布会日期
+
+
+```{r warning=FALSE, message=FALSE}
+library(plotly)
+library(dplyr)
+#载入数据
+load("D:/data/AAPL.rda")
+annouced <- c("2010-06-07", "2011-10-04", "2012-09-12", "2013-09-10", "2014-09-09", "2015-09-09", "2016-09-08")
+product <- c("iPhone 4", "iPhone 4s", "iPhone 5", "iPhone 5s", "iPhone 6", "iPhone 6s", "iPhone 7")
+#构建包含所有时间和对应的收盘价的数据框
+mat = data.frame(Date = AAPL$Date, 
+                   AAPL = round(AAPL$Adj.Close, 2))
+
+#找到新手机发布时对应的收盘价
+#由于给出的数据中时间是倒序排列，而发布时间annouced是正序排列，所以通过rev()函数将顺序反转
+close_phone <- rev(round(AAPL$Adj.Close[which(AAPL$Date %in% annouced)],2))
+
+#构建包含新产品发布的时间、手机名称和对应收盘价的数据框
+#第一列为发布时间，第二列为发布的手机名称，第三列是发布时间对应的收盘价
+mat2 <- data.frame(annouced, product, close_phone)
+
+#由于需要将三条轨迹叠加，所以先画出空的图，再依次叠加三条轨迹
+fig <- plot_ly()
+
+#第一条轨迹是收盘价的时序图
+#模式为"lines"，表示用线将所有点连接
+fig <- fig %>% 
+  add_trace(data=mat, x = ~ Date, y = ~ AAPL, 
+            type = 'scatter', mode = 'lines', name = '股票价格') 
+
+#第二条轨迹是在发布手机的位置处标上手机的名称
+#模式为"text"，表示在点附近标出手机的名称
+#showlegend=F表示在图例中不显示这条轨迹
+fig <- fig %>% 
+  add_trace(data=mat2, x = ~annouced, y = ~close_phone, 
+            type = 'scatter', mode = 'text', text = ~product, showlegend = F)
+
+#第三条轨迹是在发布手机的位置标出点
+#模式为"markers"，表示进行点的标记
+fig <- fig %>% 
+  add_trace(data=mat2, x = ~annouced, y = ~close_phone, 
+            type = 'scatter', mode = 'markers', name = "发布会")
+
+#设置x轴，y轴和图的标题
+fig <- fig %>% layout(title = "苹果股票价格与新苹果手机的发布", xaxis = list(title = " ", showticklabels = TRUE, tickfont = list(size = 8)), yaxis = list(title = "调整收盘价（美元）"))
+
+#图的显示
+fig
+```
+
+
+#任务五 文本分段
+
+```{r warning=FALSE, message=FALSE}
+#读入文本
+novel_txt <- readLines("D:/data/倚天屠龙记.txt", encoding = "UTF-8")
+#所有段落开头的标值是开头有四个空格，开头用"^"表示
+para_start <- grep("^    ",novel_txt,value = FALSE)
+#将段落内容存入para中
+para <- rep("", length(para_start))
+for(i in 1:(length(para_start)-1)){
+#第i段包含的行是第para_start[i]行至第((para_start[i+1])-1)行
+  para_line <- seq(from = para_start[i], to = (para_start[i+1])-1, by=1)
+#对每一段落的所有行进行拼接，存入para中
+  para[i] <- paste(novel_txt[para_line], sep = "", collapse = "")
+}
+#用表格形式显示前4个段落
+knitr::kable(head(para, 4), format = "html", row.names = TRUE, col.names = "《倚天屠龙记》前四段")
+
+```
+

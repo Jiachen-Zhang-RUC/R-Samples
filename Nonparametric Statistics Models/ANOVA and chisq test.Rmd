@@ -1,0 +1,1317 @@
+---
+title: "2018201743-张嘉辰-第十二周作业"
+author: "张嘉辰"
+date: "2020年12月3日"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 6
+    toc_float: true
+    number_sections: false
+    theme: lumen
+editor_options: 
+  chunk_output_type: console
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 4px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 4px 0 0 0;
+    -webkit-border-radius: 4px 0 0 0;
+    border-radius: 4px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 4px 0 0;
+    -webkit-border-radius: 0 4px 0 0;
+    border-radius: 0 4px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 4px;
+    -webkit-border-radius: 0 0 0 4px;
+    border-radius: 0 0 0 4px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 4px 0;
+    -webkit-border-radius: 0 0 4px 0;
+    border-radius: 0 0 4px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+
+
+
+
+
+
+
+#5.1 卡方独立性检验
+
+$H_0:$不同年龄段人对各商场的购物倾向性不存在差异
+
+$H_1:$不同年龄段人对各商场的购物倾向性存在差异
+
+列联表的行数和列数均为3，单元格中的期望频数都大于5，满足$\chi^2$检验的假定条件，因此可以采用卡方独立性检验。
+
+进行卡方检验可以采用`chisq.test()`，`summary(xtabs(Freq~A+B))`，或者对数线性模型的独立性模型。
+
+##1.使用函数chisq.test()
+
+```{r warning=FALSE, message=FALSE}
+market <- data.frame(first = c(83, 91, 41), second = c(70, 86, 38), thrid = c(45, 15, 10))
+row.names(market) <- c("≤30", "31~50", ">50")
+#进行卡方独立性检验
+chisq.test(market)
+```
+
+p-value = 0.0009203<0.05，所以拒绝原假设，认为不同年龄段人对各商场的购物倾向性存在差异。
+
+##2.使用summary(xtabs(Freq~A+B))
+
+```{r warning=FALSE, message=FALSE}
+market_arr <- array(data = c(83, 91, 41, 70, 86, 38, 45, 15, 10), 
+                         dim = c(3,3), 
+                dimnames = list("age" = c("≤30", "31~50", ">50"), 
+                          "market"=c("first","second","third")
+                                         ))
+market_df <- as.data.frame(as.table(market_arr))
+summary(xtabs(Freq~age+market, market_df))
+```
+
+p-value = 0.0009203，与使用函数`chisq.test()`得到的结果相同。
+
+##3.建立对数线性模型的独立性模型
+
+对于两个变量，卡方检验的原假设是两个变量独立，
+
+所以可以基于两变量独立的原假设，建立对数线性模型（此时建立的是独立性模型）进行检验。
+
+如果原假设不成立，则建立的模型的残差会比较大，p值会比较小。
+
+```{r warning=FALSE, message=FALSE}
+market_glm <- glm(Freq~age+market, family = "poisson", data = market_df)
+summary(market_glm)
+#p值
+pchisq(deviance(market_glm), df = df.residual(market_glm), lower.tail = F)
+```
+
+可以看到，三种进行卡方检验方式得到的结果是一致的，都拒绝原假设，认为年龄段和对商场的购物倾向不独立。
+
+以下题目的卡方检验都采用`chisq.test()`进行。
+
+#5.2 卡方独立性检验
+
+$H_0:$不同种族与所支持的政党之间独立
+
+$H_1:$不同种族与所支持的政党之间不独立
+
+列联表的单元格中的期望频数都大于5，满足$\chi^2$检验的假定条件，因此可以采用卡方独立性检验；
+
+```{r warning=FALSE, message=FALSE}
+politic <- data.frame(民主党 = c(341, 103), 共和党 = c(405, 11))
+row.names(politic) <- c("白人", "黑人")
+#进行卡方独立性检验
+chisq.test(politic)
+```
+
+p-value < 2.2e-16，所以拒绝原假设，认为不同种族与所支持的政党之间不独立。
+
+#5.3 Fisher精确性检验,McNemar检验
+
+数据有超过20%的单元格中的期望频数都低于5，不满足$\chi^2$检验的假定条件，因此不可以采用卡方独立性检验；
+
+这里进行Fisher精确性检验和McNemar检验。
+
+##1.Fisher精确性检验
+
+```{r warning=FALSE, message=FALSE}
+lung <- data.frame(当前有过某类肺炎 = c(6, 1), 当前没有某类肺炎 = c(4, 19))
+row.names(lung) <- c("以前有过某类肺炎", "以前没有某类肺炎")
+#Fisher精确性检验
+fisher.test(lung)
+```
+
+p-value = 0.002122<0.05，因此拒绝原假设，认为某类肺炎患者和以前是否曾经患过这类肺炎有继承性关系。
+
+##2.McNemar检验
+
+“以前是否有过某类肺炎”和“当前是否有过某类肺炎”的观测对象是同一批，且样本量较小。
+
+所以这里也可以使用McNemar检验。
+
+```{r warning=FALSE, message=FALSE}
+mcnemar <- ((6-19)^2)/(6+19)
+#McNemar检验的p值
+p_mcnemar <- 1-pchisq(mcnemar, 1)
+p_mcnemar
+```
+
+p-value = 0.009322376<0.05，因此拒绝原假设，认为某类肺炎患者和以前是否曾经患过这类肺炎有继承性关系。
+
+#5.4 卡方独立性检验
+
+每人只能选出一个最喜欢的电视节目类型；
+
+列联表的行数和列数均为3，单元格中的期望频数都大于5，满足$\chi^2$检验的假定条件，因此可以采用卡方独立性检验。
+
+```{r warning=FALSE, message=FALSE}
+tv <- data.frame(体育类 = c(83, 91, 41), 电视剧类 = c(70, 86, 38), 综艺类 = c(45, 15, 10))
+row.names(tv) <- c("≤30", "31~50", ">50")
+chisq.test(tv)
+```
+
+p-value = 0.0009203<0.05，因此拒绝原假设，认为不同观众对三类节目的关注率不一样。
+
+#5.7 Mantel-Haenszel检验
+
+##1.是否条件独立-Mantel-Haenszel检验
+
+假设检验问题为：
+
+$H_0$:不同家庭经济状况的学生的高考成绩没有差异;
+
+$H_1$:不同家庭经济状况的学生的高考成绩存在差异。
+
+进行Mantel-Haenszel检验可以使用函数`mantelhaen.test()`，或者基于条件独立的原假设，建立相应的对数线性模型进行检验。
+
+###(1)使用mantelhaen.test()
+
+对于三维列联表，设行、列、层分别是变量A、B、C；
+
+Mantel-Haenszel检验用于检验变量A与变量B之间的条件独立。
+
+即，在假定每一层的变量A和B的odds ratio相等的条件下，检验A与B是否独立。
+
+因此，在进行Mantel-Haenszel检验之前首先检验“每一层的变量A和B的odds ratio相等”的假定是否成立，这可以通过Breslow-Day检验或者Woolf检验进行。
+
+```{r warning=FALSE, message=FALSE}
+#使用array()构建3维表
+exam <- array(data = c(43, 87, 65, 77, 9, 15, 73, 30, 7, 9, 18, 11), 
+              dim = c(2,2,3), 
+              dimnames = list("economy" = c("A","B"),
+                              "college" = c("first","second"),
+                              "school" = c("1","2","3")))
+
+#Breslow-Day检验和Woolf检验的原假设是
+#变量C的每一个水平下的变量A和B的odds ratio相等
+DescTools::BreslowDayTest(exam)
+#R中有两个Woolf检验的函数，结果是相同的
+#vcd::woolf_test(exam)
+DescTools::WoolfTest(exam)
+#Breslow-Day检验和Woolf检验得到的p值都较大，所以可以认为每一层的变量A和B的odds ratio相等
+#Mantel-Haenszel检验
+mantelhaen.test(exam)
+```
+
+p-value = 0.0006461<0.05，因此拒绝原假设，认为不同家庭经济状况的学生的高考成绩存在差异。
+
+###(2)基于条件独立的原假设，建立相应的对数线性模型
+
+原假设是"家庭经济状况(economy)和高考成绩(college)条件独立"，
+
+也就是给定高中学校(school)时，家庭经济状况(economy)和高考成绩(college)独立。
+
+因此建立的对数线性模型中，包括三个变量的主效应，变量economy和school的交互项，college和school的交互项，
+
+不包括economy和college的交互项，不包括三次项。
+
+```{r warning=FALSE, message=FALSE}
+exam_df <- as.data.frame(as.table(exam))
+#以第三种学校作为基准组
+exam_df$school <- factor(exam_df$school, levels = c("3", "1", "2"))
+#以经济状况一般作为基准组
+exam_df$economy <- factor(exam_df$economy, levels = c("B", "A"))
+#建立相应的对数线性模型
+log_mod_part <- glm(Freq ~ economy + college + school + economy * school + college * school, 
+            data = exam_df, family = poisson)
+summary(log_mod_part)
+#p值
+pchisq(deviance(log_mod_part), df = df.residual(log_mod_part), lower.tail = F)
+```
+
+p-value = 0.0006461<0.05，因此拒绝原假设，认为不同家庭经济状况的学生的高考成绩存在差异。
+
+##2.odds ratio的可视化与计算
+###2.1 odds ratios的可视化
+
+####(1)fourfold()
+
+每个2×2表的单元频率$n_{ij}$显示为四分之一圆，其半径与$\sqrt{n_{ij}}$成比例，因此其面积与单元频率成比例。
+
+可以通过odds ratio的置信区间的环，来直观上判断是否拒绝两变量条件独立的原假设。
+
+在odds ratio与1显著不同时，使用更深的颜色；此时相邻象限的环不重叠。
+
+```{r warning=FALSE, message=FALSE}
+library(vcd)
+fourfold(exam, mfrow=c(1,3))
+```
+
+在同种高中时，经济状况好的学生考上第二类大学的比例都更大。
+
+而且，在第二类高中下，不同经济状况时的考上第二类大学的比例的差别比较大（颜色比较深）。
+
+
+####(2)双层图
+
+```{r warning=FALSE, message=FALSE}
+doubledecker(college ~ school + economy, data=exam[2:1,,])
+```
+
+可以看到，在学校种类相同时，经济状况好的学生上二类大学的人数都比经济状况一般的更多。
+
+###2.2 计算odds ratio-建立对数线性模型
+
+####2.2.1 使用函数array()读入数据
+
+数据有2行（经济状况），2列（高考成绩），3层（高中学校）
+
+```{r warning=FALSE, message=FALSE}
+#使用array()构建3维表
+exam <- array(data = c(43, 87, 65, 77, 9, 15, 73, 30, 7, 9, 18, 11), 
+                         dim = c(2,2,3), 
+                         dimnames = list("economy" = c("A","B"),
+                                         "college" = c("first","second"),
+                                         "school" = c("1","2","3")))
+#exam
+exam_table <- ftable(exam, row.vars = c("school","economy"))
+exam_table
+```
+
+####2.2.2 探索数据
+
+#####(1)边际总和
+
+```{r warning=FALSE, message=FALSE}
+#得到边际总和
+addmargins(exam)
+```
+
+可以看到，一共有444名学生参与调查，第一种学校的学生最多，第三种学校的最少。
+
+#####(2)边缘概率
+
+```{r warning=FALSE, message=FALSE}
+prop.table(exam, margin = c(1,3))
+```
+
+对于第一种学校的学生，经济状况好（A）的有60%上了二类学校，经济状况一般（B）的有47%上了二类学校；
+
+对于第二种学校的学生，经济状况好（A）的有89%上了二类学校，经济状况一般（B）的有67%上了二类学校；
+
+对于第一种学校的学生，经济状况好（A）的有72%上了二类学校，经济状况一般（B）的有55%上了二类学校；
+
+因此，从数据直观来看，学生的家庭经济状况与其高考成绩之间有关系。
+
+#####(3)马赛克图
+
+```{r warning=FALSE, message=FALSE}
+library(vcd)
+mosaic(~ economy + college + school, shade=TRUE, data=exam, labeling = labeling_values)
+```
+
+蓝色填充表示Pearson标准化残差为正，红色填充表示为负。
+
+可以从图上看到，
+
+相同高中时，经济状况好（A）的同学考上第二类大学的比例大于经济状况一般（B）的；
+
+经济状况好和一般时，三种高中考上第二类大学的比例高低顺序不同。
+
+可以看到，学生的家庭经济状况与其高考成绩之间有关系；存在着三个变量两两之间的交互效应。
+
+#####(4)经济状况好和一般的高中学校与高考成绩之间的关系对比图
+
+以高中学校为横轴，高考考上第二类学校的学生人数为纵轴，对家庭经济状况好和经济状况一般分别画出两条折线图。
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+exam_df <- as.data.frame(as.table(exam))
+exam_df <- exam_df[which(exam_df$college == "second"), ]
+ggplot(exam_df, aes(x = school, y = Freq, group = economy)) +
+  geom_line(aes(color = economy)) + 
+  theme_minimal() +
+  labs(x = "高中学校", y = "高考上二类学校的人数", title = "经济状况好和一般的高中学校与高考成绩之间的关系对比图") +
+  scale_color_manual(name = "", labels = c("经济状况好", "经济状况一般"), values = c("red", "orange")) +
+  theme(legend.position = "bottom")
+```
+
+从图上可以看到，对于第二种和第三种高中学校的学生而言，经济状况好的学生考上第二类大学的人数都比经济状况一般的更多。
+
+####2.2.3 建立对数线性模型
+
+函数`loglin(family = "poisson")`和`glm()`都可以建立对数线性模型，输入的参数形式略有差别，得到的结果相同。
+
+#####(1)使用函数glm()建立对数线性模型
+
+######<1>独立性模型
+
+```{r warning=FALSE, message=FALSE}
+exam_df <- as.data.frame(as.table(exam))
+#以第三种学校作为基准组
+exam_df$school <- factor(exam_df$school, levels = c("3", "1", "2"))
+#以经济状况一般作为基准组
+exam_df$economy <- factor(exam_df$economy, levels = c("B", "A"))
+#建立对数线性模型
+#(1)独立性模型
+log_mod_indep <- glm(Freq ~ economy + college + school, 
+            data = exam_df, family = poisson)
+summary(log_mod_indep)
+```
+
+下面进行原假设是"独立性模型对观测频数拟合程度较好"，即"独立性模型的模型拟合值和观测频数较为接近"的假设检验。
+
+```{r warning=FALSE, message=FALSE}
+pchisq(deviance(log_mod_indep), df = df.residual(log_mod_indep), lower.tail = F)
+```
+
+p-value = 1.204856e-12，说明该模型的拟合度较差
+
+```{r warning=FALSE, message=FALSE}
+#将观测频数与模型拟合值对比，可以看到该模型的拟合度较差
+cbind(log_mod_indep$data, fitted(log_mod_indep))
+```
+
+######<2>homogeneous模型
+
+不包含三次项，包含每个变量的主效应和两两之间的交互效应。
+
+```{r warning=FALSE, message=FALSE}
+#(2)homogeneous model
+log_mod_homo <- glm(Freq ~ (economy + college + school)^2, 
+            data = exam_df, family = poisson)
+summary(log_mod_homo)
+```
+
+从Residual deviance可以看到，这个模型的拟合要比独立性模型更好。
+
+类似地，进行原假设是"homogeneous模型对观测频数拟合程度较好"，即"homogeneous模型的模型拟合值和观测频数较为接近"的假设检验。
+
+```{r warning=FALSE, message=FALSE}
+pchisq(deviance(log_mod_homo), df = df.residual(log_mod_homo), lower.tail = F)
+```
+
+p-value = 0.265058，不能拒绝原假设。
+
+```{r warning=FALSE, message=FALSE}
+#将观测频数与模型拟合值对比，homogeneous模型的拟合程度相对较好
+cbind(log_mod_homo$data, fitted(log_mod_homo))
+```
+
+######<3>饱和模型
+
+```{r warning=FALSE, message=FALSE}
+#饱和模型
+log_mod_sat <- glm(Freq ~ economy * college * school,
+            data = exam_df, family = poisson)
+summary(log_mod_sat)
+```
+
+饱和模型的Residual deviance总是0，模型拟合值与观测频数总是相等。
+
+通常情况下，我们不使用饱和模型，而是选择一个尽可能简洁的模型。
+
+注意到饱和模型中，三次项的系数都是不显著的。
+
+在有三个变量情况下，homogeneous模型和饱和模型的差别仅在于是否有三次项。
+
+下面通过似然比检验，来检验"homogeneous模型和饱和模型的拟合长度一样好"的原假设是否成立。
+
+```{r warning=FALSE, message=FALSE}
+#比较饱和模型和homogeneous模型，以便进行选择
+#似然比检验
+anova(log_mod_homo, log_mod_sat)
+pchisq(2.6556, df = 2, lower.tail = F)
+```
+
+p-value = 0.2650598，我们不能拒绝"homogeneous模型和饱和模型的拟合长度一样好"的原假设。
+
+######<4>模型选择(Step-Down)
+
+使用Step-Down选择过程，选择合适的对数线性模型
+
+可以使用`drop1()`函数，每次从饱和模型中去掉一项，直到不能再去掉为止。
+
+```{r warning=FALSE, message=FALSE}
+#Step-Down Selection Procedure
+#从饱和模型中去掉一项
+drop1(log_mod_sat,test="Chi")
+#所以我们去掉了economy:college:school，得到了log_mod_homo(homogeneous模型)
+drop1(log_mod_homo,test="Chi")
+#都是显著的，所以不能去掉
+#所以我们最终选择了log_mod_homo，也就是homogeneous模型
+summary(log_mod_homo)
+```
+
+也可以直接使用`step()`函数进行模型选择，同样最终选择homogeneous模型。
+
+```{r warning=FALSE, message=FALSE}
+#默认是后退法
+step(log_mod_sat, trace = 0)
+```
+
+######<5>使用homogeneous模型计算odds ratio
+
+```{r warning=FALSE, message=FALSE}
+exp(coef(log_mod_homo)["economyA:collegesecond"])
+```
+
+（经济状况的基准组是经济状况一般）
+
+控制高中的学校种类相同时，经济状况好的学生考上第二类学校的估计的odds，是经济状况一般的学生的2.08倍。
+
+#####(2)使用loglin()函数
+
+```{r warning=FALSE, message=FALSE}
+#由于输出的结果比较长，这里只输出homogeneous模型的结果
+#独立性模型
+#loglin(exam, list(1,2,3), fit=TRUE, param=TRUE)
+
+#homogeneous模型
+loglin(exam, list(c(1,2),c(1,3),c(2,3)), fit=TRUE, param=TRUE)
+
+#饱和模型
+#loglin(exam, list(c(1,2,3)), fit=TRUE, param=TRUE)
+```
+
+使用`loglin()`函数与使用`glm()`函数得到的结果是相同的。下面的案例中使用`glm()`建立对数线性模型。
+
+#案例与讨论：影响婴儿体重的相关因素分析
+
+##1.未婚黑人母亲婴儿的体重
+
+```{r warning=FALSE, message=FALSE}
+data <- read.csv("D:/data/birth_weight.csv")
+#选出黑人未婚母亲
+weight.sort <- sort(data$weight[data$black==1 & data$married==0])
+weight.rank <- rank(weight.sort)
+n <- length(weight.sort)
+#经验分布函数
+weight.ecd <- weight.rank/n
+plot(weight.sort,weight.ecd,type = "o",xlab = "weight",ylab = "Fn(x)",
+main="未婚黑人母亲婴儿的体重的经验分布图及置信区间估计")
+band <- sqrt(log(2/0.1)/(2*n))
+#置信区间在各点处的上下界
+lower.9 <- weight.ecd-band
+upper.9 <- weight.ecd+band
+lower.9[which(lower.9<0)] <- 0
+upper.9[which(upper.9>1)] <- 1
+lines(weight.sort, lower.9, lty=2)
+lines(weight.sort, upper.9, lty=2)
+#标出低体重的界限2500g
+abline(v=2500,col="red")
+```
+
+在90%的置信度下，未婚黑人母亲的婴儿的低体重率的上限接近20%，与世界平均水平相比这个比率是偏高的；
+
+婴儿的体重主要分布在2500g-4000g之间，但依然存在一定数量的极小值：
+
+总之，未婚黑人母亲的婴儿低体重率较高，且整体方差较大。
+
+##2.泊松回归
+
+###(1)构建数据框
+
+在书上的代码的基础上进行了简化。
+
+```{r warning=FALSE, message=FALSE}
+labels_wtgain <- c("-50~-20","-19~-10", "-9~0", "1~10", "11~20", "21~55")
+data$classifywtgain <- cut(data$m.wtgain, breaks = c(-50, -20, -10, 0, 10, 20, 55), labels = labels_wtgain, include.lowest = FALSE, right = TRUE, ordered_result = TRUE)
+data$lowweight <- ifelse(data$weight<2500, 1, 0)
+#只选出是否为黑人、母亲怀孕期间增加的体重、是否为低体重三个变量
+data_black <- data[,c(1,10,11)]
+#求频数
+data_black_df <- as.data.frame(as.table(table(data_black)))
+#只取低体重婴儿的部分
+data_black_dflow <-
+  data_black_df[which(data_black_df$lowweight==1),]
+#求偏移量
+data_black_allwei <- 
+  as.data.frame(as.table(table(data[,c(1,10)])))
+data_black_dflow$total_number <- data_black_allwei$Fre
+```
+
+###(2)黑人母亲和白人母亲孕期体重增长量与婴儿出生体重之间的关系对比图
+
+以增加的体重为横轴，低体重婴儿率为纵轴，对黑人和白人母亲分别画出两条折线图。
+
+```{r warning=FALSE, message=FALSE}
+black_dfplot <- data_black_dflow
+#低体重率
+black_dfplot$lowratio <-
+  black_dfplot$Freq/black_dfplot$total_number
+#将变量"是否为黑人"的基准组设置为黑人
+black_dfplot$black <- 
+  factor(black_dfplot$black, levels = c("1", "0"))
+library(ggplot2)
+#画图
+ggplot(black_dfplot, aes(x = classifywtgain, y = lowratio, group = black)) +
+  geom_line(aes(color = black)) + 
+  theme_minimal() +
+  labs(x = "体重分类", y = "婴儿低体重率", title = "黑人母亲和白人母亲孕期体重增长量与婴儿出生体重之间的关系对比图") +
+  scale_color_manual(name = "", labels = c("黑人", "白人"), values = c("red", "orange")) +
+  theme(legend.position = "bottom")
+```
+
+从图上可以看到，相同体重增长量下，黑人母亲的婴儿低体重率都比白人母亲更高；
+
+体重增加为"1\~10"的母亲的婴儿低体重率最低；
+
+随着母亲体重增加量的增大，婴儿低体重率的变化趋势是先减小，后增加。
+
+###(3)泊松回归
+
+```{r warning=FALSE, message=FALSE}
+#泊松回归，加入偏移量
+res_black_pois <- glm(Freq ~classifywtgain + black + offset(log(total_number)),
+                    data = data_black_dflow, family = poisson)
+summary(res_black_pois)
+#计算odds ratio（去掉截距项）
+exp(coef(res_black_pois)[-1])
+```
+
+分析：
+
+(1)母亲怀孕期间增加的体重与婴儿低体重的关系
+
+变量"母亲怀孕期间增加的体重"(classifywtgain)的基准组是"-50\~-20"；
+
+从系数的估计可以看到，
+
+在母亲的种族相同时，增加的体重是"-50\~-20"的母亲的婴儿低体重的可能性(odds)最大；
+
+增加的体重是"1\~10"的母亲的婴儿低体重的odds最小，是增加体重"-50\~-20"的母亲的$e^{-1.4926}=0.2248$，因此建议母亲控制增加的体重在"1\~10"之间；
+
+婴儿低体重的odds从高到低依次是，"-50\~-20"，"-19\~-10"，"-9\~0"，"11\~20"，"21\~55"，"1\~10"，
+
+即母亲体重从增加-50至增加10，婴儿低体重的odds下降；
+
+而母亲体重从增加11至增加55，婴儿低体重的odds先上升后下降。
+
+(2)母亲的种族与婴儿低体重的关系
+
+变量"母亲是否为黑人"(black)的基准组是"白人"；
+
+在母亲增加的体重为同一水平时，黑人母亲的低体重婴儿的可能性(odds)是白人母亲的$e^{-0.5610}=1.7524$倍，且该系数在置信度0.1下显著。黑人母亲的婴儿的健康水平和卫生状况等有待提高。
+
+##3.泊松回归-加入母亲是否已婚和母亲的受教育程度
+
+数据中用ed.hs和ed.col两个哑变量来表示教育程度，建立泊松回归模型将其转化为因子类型的变量edu，取值为0、1、2，
+
+取值为0表示教育程度既不是高中，也不是大学（这里认为是低于高中）；
+
+取值为1表示教育程度是高中；
+
+取值为2表示教育程度是大学。
+
+建立泊松回归模型，解释变量有：
+
+母亲是否已婚，母亲的受教育程度，母亲是否为黑人，母亲怀孕期间增加的体重。
+
+```{r warning=FALSE, message=FALSE}
+#定义因子型变量edu
+data$edu <- as.factor(data$ed.hs + 2*data$ed.col)
+#只取母亲是否已婚，教育程度，是否为黑人，怀孕增加的体重，是否为低体重婴儿这5个变量
+data_edu <- data[,c(1,2,10,11,12)]
+#求频数
+data_edu_df <- as.data.frame(as.table(table(data_edu)))
+#只取低体重婴儿的部分
+data_edu_dflow <- data_edu_df[which(data_edu_df$lowweight==1),]
+#求偏移量
+data_edu_allwei <- as.data.frame(as.table(table(data[,c(1,2,10,12)])))
+data_edu_dflow$total_number <- data_edu_allwei$Freq
+#泊松回归，加入偏移量
+res_edu_pois <- glm(Freq ~married+edu+classifywtgain+black+offset(log(total_number+(1^(-10)))),
+                    data = data_edu_dflow, family = poisson)
+summary(res_edu_pois)
+#计算odds ratio（去掉截距项）
+exp(coef(res_edu_pois)[-1])
+```
+
+分析：
+
+(1)母亲的婚姻状况与婴儿低体重的关系
+
+变量"母亲是否为已婚"(married)的基准组是"未婚"；
+
+在控制其他变量，即母亲受教育程度相同、增加的体重为同一水平、为同一种族时，已婚母亲的低体重婴儿的可能性(odds)是未婚母亲的$e^{-0.04741}=0.95369$，略低于未婚母亲；
+
+(2)母亲的教育程度与婴儿低体重的关系
+
+变量"母亲的教育程度"(edu)的基准组是"教育程度低于高中"；
+
+在控制其他变量，即母亲婚姻状况相同、增加的体重为同一水平、为同一种族时，教育程度为高中的母亲的低体重婴儿的可能性(odds)是低于高中的母亲的$e^{-0.25849}=0.77222$，教育程度为大学的母亲的低体重婴儿的可能性(odds)是未婚母亲的$e^{-0.01565}=0.98447$。
+
+因此，教育程度为高中的母亲的低体重婴儿可能性最低，
+
+教育程度低于高中的母亲的低体重婴儿可能性最高，
+
+教育程度为大学的介于两者之间，略低于教育程度低于高中的母亲。
+
+(3)加入"母亲是否已婚"和"母亲的受教育程度"后，变量"怀孕期间增加的体重"和"是否为黑人"的系数变化不大。
+
+##4.对数线性模型与泊松回归的对比
+
+建立了包含母亲是否为黑人、母亲怀孕期间增加的体重、是否为低体重婴儿三个变量的对数线性模型，与第二问中建立的泊松回归模型进行对比。
+
+###4.1 对数线性模型和泊松回归在模型建立上的区别
+
+以第二问中建立的泊松回归为例。
+
+####(1)泊松回归
+
+解释变量有：
+
+母亲是否为黑人，母亲怀孕期间增加的体重；
+
+被解释变量是低体重的婴儿数。
+
+泊松回归需要加入偏移量。
+
+####(2)对数线性模型
+
+建立了三维的列表，有2行，5列，2层（行、列、层的变量可以互换），
+
+行是"母亲是否为黑人"，有黑人和白人两个水平；
+
+列是"母亲怀孕期间增加的体重"，有五个水平；
+
+层是"是否为低体重婴儿"，是低体重则取1，否则取0。
+
+被解释变量是列表中每个单元格的频数。
+
+###4.2 建立模型
+
+####(1)对数线性模型
+
+可以建立独立性模型、homogeneous模型、饱和模型等，并使用Step-Down方法选择最合适的模型。这里选择了homogeneous模型。
+
+```{r warning=FALSE, message=FALSE}
+#只取"母亲是否为黑人"、"母亲怀孕期间增加的体重"、"是否为低体重婴儿"三个变量
+data_log <- data[,c(1,10,11)]
+#求出频数，建立对数线性模型的数据框
+data_df_log <- as.data.frame(as.table(table(data_log)))
+#对数线性模型的饱和模型
+res_weight_sat <- glm(Freq ~lowweight * classifywtgain * black,data = data_df_log, family = poisson)
+#使用Step-Down过程进行模型选择，选择结果是homogeneous模型
+step(res_weight_sat, trace = 0)
+#对数线性模型的homogeneous模型
+res_weight_log <- glm(formula = Freq ~ (lowweight + classifywtgain + black)^2, family = poisson, data = data_df_log)
+summary(res_weight_log)
+```
+
+####(2)泊松回归
+
+```{r warning=FALSE, message=FALSE}
+#泊松回归的数据框，只取低体重的部分
+data_df_pois <- data_df_log[13:24,]
+#泊松回归，加偏移量
+res_weight_pois <- glm(Freq ~classifywtgain + black + offset(log(total_number)),
+                    data = data_black_dflow, family = poisson)
+summary(res_weight_pois)
+```
+
+###4.3 从模型结果看两者之间的联系
+
+####(1)因变量
+
+泊松回归的因变量部分只取低体重的婴儿数，而不包括正常体重的婴儿数。也就是说，泊松回归的因变量部分是对数线性模型的因变量中，变量"是否为低体重婴儿"取值为1（即低体重）对应的频数。
+
+####(2)odds ratio
+
+通过模型选择得到，这里对数线性模型最优的模型是homogeneous模型，也就是包含了三个变量的主效应和两两之间的交互效应的模型。
+
+而对数线性模型的主效应的系数（也就是log odds ratio）可以直接从数据中得到（主效应的odds ratio即为频率之比），有意义的是交互项的系数。
+
+可以从模型结果中看到，对数线性模型中变量"是否为低体重婴儿"lowweight与变量"是否为黑人"（black）、"母亲怀孕期间增加的体重"（classified）的交互项的系数，与泊松回归中对应的系数较为接近。
+
+以下以交互项lowweight1:classified-19\~-10为例说明系数的含义。
+
+变量"母亲怀孕期间增加的体重"的基准组是"-50\~-20"，所以该交互项的系数$-0.13917592$的含义是，在控制其余变量（这里是母亲的种族）时，增加的体重是"-19\~-10"的母亲，有低体重婴儿的可能性(odds)是增加的体重是"-50\~-20"的母亲的$e^{-0.13917592}=0.8700749$。也就是说，两者之间的odds ratio是$0.8700749$。
+
+在泊松回归的结果中，"loss_weight-19\~-10"前的系数为$-0.1238341$，类似得到两者之间的odds ratio是$e^{-0.1238341}=0.8835264$。
+
+下面计算两个模型的log odds ratio和odds ratio进行对比。
+
+```{r warning=FALSE, message=FALSE}
+#log odds ratio对比
+#泊松回归的log odds ratio
+coef(res_weight_pois)[-1]
+#对数线性模型的log odds ratio
+(coef(res_weight_log)[-1])[c(8:13)]
+
+#odds ratio对比
+#计算泊松回归的odds ratio
+exp(coef(res_weight_pois)[-1])
+#计算对数线性模型的odds ratio
+(exp(coef(res_weight_log)[-1]))[c(8:13)]
+```
+
+可以看到，两个模型得到的$log\ odds\ ratio$（系数）和$odds\ ratio$都比较接近。
+
+####(3)Residual deviance
+
+```{r warning=FALSE, message=FALSE}
+#泊松回归的Residual deviance
+deviance(res_weight_pois)
+#对数线性模型的Residual deviance
+deviance(res_weight_log)
+```
+
+泊松回归得到的Residual deviance是$0.6350838$（自由度为5），对数线性模型的Residual deviance是$0.6521538$（自由度为5），两者也比较接近。
+
+
+

@@ -1,0 +1,1545 @@
+---
+title: "2018201743-张嘉辰-第十四周作业"
+author: "张嘉辰"
+date: "2020年12月11日"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 6
+    toc_float: true
+    number_sections: false
+    theme: lumen
+editor_options: 
+  chunk_output_type: console
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 4px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: P0inter;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: P0inter;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: P0inter;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-P0sition: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 4px 0 0 0;
+    -webkit-border-radius: 4px 0 0 0;
+    border-radius: 4px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 4px 0 0;
+    -webkit-border-radius: 0 4px 0 0;
+    border-radius: 0 4px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 4px;
+    -webkit-border-radius: 0 0 0 4px;
+    border-radius: 0 0 0 4px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 4px 0;
+    -webkit-border-radius: 0 0 4px 0;
+    border-radius: 0 0 4px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+
+#6.4 Kappa一致性检验
+
+$H_0:$两位医生的治疗方案不一致；
+
+$H_1:$两位医生的治疗方案一致
+
+```{r warning=FALSE, message=FALSE}
+dent <- matrix(data = c(18, 4, 2, 2, 12, 1, 0, 1, 10), nrow = 3, ncol = 3, byrow = FALSE)
+dent <- matrix(data = c(40, 25, 5, 30), nrow = 2, ncol = 2, byrow = FALSE)
+nr <- nrow(dent)
+nc <- ncol(dent)
+N <- sum(dent)
+#P0
+P0 <- sum(diag(dent))/N
+#Pe
+Pe <- sum(rowSums(dent)*colSums(dent)/N)/N
+#Kappa统计量
+kappa <- (P0-Pe)/(1-Pe)
+kappa
+
+pi. <- apply(dent, 2, sum)/N
+p.i <- apply(dent, 1, sum)/N
+seK <- sqrt((Pe+Pe*Pe-sum(pi.*p.i*(pi.+p.i)))/(N*(1-Pe)^2))
+#Z
+Z <- kappa/seK
+#p值
+p_kappa <- 1-pnorm(Z)
+p_kappa
+```
+
+Kappa统计量$K=0.4174757$，
+
+p-value = 3.020251e-12<0.05，拒绝原假设，认为两位医生的治疗方案一致。
+
+也可以使用`fmsb`包中的`Kappa.test()`函数。得到的Kappa统计量相同（是函数输出中的`sample estimates`），Z值和p值与上面的计算稍有差别。
+
+```{r warning=FALSE, message=FALSE}
+library(fmsb)
+Kappa.test(dent)
+```
+
+
+#6.8 分位回归模型
+
+##1.简述分位回归模型
+
+分位回归模型估计因变量$Y$对自变量$X$的条件分位数，即
+
+$$
+Q_{Y}(\tau \mid X)=f(X)
+$$
+
+其中, $\tau$ 是因变量 $Y$ 在 $X$ 条件下的分位数. $f(X)$ 拟合 $Y$ 的第 $\tau$ 分位数。
+
+传统的回归模型估计因变量$Y$对自变量$X$的条件均值，即
+
+$$
+E(Y \mid X)=f(X)+\epsilon
+$$
+
+对任意的 $X=x,$ 当 $\epsilon$ 满足正态和齐性(方差相等)条件时, 可以用最小二乘法建立回归模型。
+
+不满足这两条假设时，可以采用分位回归模型。
+
+
+##2.分位模型参数估计的最优化问题
+
+通过最小化残差的绝对值求解，即通过再绝对值前增加分位点权重系数，最小化残差绝对值加权求和。
+
+线性分位回归的最优化问题表示为
+
+$$
+\hat{\beta}=\underset{\boldsymbol{\beta} \in \mathbb{R}^{p}}{\operatorname{argmin}} \sum_{i=1}^{n} \rho_{\tau}\left(y_{i}-\boldsymbol{x}_{i}^{\mathrm{T}} \boldsymbol{\beta}\right)
+$$
+
+式中，$\rho_{\tau}$ 是权重函数，表示实际值与拟合值位置关系的权重比例。
+
+$\tau$ 分位回归中小于分位点的可能性为 $\tau$，$\tau$ 分位回归中不小于分位点的可能性为 $1-\tau$。
+
+$\rho_{\tau}$ 的含义是：
+
+$$
+\rho_{\tau}(u)=\left\{\begin{array}{ll}
+\tau u, & u \geqslant 0 \\
+(1-\tau)|u|, & u<0
+\end{array}\right.
+$$
+
+给定 $\tau$，最优化问题等价于
+
+$$
+\hat{\beta}(\tau)=\underset{\boldsymbol{\beta}}{\operatorname{argmin}}\left[\sum_{\boldsymbol{i} \in\left\{i: y_{i} \geqslant \boldsymbol{x}_{i}^{\mathrm{T}} \boldsymbol{\beta}(\tau)\right\}} \tau\left|y_{i}-\boldsymbol{x}_{i}^{\mathrm{T}} \boldsymbol{\beta}(\tau)\right|_{+}+\sum_{i \in\left\{i: y_{i}<\boldsymbol{x}_{i}^{\mathrm{T}} \boldsymbol{\beta}(\tau)\right\}}(1-\tau)\left|y_{i}-\boldsymbol{x}_{i}^{\mathrm{T}} \boldsymbol{\beta}(\tau)\right|_{-}\right]
+$$
+
+##3.分位回归的优点及原因
+
+相比于线性回归，分位回归的优点有：
+
+(1)分位回归的适用性更广泛，
+
+原因是分位回归不需要对模型中的随机误差项的分布做具体的假定；
+
+(2)分位回归体现了数据驱动的建模思想，
+
+原因是分位回归没有使用连接函数描述因变量与自变量的相互关系；
+
+(3)分位回归对于异常值不敏感，模型结果比较稳定，
+
+原因是分位回归对因变量的分位数建立回归模型，而分位数比均值更稳健；
+
+(4)由分位回归解出的系列回归模型可更为全而地体现分布特点，
+
+原因是分位回归可以对多个分位数进行回归。
+
+##4.用分位回归方法拟合infant-birthweight数据并解释
+
+###4.1 概述
+
+分位回归方法要求因变量必须为连续变量，
+
+自变量可以为定性变量或者连续变量；
+
+其中，自变量为定性变量时，如有$k$个水平，则应构建$(k-1)$哑变量，加入回归方程中。
+
+以下对infant-birthweight数据进行分位回归。
+
+####4.1.1 对部分变量的说明与处理
+
+(1)母亲的第一次产前检查的时间早晚trivisit
+
+变量tri1，tri2，tri3，tri.none表示母亲的第一次产前检查的时间；
+
+变量tri.none的取值均为0，所以删除变量tri.none；
+
+根据每个母亲的第一次产前检查月份，将第一次产前检查的时间划分四个类别，分别是：
+
+没有进行过产前检查则novisit=1，
+
+第一次检查是在怀孕的前三个月则tri1=1，
+
+第一次检查是怀孕的中间三个月则tri2=1，
+
+第一次检查是在怀孕的最后三个月则tri3=1，
+
+且有nonvisit+tri1+tri2+tri3≡1；
+
+由于月份tri1、tri2、tri3的时间间隔相同（认为是3个月），所以新构建变量trivisit，表示"母亲的第一次产前检查的时间早晚"，
+
+构建方式为trivisit=3\*tri1+2\*tri2+1\*tri3，
+
+trivisit的值越大，表示母亲第一次产前检查的时间越早。
+
+(2)母亲一天内的吸烟数(cigsper)
+
+"母亲一天内的吸烟数大于0"(cigsper>0)等价于"母亲吸烟"(smoke=1)，即因此删除变量"母亲是否吸烟"(smoke)，将"母亲一天内的吸烟数"(cigsper)作为自变量。
+
+####4.1.2 分位回归模型的因变量与自变量
+
+(1)因变量
+
+选择"婴儿体重"(weight)作为因变量。由于分位回归的因变量要求为连续型，因此进行离散化，即不划分是否为低体重婴儿。
+
+(2)自变量
+
+选择"母亲是否为黑人"(black)，
+
+"母亲是否已婚"(married)，
+
+"是否为男孩"(boy)，
+
+"母亲的第一次产前检查的时间早晚"(trivisit)，
+
+"母亲一天内的吸烟数"(cigsper)，
+
+"母亲怀孕期间增加的体重"，
+
+"母亲的教育程度"。
+
+其中，"母亲的教育程度"是定性变量，有4个水平：学历低于高中，学历为高中，学历介于高中和大学之间，学历为大学；
+
+因此，在回归中使用3个哑变量表示，分别是：是否为高中ed.hs，是否为介于高中和大学之间ed.smcol，是否为大学ed.col；
+
+"母亲怀孕期间增加的体重"既可以离散化为6个水平的定性变量，分别是体重增加为-50~-20，-19~-10，-9~0，1~10，11~20，21~55；
+
+因此，可以构建m.wtgain2，m.wtgain3，...，m.wtgain6共5个哑变量加入回归方程中，
+
+也可以不进行离散化，直接作为定量变量，即采用原数据中的m.wtgain加入回归方程。
+
+得到的结果的解释是一致的。
+
+####4.1.3 对分位回归模型的系数的解释
+
+系数表示其他自变量不变时，该自变量增加一单位（或与基准组相比），因变量的相应分位数的改变量（这里是中位数）。
+
+###4.2 黑人母亲和白人母亲孕期体重增长量与婴儿出生体重之间的关系对比图
+
+由于数据infant-birthweight.txt的样本量为50000，而之前作业数据birth_weight.csv的样本量为1001，所以可能变量"母亲怀孕期间增加的体重"与婴儿体重之间的关系与之前不同。
+
+因此，在建立回归模型前，首先黑人母亲和白人母亲孕期体重增长量与婴儿出生体重之间的关系对比图，
+
+将母亲增加的体重离散化为6个水平，并计算黑人和白人母亲在不同的增加体重下，婴儿的低体重率，
+
+以增加的体重为横轴，婴儿低体重率为纵轴，对黑人和白人母亲分别画出两条折线图。
+
+```{r warning=FALSE, message=FALSE}
+#读入数据
+weig_data <- read.delim("D:/data/infant-birthweight.txt",sep = " ", header = TRUE)
+#将变量"是否为黑人"转化为因子类型
+weig_data$black <- factor(weig_data$black)
+#对变量"母亲怀孕期间增加的体重"m.wtgain进行离散化，得到classifywtgain
+labels_wtgain <- c("-50~-20","-19~-10", "-9~0", "1~10", "11~20", "21~55")
+weig_data$classifywtgain <- cut(weig_data$m.wtgain, breaks = c(-50, -20, -10, 0, 10, 20, 55), labels = labels_wtgain, include.lowest = FALSE, right = TRUE, ordered_result = TRUE)
+#是否为低体重婴儿
+weig_data$lowweight <- ifelse(weig_data$weight<2500, 1, 0)
+#只选出是否为黑人、母亲怀孕期间增加的体重、是否为低体重三个变量
+data_black <- weig_data[,c(4,22,23)]
+#求频数
+data_black_df <- as.data.frame(as.table(table(data_black)))
+#只取低体重婴儿的部分
+data_black_dflow <-
+  data_black_df[which(data_black_df$lowweight==1),]
+#黑人和白人母亲在不同的增加体重下的婴儿数
+data_black_allwei <- 
+  as.data.frame(as.table(table(weig_data[,c(4,22)])))
+data_black_dflow$total_number <- data_black_allwei$Fre
+
+black_dfplot <- data_black_dflow
+#低体重率
+black_dfplot$lowratio <-
+  black_dfplot$Freq/black_dfplot$total_number
+#将变量"是否为黑人"的基准组设置为黑人
+black_dfplot$black <- 
+  factor(black_dfplot$black, levels = c("1", "0"))
+library(ggplot2)
+#画图
+ggplot(black_dfplot, aes(x = classifywtgain, y = lowratio, group = black)) +
+  geom_line(aes(color = black)) + 
+  theme_minimal() +
+  labs(x = "体重分类", y = "婴儿低体重率", title = "黑人母亲和白人母亲孕期体重增长量与婴儿出生体重之间的关系对比图") +
+  scale_color_manual(name = "", labels = c("黑人", "白人"), values = c("red", "orange")) +
+  theme(legend.position = "bottom")
+```
+
+从图中可以看到，黑人母亲的婴儿低体重率高于白人母亲，
+
+而且母亲孕期增加的体重越多，婴儿低体重率越低。
+
+以下对"母亲怀孕期间增加的体重"离散化和作为定量变量分别建立回归模型。
+
+###4.3 建立分位回归模型
+
+####模型一：将母亲增加的体重离散化
+
+将母亲怀孕期间增加的体重m.wtgain进行离散化处理，构建5个哑变量，建立分位回归模型。
+
+```{r warning=FALSE, message=FALSE}
+#构建5个哑变量
+weig_data$wtgain2 <- ifelse(weig_data$classifywtgain=="-19~-10", 1, 0)
+weig_data$wtgain3 <- ifelse(weig_data$classifywtgain=="-9~0", 1, 0)
+weig_data$wtgain4 <- ifelse(weig_data$classifywtgain=="1~10", 1, 0)
+weig_data$wtgain5 <- ifelse(weig_data$classifywtgain=="11~20", 1, 0)
+weig_data$wtgain6 <- ifelse(weig_data$classifywtgain=="21~55", 1, 0)
+
+#将tri1、tri2、tri3合并为变量"母亲的第一次产前检查的时间早晚"trivisit，取值越大表示产前检查越早
+weig_data$trivisit <- 3*weig_data$tri1 + 2*weig_data$tri2 + 1*weig_data$tri3
+
+library(quantreg)
+#对中位数建立分位回归模型
+#其中母亲怀孕期间增加的体重有5个哑变量，母亲的教育程度有3个哑变量
+rq_weig <- rq(weight ~ black + married + boy + trivisit + cigsper + wtgain2 + wtgain3 + wtgain4 + wtgain5 + wtgain6 + ed.hs + ed.smcol + ed.col, data = weig_data, tau = 0.5)
+summary(rq_weig)
+```
+
+从回归系数可以看到，
+
+黑人母亲的婴儿的体重更低；
+
+已婚母亲的婴儿体重更高；
+
+男婴的体重更高；
+
+第一次产前检查的时间越早，婴儿体重越高；
+
+母亲吸烟越多，婴儿体重越高；
+
+母亲受教育程度越高，婴儿体重越高。
+
+母亲怀孕期间增加的体重越多，婴儿体重越高，这与折线图中所示的关系是一致的。
+
+####模型二：不对母亲增加的体重进行离散化处理
+
+由于不论母亲孕期增加的体重是多少，母亲增加体重都对婴儿体重有正向影响，因此也可以不对母亲增加的体重进行离散化处理，直接将定量变量m.wtgain作为自变量加入分位回归模型中。
+
+```{r warning=FALSE, message=FALSE}
+rq_weig2 <- rq(weight ~ black + married + boy + trivisit + cigsper + m.wtgain + ed.hs + ed.smcol + ed.col, data = weig_data, tau = 0.5)
+summary(rq_weig2)
+```
+
+得到的结论与"模型一"一致。
+
+#6.9 分位回归模型
+
+##生成数据
+
+(1)均匀分布 $U(0,1)$ 中抽取100 个 $X$ 值，将这些数值从小到大排序；
+
+(2)根据$z=2 \cdot\left(\exp \left(-30 \cdot(x-0.25)^{2}\right)+\sin \left(\pi x^{2}\right)\right)$，得到真值$Z$；
+
+(3)根据$y=z+N(0,1)$，产生带有 $N(0,1)$ 噪声的观测值$Y$；
+
+(4)以上步骤重复进行20次，得到 $(X, Y)$ 观测值矩阵和真值矩阵 $(X, Z)$
+
+```{r warning=FALSE, message=FALSE}
+set.seed(1234)
+X <- sort(runif(100, 0, 1))
+Z <- 2*(exp(-30*((X-0.25)^2))+sin(pi*X*X))
+#添加噪声
+Y <- Z + rnorm(100)
+```
+
+##1.绘制散点图和真实函数曲线
+
+绘制 $(X, Y)$ 的散点图，并在散点图上添加由 $(X, Z)$ 生成的真实函数曲线。
+
+```{r warning=FALSE, message=FALSE}
+library(ggplot2)
+#真实函数
+xzfunc <- function(x) 
+{2*(exp(-30*((x-0.25)^2))+sin(pi*x*x))}
+
+xydf <- data.frame(x=X, y=Y)
+#散点图
+qplot(X, Y, data=xydf, xlab="X", ylab="Y") +
+#真实函数曲线
+  stat_function(fun=xzfunc, col = "red", size = 1.05) +
+  theme_minimal() + labs(title = "真实函数曲线")
+```
+
+##2.线性分位回归
+
+下面求解中位数线性回归, 0.25分位数线性回归和0.75 分位数线性回归。
+
+###2.1 使用线性分位回归拟合数据
+
+```{r warning=FALSE, message=FALSE}
+library(quantreg)
+qs <- c(0.25, 0.5, 0.75)
+#线性分位回归
+rq_line <- rq(Y ~ X, data=xydf, tau = qs)
+summary(rq_line)
+```
+
+###2.2 线性分位回归的均方误差
+
+```{r warning=FALSE, message=FALSE}
+#均方误差
+mse_line <- apply(((rq_line$fitted.values- matrix(rep(Z,3), ncol = 3))^2), 2, mean)
+mse_line
+```
+
+###2.3 绘制线性分位回归的拟合线
+
+```{r warning=FALSE, message=FALSE}
+#绘制线性分位回归的拟合线
+ggplot(xydf, aes(x,y)) +
+  geom_point() +
+#深红色为真实函数曲线
+  geom_function(fun=xzfunc, col = "red", size = 1.05) +
+#浅红色为0.25分位数的线性分位回归得到的分位回归曲线
+  geom_line(aes(y = rq_line$fitted.values[,1]), col = "tomato") +
+#橙色为中位数的线性分位回归得到的分位回归曲线
+  geom_line(aes(y = rq_line$fitted.values[,2]), col = "orange") +
+#蓝色为0.75分位数的线性分位回归得到的分位回归曲线
+  geom_line(aes(y = rq_line$fitted.values[,3]), col = "skyblue") +
+  theme_minimal() +
+  labs(x ="X", y ="Y", title = "线性分位回归的拟合线")
+```
+
+##3.二阶表示型和四阶表示型
+
+下面使用二阶表示型(模型中纳入 $X^{2}$ 项)和四阶(模型中纳入 $X^{2}, X^{3}, X^{4}$ 项)拟合数据。
+
+###3.1 二阶表示型
+
+####(1)使用二阶表示型拟合数据
+
+```{r warning=FALSE, message=FALSE}
+#二阶表示型
+rq_two <- rq(Y ~ poly(X, 2), data=xydf, tau = qs)
+summary(rq_two)
+```
+
+####(2)二阶表示型的均方误差
+
+```{r warning=FALSE, message=FALSE}
+#均方误差
+mse_two <- apply(((rq_two$fitted.values- matrix(rep(Z,3), ncol = 3))^2), 2, mean)
+mse_two
+```
+
+####(3)绘制二阶表示型的拟合线
+
+```{r warning=FALSE, message=FALSE}
+#绘制拟合线
+#二阶表示型的拟合线
+ggplot(xydf, aes(x,y)) +
+  geom_point() +
+#深红色为真实函数曲线
+  geom_function(fun=xzfunc, col = "red", size = 1.05) +
+#浅红色为0.25分位数的二阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_two$fitted.values[,1]), col = "tomato") +
+#橙色为中位数的二阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_two$fitted.values[,2]), col = "orange") +
+#蓝色为数的二阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_two$fitted.values[,3]), col = "skyblue") +
+  theme_minimal() +
+  labs(x ="X", y ="Y", title = "二阶表示型的拟合线")
+```
+
+###3.2 四阶表示型
+
+####(1)使用四阶表示型拟合数据
+
+```{r warning=FALSE, message=FALSE}
+#四阶表示型
+rq_four <- rq(Y ~ poly(X, 4), data=xydf, tau = qs)
+summary(rq_four)
+```
+
+####(2)四阶表示型的均方误差
+
+```{r warning=FALSE, message=FALSE}
+#均方误差
+mse_four <- apply(((rq_four$fitted.values- matrix(rep(Z,3), ncol = 3))^2), 2, mean)
+mse_four
+```
+
+####(3)绘制四阶表示型的拟合线
+
+```{r warning=FALSE, message=FALSE}
+#绘制拟合线
+#四阶表示型的拟合线
+ggplot(xydf, aes(x,y)) +
+  geom_point() +
+#深红色为真实函数曲线
+  geom_function(fun=xzfunc, col = "red", size = 1.05) +
+#浅红色为0.25分位数的四阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_four$fitted.values[,1]), col = "tomato") +
+#橙色为中位数的四阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_four$fitted.values[,2]), col = "orange") +
+#蓝色为0.75分位数的四阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_four$fitted.values[,3]), col = "skyblue") +
+  theme_minimal() +
+  labs(x ="X", y ="Y", title = "四阶表示型的拟合线")
+```
+
+可以看到，线性分位回归的均方误差>二阶表示型>四阶表示型，表明线性分位回归的拟合效果最差，四阶表示型的拟合效果最好。
+
+##4.改变噪声
+
+产生带有 $N(0,(2 x)^{2})$ 噪声的观测值$Y$；即改变观测值 $Y$ 值的生成方式为：
+
+$$y=2 \cdot\left(\exp \left(-30 \cdot(x-0.25)^{2}\right)+\sin \left(\pi x^{2}\right)\right)+N\left(0,(2 x)^{2}\right)$$
+
+下面分别求解线性、多项式为二阶 $\left(X^{2}\right)$ 和四阶 $\left(X^{2}, X^{3}, X^{4}\right)$ 的中位数、0.25分位数、0.75分位回归，将这些拟合线绘制到散点图上。
+
+###4.1 线性分位回归
+
+####(1)使用线性分位回归拟合数据
+
+```{r warning=FALSE, message=FALSE}
+Y2 <- Z + rnorm(100, 0, 2*X)
+xydf2 <- data.frame(x=X, y=Y2)
+#线性分位回归
+rq_line2 <- rq(Y2 ~ X, data=xydf2, tau = qs)
+summary(rq_line2)
+```
+
+####(2)线性分位回归的均方误差
+
+```{r warning=FALSE, message=FALSE}
+#均方误差
+mse_line2 <- apply(((rq_line2$fitted.values- matrix(rep(Z,3), ncol = 3))^2), 2, mean)
+mse_line2
+```
+
+####(3)绘制线性分位回归的拟合线
+
+```{r warning=FALSE, message=FALSE}
+#绘制线性分位回归的拟合线
+ggplot(xydf2, aes(x,y)) +
+  geom_point() +
+#深红色为真实函数曲线
+  geom_function(fun=xzfunc, col = "red", size = 1.05) +
+#浅红色为0.25分位数的线性分位回归得到的分位回归曲线
+  geom_line(aes(y = rq_line2$fitted.values[,1]), col = "tomato") +
+#橙色为中位数的线性分位回归得到的分位回归曲线
+  geom_line(aes(y = rq_line2$fitted.values[,2]), col = "orange") +
+#蓝色为0.75分位数的线性分位回归得到的分位回归曲线
+  geom_line(aes(y = rq_line2$fitted.values[,3]), col = "skyblue") +
+  theme_minimal() +
+  labs(x ="X", y ="Y", title = "线性分位回归(改变噪声后)的拟合线")
+```
+
+###4.2 二阶表示型
+
+####(1)使用二阶表示型拟合数据
+
+```{r warning=FALSE, message=FALSE}
+#二阶表示型
+rq_two2 <- rq(Y2 ~ poly(X, 2, raw = TRUE), data=xydf2, tau = qs)
+summary(rq_two2)
+```
+
+####(2)二阶表示型的均方误差
+
+```{r warning=FALSE, message=FALSE}
+#均方误差
+mse_two2 <- apply(((rq_two2$fitted.values- matrix(rep(Z,3), ncol = 3))^2), 2, mean)
+mse_two2
+```
+
+####(3)绘制二阶表示型的拟合线
+
+```{r warning=FALSE, message=FALSE}
+#绘制拟合线
+#二阶表示型的拟合线
+ggplot(xydf2, aes(x,y)) +
+  geom_point() +
+#深红色为真实函数曲线
+  geom_function(fun=xzfunc, col = "red", size = 1.05) +
+#浅红色为0.25分位数的二阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_two2$fitted.values[,1]), col = "tomato") +
+#橙色为中位数的二阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_two2$fitted.values[,2]), col = "orange") +
+#蓝色为0.75分位数的二阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_two2$fitted.values[,3]), col = "skyblue") +
+  theme_minimal() +
+  labs(x ="X", y ="Y2", title = "二阶表示型(改变噪声后)的拟合线")
+```
+
+###4.3 四阶表示型
+
+####(1)使用四阶表示型拟合数据
+
+```{r warning=FALSE, message=FALSE}
+#四阶表示型
+rq_four2 <- rq(Y2 ~ poly(X, 4, raw = TRUE), data=xydf2, tau = qs)
+summary(rq_four2)
+```
+
+####(2)四阶表示型的均方误差
+
+```{r warning=FALSE, message=FALSE}
+#均方误差
+mse_four2 <- apply(((rq_four2$fitted.values- matrix(rep(Z,3), ncol = 3))^2), 2, mean)
+mse_four2
+```
+
+####(3)绘制四阶表示型的拟合线
+
+```{r warning=FALSE, message=FALSE}
+#绘制拟合线
+#四阶表示型的拟合线
+ggplot(xydf2, aes(x,y)) +
+  geom_point() +
+#深红色为真实函数曲线
+  geom_function(fun=xzfunc, col = "red", size = 1.05) +
+#浅红色为0.25分位数的四阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_four2$fitted.values[,1]), col = "tomato") +
+#橙色为中位数的四阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_four2$fitted.values[,2]), col = "orange") +
+#蓝色为0.75分位数的四阶表示型得到的分位回归曲线
+  geom_line(aes(y = rq_four2$fitted.values[,3]), col = "skyblue") +
+  theme_minimal() +
+  labs(x ="X", y ="Y2", title = "四阶表示型(改变噪声后)的拟合线")
+```
+
+##5.比较不同噪声下，线性、二阶、四阶对应的均方误差均方误差
+
+```{r warning=FALSE, message=FALSE}
+mse_df <- t(data.frame(mse_line, mse_two, mse_four, mse_line2, mse_two2, mse_four2))
+colnames(mse_df) <- c("0.25分位数", "中位数", "0.75分位数")
+rownames(mse_df) <- c("线性分位回归", "二阶表示型", "四阶表示型", "线性分位回归(改变噪声后)", "二阶表示型(改变噪声后)", "四阶表示型(改变噪声后)")
+knitr::kable(mse_df, format = "html")
+```
+
+上面的表格中是在不同噪声下，线性分位回归、二阶表示型、四阶表示型对应的均方误差。
+
+第一种噪声服从$N(0,1)$，与X的取值无关；
+
+第二种噪声服从$N(0,(2 x)^{2})$，即X取值越大，噪声的方差越大，因此Y的波动幅度随着X的增大而增大。
+
+真实函数曲线有两个波峰，所以更接近四阶表示型。
+
+在相同噪声时，进行线性分位回归、二阶表示型、四阶表示型的对比：
+
+在相同噪声下，对于中位数的分位回归，线性分位回归的均方误差都最大，四阶表示型的均方误差都最小，二阶表示型介于两者之间，表明四阶表示型的拟合效果最好。
+
+这是因为四阶表示型与真实函数曲线最接近。结合拟合曲线，也可以直观地看到四阶表示型的拟合效果最好。
+
+#Galaxies 核函数密度估计
+
+##1.不同带宽、不同核函数下的核密度估计
+
+选择四种核函数，分别是：
+
+高斯(Gauss) $\quad K(u) = \frac{1}{\sqrt{2 \pi}} \exp \left(-\frac{1}{2} u^{2}\right)$
+
+三角(Triangle) $K(u) = (1-|u|) I(|u| \leqslant 1)$
+
+余弦(Cosinus) $\quad K(u) = \frac{\pi}{4} \cos \left(\frac{\pi}{2} u\right) I(|u| \leqslant 1)$
+
+Epanechikov $\quad K(u) =  \frac{3}{4}\left(1-u^{2}\right)^{2} I(|u| \leqslant 1)$
+
+以带宽$h=100$，$h=814.0378$，$h=2000$分别代表偏小的带宽、合适的带宽、偏大的带宽，从左到右分别绘制，进而比较不同带宽下核密度估计的差异。
+
+其中$h=814.0378$是下文用SJ方法得到的最优带宽。
+
+###(1)高斯(Gauss)
+
+```{r warning=FALSE, message=FALSE}
+library(MASS)
+data("galaxies")
+
+#高斯
+par(mfcol=c(1,3))
+plot(density(galaxies, kernel="gaussian", bw=100), main="Bandwidth=100")
+plot(density(galaxies, kernel="gaussian", bw=814.0378), main="Bandwidth=814.0378")
+plot(density(galaxies, kernel="gaussian", bw=2000), main="Bandwidth=2000")
+```
+
+###(2)三角(Triangle)
+
+```{r warning=FALSE, message=FALSE}
+#三角
+plot(density(galaxies, kernel="triangular", bw=100), main="Bandwidth=100")
+plot(density(galaxies, kernel="triangular", bw=814.0378), main="Bandwidth=814.0378")
+plot(density(galaxies, kernel="triangular", bw=2000), main="Bandwidth=")
+```
+
+###(3)余弦(Cosinus)
+
+```{r warning=FALSE, message=FALSE}
+#余弦
+plot(density(galaxies, kernel="cosine", bw=100), main="Bandwidth=100")
+plot(density(galaxies, kernel="cosine", bw=814.0378), main="Bandwidth=814.0378")
+plot(density(galaxies, kernel="cosine", bw=2000), main="Bandwidth=2000")
+```
+
+###(4)Epanechnikov
+
+```{r warning=FALSE, message=FALSE}
+#Epanechnikov
+plot(density(galaxies, kernel="epanechnikov", bw=100), main="Bandwidth=100")
+plot(density(galaxies, kernel="epanechnikov", bw=814.0378), main="Bandwidth=814.0378")
+plot(density(galaxies, kernel="epanechnikov", bw=2000), main="Bandwidth=2000")
+```
+
+从左至右带宽依次为$h=100$，$h=814.0378$，$h=2000$，其中$h=814.0378$是下文使用SJ方法选择的最优带宽。
+
+可以看到，较小的带宽$h=100$噪声很多，在密度中引入了许多虚假的波形；
+
+较大的带宽$h=2000$的曲线较为平滑，可能存在过度平滑(oversmoothing)的问题。
+
+因此，我们应该选择一个折中的带宽作为最优带宽，使密度估计在不稳定和过度平滑之间达到平衡。
+
+###(4)四种核函数得到的核密度估计曲线
+
+在最优带宽下$h=814.0378$，将四种核函数得到的核密度估计曲线绘制在一张图上，比较其差异。
+
+```{r warning=FALSE, message=FALSE}
+#高斯
+plot(density(galaxies, kernel="gaussian", bw=814.0378), main="四种核函数对比", col = "red")
+par(new = T)
+#三角
+plot(density(galaxies, kernel="triangular", bw=814.0378), 
+     main="", xlab = "", ylab = "", 
+     xaxt = "n", yaxt = "n", col = "orange")
+par(new = T)
+#余弦
+plot(density(galaxies, kernel="cosine", bw=814.0378), 
+     main="", xlab = "", ylab = "", 
+     xaxt = "n", yaxt = "n", col = "skyblue")
+par(new = T)
+#Epanechnikov
+plot(density(galaxies, kernel="epanechnikov", bw=814.0378), 
+     main="", xlab = "", ylab = "", 
+     xaxt = "n", yaxt = "n", col = "springgreen")
+#图例
+legend("topright", legend = c("高斯", "三角", "余弦", "Epanechnikov"), col = c("red", "orange", "skyblue", "springgreen"), lty = 1)
+```
+
+四条曲线仅在中部略有差异，其余部分几乎重叠。
+
+因此，采用不同核函数得到的密度估计曲线较为接近。以下采用高斯核函数。
+
+##2.构造95%置信带
+
+###2.1 选择最优带宽h
+
+####2.1.1 选择带宽的方式
+
+选择带宽的方式很多，这里只列出最常用的四种。
+
+#####1.plug-in方法
+
+######(1)zero-stage plug-in —— Rule-of-thumb
+
+适用于接近正态分布的情形。
+
+其中，Silverman's rule of thumb可以通过函数`bw.nrd0()`计算，公式为
+
+$$
+\begin{array}{c}
+h_{o p t}=0.9 \min \{S, I Q R / 1.34\} n^{-1 / 5} \\
+\end{array}
+$$
+
+```{r warning=FALSE, message=FALSE}
+#Silverman's rule of thumb
+(nrd0 <- bw.nrd0(x = galaxies))
+```
+
+Scott's rule of thumb可以通过函数`bw.nrd()`计算，公式为
+
+$$
+h=1.06 \sigma n^{-1 / 5}
+$$
+
+
+```{r warning=FALSE, message=FALSE}
+#Scott's rule of thumb
+(nrd <- bw.nrd(x = galaxies))
+```
+
+######(2)两阶段(two stages)——Sheather and Jones方法
+
+可以通过函数`bw.SJ(method = "dpi")`或者`ks`包中的`hpi()`计算，结果接近。
+
+这是最常用的方法，因为较为稳健，且收敛速度比交叉验证更快。
+
+公式为
+
+$$
+h=\left[\frac{R(K)}{\mu_{2}(K)^{2} \hat{S}_{\mathrm{D}}\left(a_{2}(h)\right)}\right]^{1 / 5} n^{-1 / 5}
+$$
+其中$a_{2}=\hat{c}_{1} h^{5/7}$ ，$c$ 是适当的常熟
+
+```{r warning=FALSE, message=FALSE}
+#Sheather and Jones方法
+#h=814.0378
+(SJ <- bw.SJ(x = galaxies, method = "dpi"))
+```
+
+#####2.交叉验证Cross-validation
+
+######(1)Unbiased Cross-Validation (UCV)
+
+也称为Least Squares Cross-Validation (LSCV)，可以通过`bw.ucv()`计算。公式为
+
+$$
+\hat{h}_{\mathrm{LSCV}}:=\arg \min _{h>0} \operatorname{LSCV}(h)
+$$
+
+其中，
+
+$$
+\begin{aligned}
+\mathrm{UCV}(h)=\frac{1}{2 n h \sqrt{\pi}}+\\
+\frac{1}{n^{2} h \sqrt{\pi}} \sum_{1 \leq i<j \leq n} \sum_{i} &\left[\exp \left(\frac{-\left(x_{i}-x_{j}\right)^{2}}{4 h^{2}}\right)-\sqrt{8} \exp \left(\frac{-\left(x_{i}-x_{j}\right)^{2}}{2 h^{2}}\right)\right]
+\end{aligned}
+$$
+
+```{r warning=FALSE, message=FALSE}
+#UCV，也称LSCV
+(ucv <- bw.ucv(x = galaxies))
+```
+
+######(2)Biased Cross-Validation (BCV)
+
+可以通过`bw.bcv()`计算。公式为
+
+$$
+\hat{h}_{\mathrm{BCV}}:=\arg \min _{h>0} \operatorname{BCV}(h)
+$$
+
+其中，
+
+$$
+\mathrm{BCV}(h)=\frac{R(K)}{n h}+\frac{\mu_{2}(K)^{2}}{2 n^{2} h} \sum_{1 \leq i<j \leq n} \int K^{\prime \prime}(w) K^{\prime \prime}\left(w+\frac{\left(x_{i}-x_{j}\right)}{h}\right) d w
+$$
+
+```{r warning=FALSE, message=FALSE}
+#Biased Cross-Validation (BCV)
+(bcv <- bw.bcv(x = galaxies))
+```
+
+以上不同方法得到的最优带宽不同，大致都在1000左右。
+
+####2.1.2 选择带宽的依据
+
+```{r warning=FALSE, message=FALSE}
+best_h_df <- t(data.frame(nrd, SJ, ucv, bcv))
+colnames(best_h_df) <- c("不同方式得到的最优带宽")
+rownames(best_h_df) <- c("Rule of Thumb", "SJ方法", "交叉验证UCV", "交叉验证BCV")
+knitr::kable(best_h_df, format = "html")
+```
+
+对于给定的数据集，选择带宽的依据主要有：
+
+(1)Rule of Thumb适用于接近正态分布的情形。；
+
+(2)Sheather and Jones方法的收敛速度比交叉验证快得多。因此，从理论上讲，SJ方法比交叉验证（UCV和BCV）更好。实际情况中往往首选SJ方法；
+
+(3)交叉验证更适合于高度非正态分布，此时，Rule of Thumb和SJ方法可能会导致过度平滑。
+
+结合以上分析，这里选择SJ方法得到的最优带宽，即最优带宽$h=814.0378$。
+
+###2.2 通过Bootstrap方法近似给出置信带
+
+对该数据的$p_h(x)$通过bootstrap方法近似给出由$\hat p_h(x)$构造的置信水平为$95\%$置信带。
+
+1.核密度的Bootstrap算法
+
+(1)从经验分布 $\hat{F}_{n}$ 中重抽样 $X_{1}^{*}, X_{2}^{*}, \cdots, X_{n}^{*},$ 经验分布在每个样本点上的概率 必度为 $1 / n$；
+
+(2)基于Bootstrap样本 $X_{1}^{*}, X_{2}^{*}, \cdots, X_{n}^{*}$ 抽样计算 $\hat{p}_{h}^{*} $；
+
+(3)计算 $R=\sup _{x} \sqrt{n h}\left\|\hat{p}_{h}^{*}-\hat{p}_{h}\right\|_{\infty}$；
+
+(4)重复步骤(1)(2)(3)共 $B$ 次, 得到 $R_{1}, R_{2}, \cdots, R_{B}$；
+
+(5)令 $z_{\alpha}$ 是 $\left\{R_{j}, j=1, \cdots, B\right\}$ 的 $\alpha$ 分位数；
+
+$$
+\frac{1}{B} \sum_{j=1}^{B} I\left(R_{j}>z_{\alpha}\right) \approx \alpha
+$$
+
+(6)令
+
+$$
+l_{n}(x)=\hat{p}_{h}(x)-\frac{z_{\alpha}}{\sqrt{n h}}, \quad u_{n}(x)=\hat{p}_{h}(x)+\frac{z_{\alpha}}{\sqrt{n h}}
+$$
+
+2.
+
+选定$h=814.0378$，每次重抽样的样本量为$n=41$，重复$B=10000$次，得到置信上下带。
+
+```{r warning=FALSE, message=FALSE}
+#h为使用SJ方法得到的最优带宽
+h <- bw.SJ(x = galaxies, method = "dpi")
+h
+#重抽样的样本量
+n <- length(galaxies)/2
+n
+#重复抽样的次数
+B <- 10000
+R_resamp <- rep(0, B)
+#^p_h
+phat_h <- density(galaxies, kernel="gaussian", bw=h)
+set.seed(1234)
+for(i in 1:B){
+#重抽样 Xi*
+  resamp <- sample(x = galaxies, size = n, replace = TRUE)
+#^p_h*
+  phat_resamp <- density(resamp, kernel="gaussian", bw=814.0378, from = min(phat_h$x), to = max(phat_h$x))
+  R_resamp[i] <- max(sqrt(n*h)*(phat_resamp$y-phat_h$y))
+}
+
+z_alpha <- quantile(R_resamp, 0.975)
+#置信上限
+ln <- phat_h$y-(z_alpha/sqrt(82*h))
+#置信下限
+un <- phat_h$y+(z_alpha/sqrt(82*h))
+
+#^p_2h
+#带宽为2h的核密度估计
+phat_2h <- density(galaxies, kernel="gaussian", bw=2*h)
+
+#带宽为h的核密度估计，黑色
+plot(x = phat_h$x, y = phat_h$y, type = "l", xlab = "", ylab = "密度", 
+     ylim = c(-0.00005, 0.00023))
+par(new = T)
+#带宽为2h的核密度估计，橙色
+plot(x = phat_h$x, y = phat_2h$y, type = "l", xlab = "", ylab = "密度", 
+     ylim = c(-0.00005, 0.00023), xaxt = "n", yaxt = "n", col = "orange")
+par(new = T)
+#置信带，红色
+plot(x = phat_h$x, y = ln, type = "l", xlab = "", ylab = "", 
+     ylim = c(-0.00005, 0.00023), xaxt = "n", yaxt = "n", col = "red")
+par(new = T)
+plot(x = phat_h$x, y = un, type = "l", xlab = "", ylab = "", 
+     ylim = c(-0.00005, 0.00023), xaxt = "n", yaxt = "n", col = "red")
+legend("topright", legend = c("phat_h", "phat_2h", "置信带"), 
+       col = c("black", "orange", "red"), lty = 1)
+```
+
+上图中，黑色线为$\hat p_h(x)$，橙色线为$\hat p_{2h}(x)$， 红色线为置信上下带。
+
+由于置信上下带是根据$\hat p_h(x)$计算得到，所以与$\hat p_h(x)$形状相同；
+
+$\hat p_{2h}(x)$则由于带宽较大，曲线相比$\hat p_h(x)$更加平滑。
+
+
+##3.降低偏差的点估计方法
+
+偏差$b(x)=C(x) h^{2}$的估计为
+$$
+\hat{b}(x)=\frac{\hat{p}_{2 h}(x)-\hat{p}_{h}(x)}{3}
+$$
+则有
+
+$$
+\mathrm{E}(\hat{b}(x))=b(x)
+$$
+
+定义偏差降低法密度估计量为:
+$$
+\tilde{p}_{h}(x)=\hat{p}_{h}(x)-\hat{b}(x)=\frac{4}{3}\left(\hat{p}_{h}(x)-\frac{1}{4} \hat{p}_{2 h}\right)
+$$
+
+```{r warning=FALSE, message=FALSE}
+#偏差的估计
+bias <- (phat_2h$y-phat_h$y)/3
+#降低偏差的点估计ptilde_h
+ptilde_h <- phat_h$y-bias
+
+#带宽为h的核密度估计，黑色
+plot(x = phat_h$x, phat_h$y, type = "l", xlab = "", ylab = "密度", 
+     ylim = c(0, 0.00020), main = "偏差降低法得到的密度估计")
+par(new = T)
+#带宽为2h的核密度估计，橙色
+plot(x = phat_h$x, phat_2h$y, type = "l", xlab = "", ylab = "密度", 
+     ylim = c(0, 0.00020), col = "orange")
+par(new = T)
+#偏差降低法的密度估计量，红色
+plot(x = phat_h$x, ptilde_h, type = "l", xlab = "", ylab = "", 
+     ylim = c(0, 0.00020), xaxt = "n", yaxt = "n", col = "red")
+legend("topright", legend = c("phat_h", "phat_2h", "ptilde_h"), 
+       col = c("black", "orange", "red"), lty = 1)
+```
+
+上图中，黑色线为$\hat p_h(x)$，橙色线为$\hat p_{2h}(x)$， 红色线为$\tilde{p}_{h}(x)$。
+
+从图上可以看到，$\hat p_h(x)$与$\tilde{p}_{h}(x)$的曲线形状大致相同，而$\tilde{p}_{h}(x)$的极大值大于$\hat p_h(x)$，极小值小于$\hat p_h(x)$；
+
+$\hat p_{2h}(x)$则由于带宽较大，曲线相比$\hat p_h(x)$和$\tilde{p}_{h}(x)$更加平滑。
+
+
+

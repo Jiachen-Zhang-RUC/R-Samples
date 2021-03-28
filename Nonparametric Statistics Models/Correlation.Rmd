@@ -1,0 +1,832 @@
+---
+title: "2018201743-张嘉辰-第十三周作业"
+author: "张嘉辰"
+date: "2020年12月10日"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 6
+    toc_float: true
+    number_sections: false
+    theme: lumen
+editor_options: 
+  chunk_output_type: console
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 4px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 4px 0 0 0;
+    -webkit-border-radius: 4px 0 0 0;
+    border-radius: 4px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 4px 0 0;
+    -webkit-border-radius: 0 4px 0 0;
+    border-radius: 0 4px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 4px;
+    -webkit-border-radius: 0 0 0 4px;
+    border-radius: 0 0 0 4px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 4px 0;
+    -webkit-border-radius: 0 0 4px 0;
+    border-radius: 0 0 4px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+
+
+
+#6.1 Pearson,Spearman,Kendall相关系数
+
+$H_0$:文盲率与人均GDP不相关；
+
+$H_1$:文盲率与人均GDP相关。
+
+##1.Pearson相关系数检验
+
+```{r warning=FALSE, message=FALSE}
+#文盲率
+illit <- c(7.33, 10.80, 15.60, 8.86, 9.70, 18.52, 17.71, 21.24, 23.20, 14.24, 13.82, 17.97, 10.00, 10.15, 17.05, 10.94, 20.97, 16.40, 16.59, 17.40, 14.12, 18.99, 30.18, 28.48, 61.13, 21.00, 32.88, 42.14, 25.02, 14.65)
+#人均GDP
+gdp <- c(15044, 12270, 5345, 7730, 22275, 8447, 9455, 8136, 6834, 9513, 4081, 5500, 5163, 4220, 4259, 6468, 3881, 3715, 4032, 5122, 4130, 3763, 2093, 3715, 2732, 3313, 2901, 3748, 3731, 5167)
+#Pearson
+pear <- cor.test(illit, gdp, method = "pearson")
+pear
+```
+
+Pearson相关系数检验的p-value = 0.01287<0.05, $r$ = -0.4487388<0
+
+##2.Spearman秩相关系数检验
+
+```{r warning=FALSE, message=FALSE}
+#Spearman
+spear <- cor.test(illit, gdp, method = "spearman")
+spear
+```
+
+Spearman秩相关系数检验的p-value = 0.0001851<0.05, $\rho$ = -0.6309934<0
+
+##3.Kendall τ相关检验
+
+```{r warning=FALSE, message=FALSE}
+#Kendall
+kend <- cor.test(illit, gdp, method = "kendall")
+kend
+```
+
+Kendall $\tau$ 相关检验的p-value = 0.0002725<0.05, $\tau$ = -0.4695055<0
+
+##4.结果对比
+```{r warning=FALSE, message=FALSE}
+df_cor <- data.frame("p值" = c(pear$p.value, spear$p.value, kend$p.value), 
+                     "相关系数统计量" = c(pear$estimate, spear$estimate, kend$estimate))
+                     
+row.names(df_cor) <- c("Pearson相关系数检验", "Spearman秩相关系数检验", "Kendall τ相关检验")
+knitr::kable(df_cor, format = "html")
+```
+
+可以看到，Pearson相关系数检验，Spearman秩相关系数检验，Kendall $\tau$相关检验得到的p值都小于0.05，所以三种检验都拒绝原假设，认为文盲率和人均GDP之间是相关的。
+
+同时，Pearson相关系数$r$，Spearman相关系数$\rho$，Kendall $\tau$均小于0，因此认为文盲率和人均GDP之间是负相关的。
+
+#6.2 中位数线性回归直线
+
+##1.Brown-Mood方法
+
+回归直线的斜率$\beta$ 的估计值为
+$$
+\hat{\beta}_{B M}=\frac{Y_{\operatorname{med}}^{\prime}-Y_{\mathrm{med}}^{\prime \prime}}{X_{\mathrm{med}}^{\prime}-X_{\mathrm{med}}^{\prime \prime}}
+$$
+
+回归直线在 $Y$ 轴上的截距 $\alpha$ 的估计值为
+
+$$
+\hat{\alpha}_{B M}=\operatorname{median}\left\{Y_{i}-\hat{\beta}_{B M} X_{i}, i=1,2, \cdots, n\right\}
+$$
+
+```{r warning=FALSE, message=FALSE}
+#人均收入
+income <- c(9.1, 8.3, 7.2, 7.5, 6.3, 5.8, 7.6, 8.1, 7.0, 7.3, 6.5, 6.9, 8.2, 6.8, 5.5)
+#销售量
+sale <- c(8.7, 9.6, 6.1, 8.4, 6.8, 5.5, 7.1, 8.0, 6.6, 7.9, 7.6, 7.8, 9.0, 7.0, 6.3)
+#最小二乘估计
+cyx <- coef(lm(sale~income))
+cyx
+md <- median(income)
+#将数据分为两组
+income1 <- income[income<=md]
+income2 <- income[income>md]
+sale1 <- sale[income<=md]
+sale2 <- sale[income>md]
+md1 <- median(income1)
+md2 <- median(income2)
+mw1 <- median(sale1)
+mw2 <- median(sale2)
+#β_BM
+beta_BM <- (mw2-mw1)/(md2-md1)
+beta_BM
+#α_BM
+alpha_BM <- median(sale-beta_BM*income)
+alpha_BM
+#画图
+plot(income,sale, xlab = "人均收入", ylab = "销售量", main = "中位数线性回归")
+#实线为中位数回归直线
+abline(alpha_BM, beta_BM)
+#虚线为最小二乘估计
+abline(c(cyx),lty=2)
+#图例位置为右下角
+legend("bottomright", legend = c("Brown-Mood方法中位数回归","最小二乘估计"),
+              lty=c(1,2))
+```
+
+图中实线为Brown-Mood方法得到的中位数回归直线，虚线为最小二乘估计的回归直线。
+
+Brown-Mood方法得到的中位数回归直线为$销售量=-0.6586207 + 1.172414×收入$
+
+最小二乘估计的回归方程为$销售量=0.7995749 + 0.9288286×收入$
+
+从图上看可以看到，最小二乘估计的回归方程的斜率小于中位数回归，偏离了主体数据的走向，原因是受到了直线下方部分异常数据的影响，即最小二乘估计对异常值更敏感。
+
+##2.Theil方法
+
+自变量 $X$ 中没有重复数据时, 任给 $i<j,$ 记 $s_{i j}=\frac{Y_{j}-Y_{i}}{X_{j}-X_{i}},$ 则回归直线的斜率 $\beta$ 的估计为
+
+$$
+\tilde{\beta}_{T}=\operatorname{median}\left\{s_{i j}: 1 \leqslant i<j \leqslant n\right\}
+$$
+
+回归直线在 $Y$ 轴上的截距 $\alpha$ 的估计值为
+
+$$
+\tilde{\alpha}_{T}=\operatorname{median}\left\{Y_{j}-\tilde{\beta}_{T} X_{j}: j=1,2, \cdots, n\right\}
+$$
+
+
+```{r warning=FALSE, message=FALSE}
+n <- length(sale)
+sij <- NULL
+#计算sij
+for(i in 1:n-1){
+  for(j in (i+1):n){
+    sij <- c(sij, (sale[j]-sale[i])/(income[j]-income[i]))
+  }
+}
+#β_T是所有sij的中位数
+beta_T <- median(sij)
+beta_T
+alpha_T <- median(sale - beta_T*income)
+alpha_T
+#画图
+plot(income,sale, xlab = "人均收入", ylab = "销售量", main = "中位数线性回归")
+#实线为Brown-Mood方法得到的中位数回归直线
+abline(alpha_BM, beta_BM)
+#虚线为最小二乘估计
+abline(c(cyx),lty=2)
+#点虚线为Theil方法得到中位数回归直线
+abline(alpha_T, beta_T,lty=3)
+#图例位置为右下角
+legend("bottomright", legend = c("Brown-Mood方法", "Theil方法", "最小二乘估计"),
+              lty=c(1,3,2))
+```
+
+Theil方法得到的中位数回归直线为$销售量=0.6909091 + 0.969697×收入$
+
+可以从图中看到Theil方法得到的中位数回归直线位于Brown-Mood方法和最小二乘估计的直线之间。
+
+Theil方法也可以用`RobustLinearReg`包中的`theil_sen_regression()`函数计算，得到的结果相同。
+
+```{r warning=FALSE, message=FALSE}
+library(RobustLinearReg)
+summary(theil_sen_regression(sale~income))
+```
+
+
+#6.3 多变量Kendall协和系数检验
+
+原假设与备择假设为：
+
+$H_0$:12位裁判的打分不一致(不相关)；
+
+$H_1$:12位裁判的打分一致(相关)；
+
+以下进行多变量Kendall协和系数检验。
+
+##1.根据公式计算
+
+这里的样本中有结，Kendall协和系数为
+
+$$
+\begin{aligned}
+W_{\mathrm{c}}=& \frac{\sum^{n} R_{i .}^{2}-\left(\sum R_{i}\right)^{2} / n}{\frac{k^{2}\left(n^{3}-n\right)-k \sum T}{12}} \\
+&=\frac{12 \sum R_{i .}^{2}-3 k^{2} n(n+1)^{2}}{k^{2}\left(n^{3}-n\right)-k \sum\left(\tau_{i}^{3}-\tau_{i}\right)}
+\end{aligned}
+$$
+式中, $\tau_{i}$ 为结长, $g$ 为结的个数.
+
+```{r warning=FALSE, message=FALSE}
+#歌手成绩.csv与题给数据的行和列相同
+#即每一列是一个歌手的成绩，共10位歌手；#每一行是一个裁判的打分，共12位裁判
+ratings <- read.csv("D:/data/歌手成绩.csv", header = TRUE)
+#转置
+#转置后，每一列是一个裁判的打分，共12位裁判；每一行是一个歌手的成绩，共10位歌手
+ratings <- t(ratings)
+#n=10，10个歌手
+n <- nrow(ratings)
+#k=12，12个裁判
+k <- ncol(ratings)
+#样本中有结
+#秩
+ratings.rank <- apply(ratings,2,rank)
+#计算T的和
+T_sum <- 0
+for (i in 1:k) {
+	rater <- table(ratings.rank[,i])
+	ties <- rater[rater>1]
+	l <- as.numeric(ties)
+	T_sum <- T_sum + sum(l^3-l)
+	}
+#根据公式计算样本中有结时的Kendall协和系数Wc
+Wc <- (12*var(apply(ratings.rank,1,sum))*(n-1))/(k^2*(n^3-n)-k*T_sum)
+#检验统计量
+Xvalue <- k*(n-1)*Wc
+#自由度
+df <- n-1
+#p值
+p.value <- pchisq(Xvalue, df, lower.tail = FALSE)
+p.value
+```
+
+
+##2.使用KendallW()函数和kendall()函数
+
+也可以用`DescTools`包中的`KendallW()`函数，`irr`包中的`kendall()`函数来计算。
+
+由于样本中有结，因此设置`correct=TRUE`；
+
+得到的结果一致。
+
+```{r warning=FALSE, message=FALSE}
+DescTools::KendallW(ratings, correct = TRUE, test = TRUE)
+irr::kendall(ratings, correct = TRUE)
+```
+
+p-value = 0.000123<0.05，拒绝原假设，认为裁判的打分是一致的。
+

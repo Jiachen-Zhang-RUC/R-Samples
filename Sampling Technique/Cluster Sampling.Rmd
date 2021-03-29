@@ -1,0 +1,931 @@
+---
+title: "2018201743-张嘉辰-第四次作业代码"
+author: "张嘉辰"
+date: "2020年11月22日"
+output: 
+  html_document:
+    toc: true 
+    toc_depth: 4
+    toc_float: true
+    number_sections: false
+    theme: lumen
+
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 4px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 4px 0 0 0;
+    -webkit-border-radius: 4px 0 0 0;
+    border-radius: 4px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 4px 0 0;
+    -webkit-border-radius: 0 4px 0 0;
+    border-radius: 0 4px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 4px;
+    -webkit-border-radius: 0 0 0 4px;
+    border-radius: 0 0 0 4px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 4px 0;
+    -webkit-border-radius: 0 0 4px 0;
+    border-radius: 0 0 4px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+#3
+
+```{r warning=FALSE, message=FALSE}
+N <- 400
+n <- 4
+M <- 10
+yi <- c(19,20,16,20)
+#均值的估计
+y_barbar <- sum(yi)/(n*M)
+y_barbar
+#总量的估计
+y_sum <- N*M*y_barbar
+y_sum
+
+yi_bar <- yi/M
+sb2 <- sum(M*((yi_bar-y_barbar)^2))/(n-1)
+sb2
+#均值的估计的方差
+var_y_barbar <- (1-(n/N))*sb2/(n*M)
+var_y_barbar
+#总量的估计的方差
+var_y_sum <- var_y_barbar*N*N*M*M
+var_y_sum
+```
+
+#4
+
+```{r warning=FALSE, message=FALSE}
+N <- 10
+n <- 4
+M <- c(32,45,36,54)
+m <- c(4,5,4,6)
+y1 <- c(4,2,3,6)
+y2 <- c(2,2,4,3,6)
+y3 <- c(3,2,5,8)
+y4 <- c(4,3,6,2,4,6)
+y_mean <- c(mean(y1), mean(y2), mean(y3), mean(y4))
+M0 <- 500
+#简单估计量
+#总量的估计
+Y_hat <- (N/n)*sum(M*y_mean)
+Y_hat
+#均值的估计
+Y_barbar_hat <- Y_hat/500
+Y_barbar_hat
+
+Yi_hat <- M*y_mean
+Y_bar_hat <- mean(Yi_hat)
+Y_bar_hat
+var_Yi_hat <- var(Yi_hat)
+var_Yi_hat
+var2i <- c(var(y1), var(y2), var(y3), var(y4))
+#第一阶段的抽样比
+f1 <- n/N
+#总量的估计的方差
+var_Y_hat <- N*N*(1-f1)*var_Yi_hat/n+N*(sum(M*M*(1-m/M)*var2i/m))/n
+var_Y_hat
+#均值的估计的方差
+var_Y_barbar_hat <- var_Y_hat/(M0*M0)
+var_Y_barbar_hat
+#均值的估计的标准差
+se_Y_barbar_hat <- sqrt(var_Y_barbar_hat)
+se_Y_barbar_hat
+
+#比率估计量
+#总量的比率估计
+Y_hat_R <- M0*sum(Yi_hat)/sum(M)
+Y_hat_R
+#均值的比率估计
+Y_barbar_hat_R <- Y_hat_R/500
+Y_barbar_hat_R
+#总量的估计的方差
+var_Y_hat_R <- N*N*(1-f1)*sum(M*M*((y_mean-Y_barbar_hat_R)^2))/(n*(n-1))+N*(sum(M*M*(1-m/M)*var2i/m))/n
+var_Y_hat_R
+#均值的估计的方差
+var_Y_barbar_hat_R <- var_Y_hat_R/(M0*M0)
+var_Y_barbar_hat_R
+#均值的估计的标准差
+se_Y_barbar_hat_R <- sqrt(var_Y_barbar_hat_R)
+se_Y_barbar_hat_R
+
+```
+
+
+#案例
+
+##1.读入数据，分群
+
+```{r warning=FALSE, message=FALSE}
+#读入数据
+data <- read.csv("D:/data/第四次作业案例数据.csv", header = TRUE)
+#根据街道乡镇town分群，group是列表类型
+group <- split(data, data$town)
+#总体群数
+N <- length(group)
+N
+#样本群数
+n <- 1000
+#每个群的群规模
+M <- sapply(group, nrow)
+#该省份企业平均经营收入的真实值
+Y_barbar <- mean(data$income)
+Y_barbar
+#抽样比
+f <- n/N
+f
+#总体单位总数
+M0 <- sum(M)
+M0
+```
+
+##2.抽样
+
+进行一阶段等概整群抽样。
+
+```{r warning=FALSE, message=FALSE}
+set.seed(1234)
+#被抽到的群的群号
+id <- sample(c(1:N), n, replace = FALSE)
+#被抽到的群，samp是列表类型
+samp_all <- group[id]
+#samp只包含income和employees两列的样本信息
+library(dplyr)
+samp <- lapply(samp_all, function(x) x %>% select(income, employees))
+#M_samp是被抽到的群的群规模
+M_samp <- M[id]
+```
+
+##3.相同样本量下简单随机抽样的方差
+
+函数`var_srs()`的功能是计算相同样本量下的简单随机抽样的估计量的方差，以便进行后续的设计效应deff的计算。
+
+输入的参数是一阶段整群抽样的估计，例如加权估计量（无偏估计量）、比率估计的估计值、比估计的估计值；
+
+返回的值为相同样本量下的简单随机抽样的估计量的方差。
+
+```{r warning=FALSE, message=FALSE}
+var_srs <- function(y_bb_est){
+  s_2 <- (sum(sapply(samp, function(x) sum((x$income-y_bb_est)^2))))/
+    (sum(M_samp)-1)
+  v_srs <- (1-f)*s_2/(sum(M_samp))
+  return(v_srs)
+}
+```
+
+##4.对该省份企业平均经营收入进行估计
+###(1)无偏估计（加权估计）
+
+```{r warning=FALSE, message=FALSE}
+#群平均规模
+M_bar <- mean(M)
+M_bar
+
+#样本中的每个群的个体均值，即yi_bar
+y_mean <- sapply(samp, function(x) mean(x$income))
+#样本中的每个群的群总值，即yi
+y_sum <- sapply(samp, function(x) sum(x$income))
+
+#加权估计量
+Y_bb_hat_w <- sum(y_sum)/(n*M_bar)
+Y_bb_hat_w
+
+#方差的估计
+v_Ybbhat_w <- (N^2)*(1-f)*(var(y_sum))/((M0^2)*n)
+v_Ybbhat_w
+
+#标准误
+se_Ybbhat_w <- sqrt(v_Ybbhat_w)
+se_Ybbhat_w
+
+#相对标准误
+rese_Ybbhat_w <- sqrt(v_Ybbhat_w)/Y_barbar
+rese_Ybbhat_w
+
+#置信区间
+#置信区间下限
+l_weig <- Y_bb_hat_w-qnorm(0.975)*se_Ybbhat_w
+l_weig
+#置信区间上限
+u_weig <- Y_bb_hat_w+qnorm(0.975)*se_Ybbhat_w
+u_weig
+
+#设计效应
+#采用加权估计量时，相同样本量的简单随机抽样的方差
+v_srs_weig <- var_srs(y_bb_est = Y_bb_hat_w)
+v_srs_weig
+#设计效应
+deff_weig <- v_Ybbhat_w/v_srs_weig
+deff_weig
+```
+
+###(2)比率估计
+
+选择群规模$M_i$作为辅助变量。
+
+```{r warning=FALSE, message=FALSE}
+#比率估计
+Y_bb_hat_b <- (sum(y_sum)/sum(M_samp))
+Y_bb_hat_b
+
+#样本的群平均规模
+m_bar <- mean(M_samp)
+m_bar
+
+#方差的估计
+v_Ybbhat_b <- (1-f)*(sum((y_sum-M_samp*Y_bb_hat_b)^2))/((n-1)*n*(m_bar^2))
+v_Ybbhat_b
+
+#标准误
+se_Ybbhat_b <- sqrt(v_Ybbhat_b)
+se_Ybbhat_b
+
+#相对标准误
+rese_Ybbhat_b <- sqrt(v_Ybbhat_b)/Y_barbar
+rese_Ybbhat_b
+
+#置信区间
+#置信区间下限
+l_b <- Y_bb_hat_b-qnorm(0.975)*se_Ybbhat_b
+l_b
+#置信区间上限
+u_b <- Y_bb_hat_b+qnorm(0.975)*se_Ybbhat_b
+u_b
+
+#设计效应
+#采用比率估计时，相同样本量的简单随机抽样的方差
+v_srs_b <- var_srs(y_bb_est = Y_bb_hat_b)
+v_srs_b
+#设计效应
+deff_b <- v_Ybbhat_b/v_srs_b
+deff_b
+```
+
+
+###(3)比估计(以employees作为辅助变量)
+
+由于给出了企业本年度的平均雇员人数（employees）信息，所以考虑选择employees作为辅助变量，构造比估计。
+
+首先计算income与employees之间的相关系数$\rho$，再与$\frac{1}{2} \frac{C V(X)}{C V(Y)}$进行比较，以确认使用employees作为辅助变量是否合适。
+
+
+```{r warning=FALSE, message=FALSE}
+#income与employees之间的相关系数
+corr <- cor(data$income, data$employees)
+corr
+#计算employees的标准差
+Sx <- sd(data$employees)
+#计算income的标准差
+Sy <- sd(data$income)
+#计算CV(x)/2CV(y)
+(Sx/mean(data$employees))/(2*Sy/mean(data$income))
+```
+
+计算得到，
+企业经营收入（成本）（income）与企业本年度的平均雇员人数（employees）之间的相关系数为$\quad \rho=0.3695445$，
+
+而$$\frac{1}{2} \frac{C V(X)}{C V(Y)}=\frac{1}{2} \frac{S_{X} / \overline{\overline{X}}}{S_{Y} / \overline{\overline{Y}}}=0.2167228$$
+
+满足$:\quad \rho>\frac{1}{2} \frac{C V(X)}{C V(Y)}$。
+
+因此，选择企业本年度的平均雇员人数（employees）作为辅助信息，记为变量$X$。
+
+
+```{r warning=FALSE, message=FALSE}
+
+#企业本年度的平均雇员人数的平均值的真实值
+X_barbar <- mean(data$employees)
+X_barbar
+
+#样本中的每个群的x变量的个体均值，即xi_bar
+x_mean <- sapply(samp, function(x) mean(x$employees))
+#样本中的每个群的x变量的群总值，即xi
+x_sum <- sapply(samp, function(x) sum(x$employees))
+
+#比估计
+Y_bb_hat_r <- X_barbar*(sum(y_sum)/sum(x_sum))
+Y_bb_hat_r
+
+#R的估计
+r_est <- sum(y_sum)/sum(x_sum)
+r_est
+
+#方差的估计
+v_Ybbhat_r <- (N^2)*(1-f)*(sum((y_sum-x_sum*r_est)^2))/((n-1)*n*(M0^2))
+v_Ybbhat_r
+
+#标准误
+se_Ybbhat_r <- sqrt(v_Ybbhat_r)
+se_Ybbhat_r
+
+#相对标准误
+rese_Ybbhat_r <- sqrt(v_Ybbhat_r)/Y_barbar
+rese_Ybbhat_r
+
+#置信区间
+#置信区间下限
+l_ratio <- Y_bb_hat_r-qnorm(0.975)*se_Ybbhat_r
+l_ratio
+#置信区间上限
+u_ratio <- Y_bb_hat_r+qnorm(0.975)*se_Ybbhat_r
+u_ratio
+
+#设计效应
+#采用比估计时，相同样本量的简单随机抽样的方差
+v_srs_ratio <- var_srs(y_bb_est = Y_bb_hat_r)
+v_srs_ratio
+#设计效应
+deff_ratio <- v_Ybbhat_r/v_srs_ratio
+deff_ratio
+```
+
+##5.结果展示
+
+```{r warning=FALSE, message=FALSE}
+#包括所有估计量的值和标准误的数据框
+df_est <- data.frame("无偏估计" = c(Y_bb_hat_w, Y_bb_hat_w-Y_barbar, rese_Ybbhat_w, (Y_bb_hat_w-Y_barbar)^2+v_Ybbhat_w, l_weig, u_weig, deff_weig), 
+                     "比率估计" = c(Y_bb_hat_b, Y_bb_hat_b-Y_barbar, rese_Ybbhat_b, (Y_bb_hat_b-Y_barbar)^2+v_Ybbhat_b, l_b, u_b, deff_b), 
+                     "比估计" = c(Y_bb_hat_r, Y_bb_hat_r-Y_barbar, rese_Ybbhat_r, (Y_bb_hat_r-Y_barbar)^2+v_Ybbhat_r, l_ratio, u_ratio, deff_ratio))
+                     
+
+row.names(df_est) <-
+  c("估计值", "与真实值的距离", "相对标准误", "均方误差", "置信区间下限", "置信区间上限", "设计效应")
+
+#该省份企业平均经营收入的真实值
+Y_barbar
+
+#使表格中数据不出现科学计数法表示
+options(scipen=200)
+#保留四位小数
+options(digits=4)
+knitr::kable(df_est, format = "html")
+```
+
+从上表可以看到，比估计与真实值的距离最大，无偏估计和比率估计离真实值较近；
+
+从相对标准误来看，比估计的相对标准误最小，精度最高；无偏估计的标准误最大，比率估计的相对标准误介于无偏估计和比估计之间。
+
+从设计效应来看，无偏估计和比率估计的设计效应均大于1，表明精度低于相同样本量下的简单估计；而比估计的设计效应小于1，表明采用了合适的辅助信息时，比估计的精度比简单随机抽样更高。
+

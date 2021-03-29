@@ -1,0 +1,1426 @@
+---
+title: "2018201743-张嘉辰-第三次作业代码"
+author: "张嘉辰"
+date: "2020年11月4日"
+output: 
+  html_document:
+    toc: true # table of content true
+    toc_depth: 4  # upto three depths of headings (specified by #, ## and ###)
+    toc_float: true
+    number_sections: false
+    theme: lumen
+editor_options: 
+  chunk_output_type: console
+---
+<style type="text/css">
+body{
+    margin: 0 auto;
+    font-family: "Microsoft YaHei", arial,sans-serif;
+    color: #444444;
+    line-height: 1;
+    padding: 30px;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin: 10px auto;
+    }
+}
+h1, h2, h3, h4 {
+    color: #111111;
+    font-weight: 400;
+    margin-top: 1em;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: Georgia, Palatino, serif;
+}
+h1, h2, h3, h4, h5, p , dl{
+    margin-bottom: 16px;
+    padding: 0;
+}
+h1 {
+    font-size: 48px;
+    line-height: 54px;
+}
+h2 {
+    font-size: 36px;
+    line-height: 42px;
+}
+h1, h2 {
+    border-bottom: 1px solid #EFEAEA;
+    padding-bottom: 10px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 30px;
+}
+h4 {
+    font-size: 21px;
+    line-height: 26px;
+}
+h5 {
+    font-size: 18px;
+    list-style: 23px;
+}
+a {
+    color: #0099ff;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+a:hover {
+    text-decoration: none;
+    color: #ff6600;
+}
+a:visited {
+    /*color: purple;*/
+}
+ul, ol {
+    padding: 0;
+    padding-left: 24px;
+    margin: 0;
+}
+li {
+    line-height: 24px;
+}
+p, ul, ol {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman;
+}
+
+/*pre {
+    padding: 0px 24px;
+    max-width: 800px;
+    white-space: pre-wrap;
+}
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5;
+    font-size: 13px;
+}*/
+
+code, pre {
+    border-radius: 3px;
+    background-color:#f7f7f7;
+    color: inherit;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    margin: 0 2px;
+}
+
+pre {
+    line-height: 1.7em;
+    overflow: auto;
+    padding: 6px 10px;
+    border-left: 5px solid #6CE26C;
+}
+
+pre > code {
+    border: 0;
+    display: inline;
+    max-width: initial;
+    padding: 0;
+    margin: 0;
+    overflow: initial;
+    line-height: inherit;
+    font-size: .85em;
+    white-space: pre;
+    background: 0 0;
+
+}
+
+code {
+    color: #666555;
+}
+
+
+/** markdown preview plus 对于代码块的处理有些问题, 所以使用统一的颜色 */
+/*code .keyword {
+  color: #8959a8;
+}
+
+code .number {
+  color: #f5871f;
+}
+
+code .comment {
+  color: #998
+}*/
+
+aside {
+    display: block;
+    float: right;
+    width: 390px;
+}
+blockquote {
+    border-left:.5em solid #eee;
+    padding: 0 0 0 2em;
+    margin-left:0;
+}
+blockquote  cite {
+    font-size:14px;
+    line-height:20px;
+    color:#bfbfbf;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #666;
+}
+
+pre, code, tt {
+
+  font-size: 16px;
+
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+
+}
+
+ 
+
+code, tt {
+
+  margin: 0 0px;
+
+  padding: 0px 0px;
+
+  white-space: nowrap;
+
+  border: 1px solid #eaeaea;
+
+  background-color: #f8f8f8;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre>code {
+
+  margin: 0;
+
+  padding: 0;
+
+  white-space: pre;
+
+  color: #338000;
+
+  border: none;
+
+  background: transparent;
+
+ 
+
+}
+
+ 
+
+pre {
+
+  background-color: #f8f8f8;
+
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  line-height: 19px;
+
+  overflow: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 3px;
+
+}
+
+ 
+
+pre code, pre tt {
+
+  background-color: transparent;
+
+  border: none;
+
+}
+
+/* QUOTES
+
+=============================================================================*/
+
+ 
+
+blockquote {
+
+  border-left: 4px solid #DDD;
+
+  padding: 0 15px;
+
+  color: #777;
+
+}
+
+ 
+
+blockquote>:first-child {
+
+  margin-top: 0px;
+
+}
+
+ 
+
+blockquote>:last-child {
+
+  margin-bottom: 0px;
+
+}
+
+ 
+
+/* HORIZONTAL RULES
+
+=============================================================================*/
+
+ 
+
+hr {
+
+  clear: both;
+
+  margin: 15px 0;
+
+  height: 0px;
+
+  overflow: hidden;
+
+  border: none;
+
+  background: transparent;
+
+  border-bottom: 4px solid #ddd;
+
+  padding: 0;
+
+}
+
+ 
+
+
+hr {
+    text-align: left;
+    color: #999;
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+}
+
+dl {
+    padding: 0;
+}
+
+dl dt {
+    padding: 10px 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+}
+
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px;
+}
+
+dd {
+    margin-left: 0;
+}
+
+/* Code below this line is copyright Twitter Inc. */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    *vertical-align: middle;
+}
+button, input {
+    line-height: normal;
+    *overflow: visible;
+}
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
+/* override default chrome & firefox settings */
+input:not([type="image"]), textarea {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+label,
+input,
+select,
+textarea {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 18px;
+}
+input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+    margin-bottom: 0;
+}
+input[type=text],
+input[type=password],
+textarea,
+select {
+    display: inline-block;
+    width: 210px;
+    padding: 4px;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 18px;
+    height: 18px;
+    color: #808080;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+select, input[type=file] {
+    height: 27px;
+    line-height: 27px;
+}
+textarea {
+    height: auto;
+}
+/* grey out placeholders */
+:-moz-placeholder {
+    color: #bfbfbf;
+}
+::-webkit-input-placeholder {
+    color: #bfbfbf;
+}
+input[type=text],
+input[type=password],
+select,
+textarea {
+    -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* buttons */
+button {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #0064cd;
+    background-repeat: repeat-x;
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+    background-image: -moz-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -ms-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+    background-image: -webkit-linear-gradient(top, #049cdb, #0064cd);
+    background-image: -o-linear-gradient(top, #049cdb, #0064cd);
+    background-image: linear-gradient(top, #049cdb, #0064cd);
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid #004b9a;
+    border-bottom-color: #003f81;
+    -webkit-transition: 0.1s linear all;
+    -moz-transition: 0.1s linear all;
+    transition: 0.1s linear all;
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+button:hover {
+    color: #fff;
+    background-position: 0 -15px;
+    text-decoration: none;
+}
+button:active {
+    -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;
+}
+table {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    /*-webkit-box-shadow: 0 1px 1px #ccc;
+    -moz-box-shadow: 0 1px 1px #ccc;
+    box-shadow: 0 1px 1px #ccc;   */
+}
+table tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+table td, .table th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+table th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    /*-webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;*/
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    padding: 5px;
+}
+
+table td:first-child, table th:first-child {
+    border-left: none;
+}
+
+table th:first-child {
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-radius: 6px 0 0 0;
+}
+table th:last-child {
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+}
+table th:only-child{
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 6px;
+    -webkit-border-radius: 0 0 0 6px;
+    border-radius: 0 0 0 6px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius: 0 0 6px 0;
+    -webkit-border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 0;
+}
+
+#TOC {
+  left: 60px;
+  margin: 20px 0px 10px 0px;
+}
+
+.main-container {
+  max-width: 1800px;
+  margin-left: -220px;
+  margin-right: -205px;
+}
+
+options(width = 600px)
+
+</style>
+
+#3.3
+
+##(1)
+```{r warning=FALSE, message=FALSE}
+#每层的样本量
+nh <- c(10,10,10)
+#每层的总体单元数
+Nh <- c(256,420,168)
+n <- sum(nh)
+n
+N <- sum(Nh)
+N
+#层权
+Wh <- Nh/N
+Wh
+#每层的抽样比
+fh <- nh/Nh
+fh
+#每一层的样本
+yh1 <- c(10,10,2,0,20,10,0,10,30,20)
+yh2 <- c(20,35,10,50,0,40,50,10,20,20)
+yh3 <- c(0,20,0,30,30,50,40,0,30,0)
+#每层的样本均值
+yh_bar <- c(mean(yh1), mean(yh2), mean(yh3))
+yh_bar
+#层权乘各层的样本均值
+Wh_yhbar <- Wh*yh_bar
+Wh_yhbar
+#总体均值的估计值
+ybar_st <- sum(Wh_yhbar)
+ybar_st
+#每一层的样本方差
+varh <- c(var(yh1), var(yh2), var(yh3))
+varh
+#总体均值的估计值的方差的样本估计
+var_ybar <- sum((Wh^2)*(1-fh)*varh/nh)
+#总体均值的估计值的标准差的样本估计
+sd_ybar <- sqrt(var_ybar)
+sd_ybar
+```
+
+##(2)
+
+```{r warning=FALSE, message=FALSE}
+#最大相对误差
+r <- 0.1
+
+#按比例分配
+#按比例分配时的样本量
+n_prop <- (sum(Wh*varh))/(((r*ybar_st/qnorm(0.975))^2)+sum(Wh*varh)/N)
+n_prop
+#按比例分配时各层的样本量
+nh_prop <- n_prop*Wh
+nh_prop
+
+#Neyman分配
+n_neyman <- ((sum(Wh*sqrt(varh)))^2)/(((r*ybar_st/qnorm(0.975))^2)+sum(Wh*varh)/N)
+n_neyman
+#Neyman分配的wh
+wh_neyman <- (Wh*sqrt(varh))/(sum(Wh*sqrt(varh)))
+#Neyman分配时各层的样本量
+nh_neyman <- n_neyman*wh_neyman
+nh_neyman
+```
+
+#3.6
+
+
+```{r warning=FALSE, message=FALSE}
+Wh <- c(0.2,0.3,0.5)
+Ph <- c(0.1,0.2,0.4)
+P <- sum(Wh*Ph)
+n_srs <- 100
+#样本量为100的简单随机抽样的估计量的方差
+var_srs <- P*(1-P)/n_srs
+var_srs
+
+#按比例分配时的样本量
+varh <- Ph*(1-Ph)
+n_prop <- (sum(Wh*varh))/((var_srs)+sum(Wh*varh)/N)
+n_prop
+
+```
+
+#3.9
+
+##(2)
+
+```{r warning=FALSE, message=FALSE}
+Yh1 <- c(0,3,6)
+Yh2 <- c(6,9,15)
+#Y的平均值的真实值
+Y_bar <- mean(c(0,3,6,6,9,15))
+Y_bar
+
+
+Xh1 <- c(3,5,10)
+Xh2 <- c(8,15,25)
+#X的平均值的真实值
+X_bar <- mean(c(3,5,10,8,15,25))
+X_bar
+
+#各层的X的均值
+#第一层的X的均值
+X_bar_h1 <- mean(Xh1)
+X_bar_h1
+#第二层的X的均值
+X_bar_h2 <- mean(Xh2)
+X_bar_h2
+
+#层权
+Wh1 <- 0.5
+Wh2 <- 0.5
+
+#可能的样本有9种
+#从第一层中随机抽样，可能的样本均值有三种
+#y_samp1 <- data.frame(c(0,3),c(0,6),c(3,6))
+#x_samp1 <- data.frame(c(3,5),c(3,10),c(5,10))
+mean_samp1 <- data.frame(ymean = c(1.5, 3, 4.5), xmean = c(4,6.5,7.5))
+
+#从第二层中随机抽样，可能的样本均值有三种
+#y_samp2 <- data.frame(c(6,9),c(6,15),c(9,15))
+#x_samp2 <- data.frame(c(8,15),c(8,25),c(15,25))
+mean_samp2 <- data.frame(ymean = c(7.5, 10.5, 12), xmean = c(11.5,16.5,20))
+
+#第一层的E(y_bar/x_bar)
+mean_yxbar1 <- mean(mean_samp1$ymean/mean_samp1$xmean)
+mean_yxbar1
+#第二层的E(y_bar/x_bar)
+mean_yxbar2 <- mean(mean_samp2$ymean/mean_samp2$xmean)
+mean_yxbar2
+
+#分别比估计的均值
+E_y_rs <- Wh1*X_bar_h1*mean_yxbar1+Wh2*X_bar_h2*mean_yxbar2
+E_y_rs
+
+bias_y_ys <- E_y_rs-Y_bar
+bias_y_ys
+
+#第一层的V(y_bar/x_bar)
+var_yxbar1 <- var(mean_samp1$ymean/mean_samp1$xmean)
+var_yxbar1
+#第二层的V(y_bar/x_bar)
+var_yxbar2 <- var(mean_samp2$ymean/mean_samp2$xmean)
+var_yxbar2
+
+V_y_rs <- (Wh1^2)*(X_bar_h1)^2*var_yxbar1+(Wh2^2)*(X_bar_h2)^2*var_yxbar2
+V_y_rs
+
+MSE_y_rs <- (bias_y_ys)^2+V_y_rs
+MSE_y_rs
+
+#联合比估计
+yx_st <- NULL
+for(i in 1:3){
+  for(j in 1:3){
+    yx_st <- c(yx_st,
+            (Wh1*mean_samp1$ymean[i]+Wh2*mean_samp2$ymean[j])/
+              (Wh1*mean_samp1$xmean[i]+Wh2*mean_samp2$xmean[j]))
+  }
+}
+mean_yx_st <- mean(yx_st)
+mean_yx_st
+var_yx_st <- var(yx_st)
+var_yx_st
+#联合比估计的均值
+E_y_rc <- X_bar*mean_yx_st
+E_y_rc
+#联合比估计的偏差
+bias_y_yc <- E_y_rc-Y_bar
+bias_y_yc
+#联合比估计的方差
+V_y_rc <- (X_bar^2)*var(yx_st)
+V_y_rc
+#联合比估计的均方误差
+MSE_y_rc <- (bias_y_yc)^2+V_y_rc
+MSE_y_rc
+```
+
+
+#案例
+##(1)读入数据
+
+第1095行，湖南省洞口县的记录中，第11列的地方一般财政预算收入多加了双引号",已提前手动修正。
+
+```{r warning=FALSE, message=FALSE}
+#空值读入的结果是空字符""
+data_origin <- read.csv("D:\\data\\HW2.csv", header = TRUE, stringsAsFactors = FALSE)
+#去掉第二行，第二行是各变量的单位
+data <- data_origin[2:nrow(data_origin), ]
+
+#地区生产总值
+gdp1 <- data[,8]
+gdp1 <- as.numeric(gdp1)
+#去除空值
+gdp <- na.omit(gdp1)
+#地方财政一般预算收入变量
+income1 <- data[,11]
+income1 <- as.numeric(income1)
+#去除空值
+income <- na.omit(income1)
+
+min_gdp <- min(gdp)
+min_gdp
+
+max_gdp <- max(gdp)
+max_gdp
+
+```
+
+##(2)分层
+
+使用累积平方根法分层。
+
+###方法一：编写分层函数
+
+```{r warning=FALSE, message=FALSE}
+#分层函数
+stratify <- function(x, strata, breaks) {
+h <- hist(x, plot = FALSE, breaks = breaks)
+g <- length(h$counts)
+z <- data.frame(
+  lower = rep(NA, g),
+  upper = rep(NA, g),
+  freq = h$counts,
+  sqrtf = sqrt(h$counts),
+  csqrtf = cumsum(sqrt(h$counts)),
+  stratum = NA)
+k <- 1:(strata - 1) * max(z$csqrtf)/strata
+for (i in 1:g) {
+  z$lower[i] <- h$breaks[i]
+  z$upper[i] <- h$breaks[i + 1]
+}
+for (i in 1:(strata - 1)) {
+  tmp <- which(abs(z$csqrtf - k[i]) == min(abs(z$csqrtf - k[i])))
+  z$stratum[c(1:g) <= tmp & is.na(z$stratum)] <- i
+}
+z$stratum[is.na(z$stratum)] <- strata
+return(list(output = z, cutpoints = k))
+}
+#分层
+stratify(gdp, strata = 6, breaks = 50)
+```
+
+###方法二：使用stratification包中的strata.cumrootf()函数进行分层
+
+```{r warning=FALSE, message=FALSE}
+library(stratification)
+#按比例分配进行分层
+pro <- strata.cumrootf(x = as.numeric(sort(gdp)), n=200, Ls=6, alloc=c(0.5,0,0), nclass=50)
+pro
+
+#内曼分配进行分层
+ney <- strata.cumrootf(x = as.numeric(sort(gdp)), n=200, Ls=6, alloc=c(0.5,0,0.5), nclass=50)
+ney
+
+#各层的单元总数
+Nh <- pro$Nh
+#各层的标准差
+Sh <- sqrt(pro$varh)
+```
+
+接下来的分层使用`stratification`包中的`strata.cumrootf()`函数进行。
+
+##(3)构建包含辅助变量（地区生产总值）和待预测的变量（地方财政一般预算收入）的数据框
+
+```{r warning=FALSE, message=FALSE}
+#构建数据框
+df <- data.frame(gdp = gdp, income = income)
+#按地区生产总值由低到高进行排序
+df <- df[order(df[,1]),]
+N <- nrow(df)
+X_bar_gdp <- mean(gdp)
+```
+
+接下来分别按照按比例分配和内曼分配进行分层和计算。
+
+一共分6层。
+
+
+
+##(4)按比例分配
+
+###步骤一：计算各层的样本量
+
+####方法一：根据按比例分配的公式计算样本量
+
+按比例分配下，各层的样本量满足：
+
+$$n_{h}=n \frac{N_{h}}{N}$$
+
+```{r warning=FALSE, message=FALSE}
+#分6层
+L <- 6
+#样本量为n
+n <- 200
+#总体的单元总数为N=2073
+N <- length(income)
+#根据公式计算各层的样本量
+#原则上样本量应该向上取整，但是这里由于样本量为固定的大小，如果每层的样本量都向上取整则样本总量超过200。
+nh_pro <- round(n*Nh/N)
+nh_pro
+```
+
+
+####方法二：使用stratification包中的strata.cumrootf()函数进行样本量的分配
+
+```{r warning=FALSE, message=FALSE}
+library(plyr)
+library(reshape2)
+L <- 6
+library(stratification)
+#按比例分配
+pro <- strata.cumrootf(x = as.numeric(sort(gdp)), n=200, Ls=6, alloc=c(0.5,0,0), nclass=50)
+#按比例分配下，各层的样本量
+pro$nh
+```
+
+###步骤二：在各层中抽样，并构建包含各层信息的数据框
+
+数据框说明：
+
+df_pro和df_ney表示添加了每个总体所属的层号信息的总体；
+
+sample_pro和sample_ney表示添加了每个样本所属的层号信息的样本；
+
+strata_pro和strata_ney分别表示分层后的每层的信息。
+
+```{r warning=FALSE, message=FALSE}
+
+#添加表示该样本所属的层号的一列
+df_pro <- df
+df_pro$strata <- as.numeric(pro$stratumID)
+
+library(plyr)
+
+#每一层的X_bar
+mean_gdp_pro <- ddply(df_pro, .(strata), function(x) mean(x$gdp))
+
+#每一层的Y_bar
+mean_income_pro <- ddply(df_pro, .(strata), function(x) mean(x$income))
+
+#构建按比例分配的层的信息数据框，包括层权、每层的样本量、每层的总体大小等各层的信息
+strata_pro <- data.frame(Wh = pro$Nh/N, Nh = pro$Nh, nh = pro$nh, Xh_bar = pro$meanh, Yh_bar = mean_income_pro[,2])
+#每层的抽样比
+strata_pro$fh <- strata_pro$nh/strata_pro$Nh
+
+#进行分层抽样
+set.seed(12)
+#先抽序号
+pro_group <- split(df_pro, list(df_pro$strata))
+
+sample_pro_list <- list()
+#对每一层分别抽取nh个样本，列表sample_pro_list的每一元素分别为每层的样本
+for(i in 1:L){
+  sample_pro_list[[i]] <- pro_group[[i]] [sample(1:nrow(pro_group[[i]]), strata_pro$nh[i], replace = FALSE),]
+}
+
+#将列表的每个元素合并为数据框，得到样本的数据框
+sample_pro <- do.call(rbind, sample_pro_list)
+
+#每一层的y的样本均值
+strata_pro$yh_bar <- ddply(sample_pro, .(strata), function(x) mean(x$income))[,2]
+#每一层的x的均值
+strata_pro$xh_bar <- ddply(sample_pro, .(strata), function(x) mean(x$gdp))[,2]
+#每一层的Y的总体方差
+strata_pro$Yh_var <- ddply(df_pro, .(strata), function(x) var(x$income))[,2]
+#每一层的y的样本方差
+strata_pro$yh_var <- ddply(sample_pro, .(strata), function(x) var(x$income))[,2]
+#每一层的X的总体方差
+strata_pro$Xh_var <- ddply(df_pro, .(strata), function(x) var(x$gdp))[,2]
+#每一层的x的样本方差
+strata_pro$xh_var <- ddply(sample_pro, .(strata), function(x) var(x$gdp))[,2]
+#每一层的Rh的真实值
+strata_pro$Rh <- ddply(df_pro, .(strata), function(x) mean(x$income)/mean(x$gdp))[,2]
+#每一层的用样本估计的rh
+strata_pro$rh <- ddply(sample_pro, .(strata), function(x) mean(x$income)/mean(x$gdp))[,2]
+#每一层的Syxh的真实值
+strata_pro$Syxh <- ddply(df_pro, .(strata), function(x) sum((x$income-mean(x$income))*(x$gdp-mean(x$gdp))))[,2]/(strata_pro$Nh-1)
+#每一层的用样本估计的syxh
+strata_pro$syxh <- ddply(sample_pro, .(strata), function(x) sum((x$income-mean(x$income))*(x$gdp-mean(x$gdp))))[,2]/(strata_pro$nh-1)
+
+
+```
+
+###步骤三：计算估计量
+
+```{r warning=FALSE, message=FALSE}
+#简单估计
+pro_st_y <- sum(strata_pro$Wh*strata_pro$yh_bar)
+pro_st_y
+
+#分别比估计
+pro_rs <- sum(strata_pro$Wh*strata_pro$Xh_bar*strata_pro$yh_bar/strata_pro$xh_bar)
+pro_rs
+
+#联合比估计
+#总体的X_bar
+X_bar_gdp <- mean(gdp)
+#分层抽样得到x的简单估计
+pro_st_x <- sum(strata_pro$Wh*strata_pro$xh_bar)
+pro_st_x
+#联合比估计
+pro_rc <- X_bar_gdp*pro_st_y/pro_st_x
+pro_rc
+
+#分别回归估计
+#每一层的用样本估计的bh
+bh_pro <- sapply(sample_pro_list, function(x) sum((x$income-mean(x$income))*(x$gdp-mean(x$gdp)))/sum((x$gdp-mean(x$gdp))^2))
+strata_pro$bh <- bh_pro
+#或者
+#bh_pro <- ddply(sample_pro, .(strata), function(x) (sum((x$income-mean(x$income))*(x$gdp-mean(x$gdp))))/sum((x$gdp-mean(x$gdp))^2))[,2]
+#分别回归估计
+pro_lrs <- sum(strata_pro$Wh*(strata_pro$yh_bar+bh_pro*(strata_pro$Xh_bar-strata_pro$xh_bar)))
+pro_lrs
+
+#联合回归估计
+#每一层的Σ(xi-xbar)(yi-ybar)
+Lxy_h_pro <- sapply(sample_pro_list, function(x) sum((x$income-mean(x$income))*(x$gdp-mean(x$gdp))))
+#每一层的Σ(xi-xbar)^2
+Lxx_h_pro <- sapply(sample_pro_list, function(x) sum((x$gdp-mean(x$gdp))^2))
+#联合回归估计的样本估计的b_c
+b_pro <- (sum(Lxy_h_pro))/(sum(Lxx_h_pro))
+b_pro
+#联合回归估计
+pro_lrc <- pro_st_y + b_pro*(X_bar_gdp-pro_st_x)
+pro_lrc
+```
+
+
+##(5)Neyman分配
+
+###步骤一：计算各层的样本量
+
+####方法一：使用内曼分配的公式计算样本量
+
+内曼最优分配:
+$$
+n_{h}=n \frac{N_{h} S_{h}}{\sum_{h=1}^{L} N_{h} S_{h}}
+$$
+
+```{r warning=FALSE, message=FALSE}
+#分6层
+L <- 6
+#样本量为n
+n <- 200
+#总体的单元总数为N=2073
+N <- length(income)
+
+#根据公式计算各层的样本量
+nh_ney <- n*Nh*Sh/sum(Nh*Sh)
+nh_ney
+
+#由于第6层的单元总数为N6=56，但是上面计算得到的内曼分配下，第六层的样本量为n6=64，超过了该层的单元总数
+#所以，将第六层作为全抽样层，将超过总体单元的部分的样本量重新分配至第1至5层
+
+#第六层中，超过总体单元的部分的样本量
+nh6_exceed <- nh_ney[6]-Nh[6]
+#将超过总体单元的部分的样本量重新分配至第1至5层
+nh_exceed <- nh6_exceed*Nh*Sh/sum(Nh*Sh)
+#内曼分配下的样本量
+nh_ney <- nh_ney+nh_exceed
+#第六层作为全抽样层
+nh_ney[6] <- Nh[6]
+#对每层的样本量向上取整
+nh_ney <- ceiling(nh_ney)
+nh_ney
+```
+
+####方法二：使用stratification包中的strata.cumrootf()函数进行样本量的分配
+
+```{r warning=FALSE, message=FALSE}
+L <- 6
+library(stratification)
+
+#Neyman分配
+ney <- strata.cumrootf(x = as.numeric(sort(gdp)), n=200, Ls=6, alloc=c(0.5,0,0.5), nclass=50)
+#Neyman分配下，各层的样本量
+ney$nh
+```
+
+###步骤二：在各层中抽样，并构建包含各层信息的数据框
+
+数据框说明：
+
+df_pro和df_ney表示添加了每个总体所属的层号信息的总体；
+
+sample_pro和sample_ney表示添加了每个样本所属的层号信息的样本；
+
+strata_pro和strata_ney分别表示分层后的每层的信息。
+
+```{r warning=FALSE, message=FALSE}
+#添加表示该样本所属的层数的一列
+df_ney <- df
+df_ney$strata <- as.numeric(ney$stratumID)
+
+library(plyr)
+
+#每一层的X_bar
+mean_gdp_ney <- ddply(df_ney, .(strata), function(x) mean(x$gdp))
+mean_gdp_ney
+#每一层的Y_bar
+mean_income_ney <- ddply(df_ney, .(strata), function(x) mean(x$income))
+mean_income_ney
+
+#构建Neyman分配的层的信息数据框，包括层权、每层的样本量、每层的总体大小等各层的信息
+strata_ney <- data.frame(Wh = ney$Nh/N, Nh = ney$Nh, nh = ney$nh, Xh_bar = ney$meanh, Yh_bar = mean_income_ney[,2])
+#每层的抽样比
+strata_ney$fh <- strata_ney$nh/strata_ney$Nh
+
+#进行分层抽样
+set.seed(12)
+#先抽序号
+ney_group <- split(df_ney, list(df_ney$strata))
+#samples_ney <- lapply(ney_group, function(x) x[sample(1:nrow(x), 30, FALSE),])
+sample_ney_list <- list()
+#对每一层分别抽取nh个样本，列表sample_ney_list的每一元素分别为每层的样本
+for(i in 1:L){
+  sample_ney_list[[i]] <- ney_group[[i]] [sample(1:nrow(ney_group[[i]]), strata_ney$nh[i], replace = FALSE),]
+}
+#将列表的每个元素合并为数据框，得到样本的数据框
+sample_ney <- do.call(rbind, sample_ney_list)
+
+#每一层的y的样本均值
+strata_ney$yh_bar <- ddply(sample_ney, .(strata), function(x) mean(x$income))[,2]
+#每一层的x的均值
+strata_ney$xh_bar <- ddply(sample_ney, .(strata), function(x) mean(x$gdp))[,2]
+#每一层的Y的总体方差
+strata_ney$Yh_var <- ddply(df_ney, .(strata), function(x) var(x$income))[,2]
+#每一层的y的样本方差
+strata_ney$yh_var <- ddply(sample_ney, .(strata), function(x) var(x$income))[,2]
+#每一层的X的总体方差
+strata_ney$Xh_var <- ddply(df_ney, .(strata), function(x) var(x$gdp))[,2]
+#每一层的x的样本方差
+strata_ney$xh_var <- ddply(sample_ney, .(strata), function(x) var(x$gdp))[,2]
+#每一层的Rh的真实值
+strata_ney$Rh <- ddply(df_ney, .(strata), function(x) mean(x$income)/mean(x$gdp))[,2]
+#每一层的用样本估计的rh
+strata_ney$rh <- ddply(sample_ney, .(strata), function(x) mean(x$income)/mean(x$gdp))[,2]
+#每一层的Syxh的真实值
+strata_ney$Syxh <- ddply(df_ney, .(strata), function(x) sum((x$income-mean(x$income))*(x$gdp-mean(x$gdp))))[,2]/(strata_ney$Nh-1)
+#每一层的用样本估计的syxh
+strata_ney$syxh <- ddply(sample_ney, .(strata), function(x) 
+sum((x$income-mean(x$income))*(x$gdp-mean(x$gdp))))[,2]/(strata_ney$nh-1)
+
+
+```
+
+###步骤三：计算估计量
+
+```{r warning=FALSE, message=FALSE}
+
+#简单估计
+ney_st_y <- sum(strata_ney$Wh*strata_ney$yh_bar)
+ney_st_y
+
+#分别比估计
+ney_rs <- sum(strata_ney$Wh*strata_ney$Xh_bar*strata_ney$yh_bar/strata_ney$xh_bar)
+ney_rs
+
+#联合比估计
+#总体的X_bar
+X_bar_gdp <- mean(gdp)
+#分层抽样得到x的简单估计
+ney_st_x <- sum(strata_ney$Wh*strata_ney$xh_bar)
+ney_st_x
+#联合比估计
+ney_rc <- X_bar_gdp*ney_st_y/ney_st_x
+ney_rc
+
+#分别回归估计
+#每一层的用样本估计的bh
+bh_ney <- sapply(sample_ney_list, function(x) (sum((x$income-mean(x$income))*(x$gdp-mean(x$gdp))))/sum((x$gdp-mean(x$gdp))^2))
+strata_ney$bh <- bh_ney
+#分别回归估计
+ney_lrs <- sum(strata_ney$Wh*(strata_ney$yh_bar+bh_ney*(strata_ney$Xh_bar-strata_ney$xh_bar)))
+ney_lrs
+
+#联合回归估计
+#每一层的Σ(xi-xbar)(yi-ybar)
+Lxy_h_ney <- sapply(sample_ney_list, function(x) sum((x$income-mean(x$income))*(x$gdp-mean(x$gdp))))
+#每一层的Σ(xi-xbar)^2
+Lxx_h_ney <- sapply(sample_ney_list, function(x) sum((x$gdp-mean(x$gdp))^2))
+#联合回归估计的样本估计的b_c
+b_ney <- sum((strata_ney$Wh^2)*(1-strata_ney$fh)*(Lxy_h_ney)/(strata_ney$nh*(strata_ney$nh-1)))/sum((strata_ney$Wh^2)*(1-strata_ney$fh)*(Lxx_h_ney)/(strata_ney$nh*(strata_ney$nh-1)))
+b_ney
+ney_lrc <- ney_st_y + b_ney*(X_bar_gdp-ney_st_x)
+ney_lrc
+```
+
+
+
+##(6)计算两种分配方式下，各估计量的标准误和均方误差
+
+###①按比例分配下，估计量的标准误和均方误差
+
+####计算过程
+
+```{r warning=FALSE, message=FALSE}
+#地方财政一般预算收入的均值的真实值
+Y_bar_income <- mean(income)
+Y_bar_income
+#比例分配下五种估计的偏差
+bias_pro <- c(pro_st_y-Y_bar_income, pro_rs-Y_bar_income, pro_rc-Y_bar_income, pro_lrs-Y_bar_income, pro_lrc-Y_bar_income)
+
+#以下计算比例分配下五种估计的标准误
+#简单估计
+bias_y_yc
+#已知每层的总体方差时
+V_pro_st_y <- sum(((strata_pro$Wh)^2)*(1-strata_pro$fh)* strata_pro$Yh_var/(strata_pro$nh))
+SE_pro_st_y <- sqrt(V_pro_st_y)
+SE_pro_st_y
+#每层的总体方差未知时，用样本方差估计总体方差
+v_pro_st_y <- sum(((strata_pro$Wh)^2)*(1-strata_pro$fh)* (strata_pro$yh_var)/(strata_pro$nh))
+se_pro_st_y <- sqrt(v_pro_st_y)
+se_pro_st_y
+#相对标准误
+re_se_pro_st_y <- se_pro_st_y/Y_bar_income
+re_se_pro_st_y
+
+#分别比估计
+#已知每层的总体方差，Rh的真实值时
+V_pro_rs <- sum(((strata_pro$Wh)^2)*(1-strata_pro$fh)*(strata_pro$Yh_var+(strata_pro$Rh^2)*strata_pro$Xh_var-2*strata_pro$Rh*strata_pro$Syxh)/(strata_pro$nh))
+SE_pro_rs <- sqrt(V_pro_rs)
+SE_pro_rs
+#每层的总体方差和Rh的真实值未知时，用样本方差估计总体方差，用rh估计Rh
+v_pro_rs <- sum(((strata_pro$Wh)^2)*(1-strata_pro$fh)*(strata_pro$yh_var+((strata_pro$rh)^2)*strata_pro$xh_var-2*strata_pro$rh*strata_pro$syxh)/(strata_pro$nh))
+se_pro_rs <- sqrt(v_pro_rs)
+se_pro_rs
+#相对标准误
+re_se_pro_rs <- se_pro_rs/Y_bar_income
+re_se_pro_rs
+
+#联合比估计
+#已知每层的总体方差，R的真实值时
+#R的真实值
+R_true <- mean(income)/X_bar_gdp
+V_pro_rc <- sum(((strata_pro$Wh)^2)*(1-strata_pro$fh)*(strata_pro$Yh_var+((R_true)^2)*strata_pro$Xh_var-2*R_true*strata_pro$Syxh)/(strata_pro$nh))
+SE_pro_rc <- sqrt(V_pro_rc)
+SE_pro_rc
+
+#每层的总体方差和R的真实值未知时，用样本方差估计总体方差，用r估计R
+#r为R的样本估计值
+R_est <- pro_st_y/pro_st_x
+v_pro_rc <- sum(((strata_pro$Wh)^2)*(1-strata_pro$fh)*(strata_pro$yh_var+((R_est)^2)*strata_pro$xh_var-2*R_est*strata_pro$syxh)/(strata_pro$nh))
+se_pro_rc <- sqrt(v_pro_rc)
+se_pro_rc
+#相对标准误
+re_se_pro_rc <- se_pro_rc/Y_bar_income
+re_se_pro_rc
+
+#分别回归估计
+#用样本方差估计总体方差，每层的bh由样本估计
+v_pro_lrs <- sum(((strata_pro$Wh)^2)*(1-strata_pro$fh)*((strata_pro$nh-1)*strata_pro$yh_var*(1-(((strata_pro$bh)^2)*strata_pro$xh_var/strata_pro$yh_var)))/((strata_pro$nh)*(strata_pro$nh-2)))
+se_pro_lrs <- sqrt(v_pro_lrs)
+se_pro_lrs
+#相对标准误
+re_se_pro_lrs <- se_pro_lrs/Y_bar_income
+re_se_pro_lrs
+
+#联合回归估计
+#用样本方差估计总体方差，b_c由样本估计
+v_pro_lrc <- sum(((strata_pro$Wh)^2)*(1-strata_pro$fh)*(strata_pro$yh_var+(b_ney^2)*strata_pro$xh_var-2*b_ney*strata_pro$syxh)/(strata_pro$nh))
+se_pro_lrc <- sqrt(v_pro_lrc)
+se_pro_lrc
+#相对标准误
+re_se_pro_lrc <- se_pro_lrc/Y_bar_income
+re_se_pro_lrc
+
+#比例分配下五种估计的标准误
+se_pro <- c(se_pro_st_y, se_pro_rs, se_pro_rc, se_pro_lrs, se_pro_lrc)
+#比例分配下五种估计的相对标准误
+re_se_pro <- c(re_se_pro_st_y, re_se_pro_rs, re_se_pro_rc, re_se_pro_lrs, re_se_pro_lrc)
+
+
+#以下计算比例分配下五种估计的均方误差
+MSE_pro <- (bias_pro^2)+(se_pro^2)
+
+
+```
+
+####结果展示
+
+用表格形式展示比例分配下，所有估计量的值、估计值与真实值的距离、估计的标准误、估计的均方误差。
+
+```{r}
+Y_bar_income <- mean(income)
+
+#构建比例分配下，包括所有估计量的值和标准误的数据框
+df_est_pro <- data.frame("估计值-比例分配" = c(pro_st_y, pro_rs, pro_rc, pro_lrs, pro_lrc),
+                     "与真实值的距离-比例分配" = bias_pro,
+                     "相对标准误-比例分配" = re_se_pro,
+                     "均方误差-比例分配" = MSE_pro)
+
+row.names(df_est_pro) <-
+  c("简单估计","分别比估计","联合比估计","分别回归估计","联合回归估计")
+
+#以表格形式显示
+knitr::kable(df_est_pro,  format = "html")
+
+```
+
+###②Neyman分配下，各估计量的标准误和均方误差
+
+####计算过程
+
+
+```{r warning=FALSE, message=FALSE}
+
+#Neyman分配下五种估计的偏差
+bias_ney <- c(ney_st_y-Y_bar_income, ney_rs-Y_bar_income, ney_rc-Y_bar_income, ney_lrs-Y_bar_income, ney_lrc-Y_bar_income)
+
+#以下计算Neyman分配下五种估计的标准误
+#简单估计
+#已知每层的总体方差时
+V_ney_st_y <- sum(((strata_ney$Wh)^2)*(1-strata_ney$fh)* strata_ney$Yh_var/(strata_ney$nh))
+SE_ney_st_y <- sqrt(V_ney_st_y)
+SE_ney_st_y
+#每层的总体方差未知时，用样本方差估计总体方差
+v_ney_st_y <- sum(((strata_ney$Wh)^2)*(1-strata_ney$fh)* (strata_ney$yh_var)/(strata_ney$nh))
+se_ney_st_y <- sqrt(v_ney_st_y)
+se_ney_st_y
+#相对标准误
+re_se_ney_st_y <- se_ney_st_y/Y_bar_income
+re_se_ney_st_y
+
+#分别比估计
+#已知每层的总体方差，Rh的真实值时
+V_ney_rs <- sum(((strata_ney$Wh)^2)*(1-strata_ney$fh)*(strata_ney$Yh_var+((strata_ney$Rh)^2)*strata_ney$Xh_var-2*strata_ney$Rh*strata_ney$Syxh)/(strata_ney$nh))
+SE_ney_rs <- sqrt(V_ney_rs)
+SE_ney_rs
+#每层的总体方差和Rh的真实值未知时，用样本方差估计总体方差，用rh估计Rh
+v_ney_rs <- sum(((strata_ney$Wh)^2)*(1-strata_ney$fh)*(strata_ney$yh_var+((strata_ney$rh)^2)*strata_ney$xh_var-2*strata_ney$rh*strata_ney$syxh)/(strata_ney$nh))
+se_ney_rs <- sqrt(v_ney_rs)
+se_ney_rs
+#相对标准误
+re_se_ney_rs <- se_ney_rs/Y_bar_income
+re_se_ney_rs
+
+#联合比估计
+#已知每层的总体方差，R的真实值时
+#R的真实值
+R_true <- mean(income)/X_bar_gdp
+V_ney_rc <- sum(((strata_ney$Wh)^2)*(1-strata_ney$fh)*(strata_ney$Yh_var+((R_true)^2)*strata_ney$Xh_var-2*R_true*strata_ney$Syxh)/(strata_ney$nh))
+SE_ney_rc <- sqrt(V_ney_rc)
+SE_ney_rc
+
+#每层的总体方差和R的真实值未知时，用样本方差估计总体方差，用r估计R
+#r为R的样本估计值
+R_est <- ney_st_y/ney_st_x
+
+v_ney_rc <- sum(((strata_ney$Wh)^2)*(1-strata_ney$fh)*(strata_ney$yh_var+((R_est)^2)*strata_ney$xh_var-2*R_est*strata_ney$syxh)/(strata_ney$nh))
+se_ney_rc <- sqrt(v_ney_rc)
+se_ney_rc
+#相对标准误
+re_se_ney_rc <- se_ney_rc/Y_bar_income
+re_se_ney_rc
+
+#分别回归估计
+#用样本方差估计总体方差，每层的bh由样本估计
+v_ney_lrs <- sum(((strata_ney$Wh)^2)*(1-strata_ney$fh)*((strata_ney$nh-1)*strata_ney$yh_var*(1-((strata_ney$bh)^2)*strata_ney$xh_var/strata_ney$yh_var))/((strata_ney$nh)*(strata_ney$nh-2)))
+se_ney_lrs <- sqrt(v_ney_lrs)
+se_ney_lrs
+#相对标准误
+re_se_ney_lrs <- se_ney_lrs/Y_bar_income
+re_se_ney_lrs
+
+#联合回归估计
+#用样本方差估计总体方差，b_c由样本估计
+v_ney_lrc <- sum(((strata_ney$Wh)^2)*(1-strata_ney$fh)*(strata_ney$yh_var+(b_ney^2)*strata_ney$xh_var-2*b_ney*strata_ney$syxh)/(strata_ney$nh))
+se_ney_lrc <- sqrt(v_ney_lrc)
+se_ney_lrc
+#相对标准误
+re_se_ney_lrc <- se_ney_lrc/Y_bar_income
+re_se_ney_lrc
+
+#Neyman分配下五种估计的标准误
+se_ney <- c(se_ney_st_y, se_ney_rs, se_ney_rc, se_ney_lrs, se_ney_lrc)
+#Neyman分配下五种估计的相对标准误
+re_se_ney <- c(re_se_ney_st_y, re_se_ney_rs, re_se_ney_rc, re_se_ney_lrs, re_se_ney_lrc)
+
+#以下计算Neyman分配下五种估计的均方误差
+MSE_ney <- (bias_ney^2)+(se_ney^2)
+
+```
+
+####结果展示
+
+用表格形式展示内曼分配下，所有估计量的值、估计值与真实值的距离、估计的标准误、估计的均方误差。
+
+```{r}
+#构建内曼分配下，包括所有估计量的值和标准误的数据框
+df_est_ney <- data.frame("估计值-内曼分配" = c(ney_st_y, ney_rs, ney_rc, ney_lrs, ney_lrc),
+                     "与真实值的距离-内曼分配" = bias_ney,
+                     "相对标准误-内曼分配计" = re_se_ney,
+                     "均方误差-内曼分配" = MSE_ney)
+
+row.names(df_est_ney) <-
+  c("简单估计","分别比估计","联合比估计","分别回归估计","联合回归估计")
+
+#以表格形式显示
+knitr::kable(df_est_ney,  format = "html")
+
+```
+
+
+##(7)以表格形式输出所有估计量的值,偏差,相对标准误及均方误差
+
+```{r}
+#地方财政一般预算收入的均值的真实值
+Y_bar_income <- mean(income)
+Y_bar_income
+
+#构建两种分配方式下，包括所有估计量的值和标准误的数据框
+df_est <- data.frame("估计值-比例分配" = c(pro_st_y, pro_rs, pro_rc, pro_lrs, pro_lrc), 
+                     "与真实值的距离-比例分配" = bias_pro,
+                     "相对标准误-比例分配" = se_pro/Y_bar_income,
+                     "均方误差-比例分配" = MSE_pro,
+                     "估计值-内曼分配" = c(ney_st_y, ney_rs, ney_rc, ney_lrs, ney_lrc),
+                     "与真实值的距离-内曼分配" = bias_ney,
+                     "相对标准误-内曼分配" = se_ney/Y_bar_income,
+                     "均方误差-内曼分配" = MSE_ney)
+
+row.names(df_est) <-
+  c("简单估计","分别比估计","联合比估计","分别回归估计","联合回归估计")
+
+#地方财政一般预算收入的均值的真实值
+Y_bar_income
+
+#以表格形式显示
+knitr::kable(df_est,  format = "html")
+```
+

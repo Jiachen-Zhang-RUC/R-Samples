@@ -1,5 +1,5 @@
 ---
-title: Comparison of Algorithms in Data classification
+title: Comparison of Algorithms in Data Classification
 author: Jiachen Zhang
 geometry: "left=1.5cm,right=1.5cm,top=1.6cm,bottom=2.5cm"
 output:

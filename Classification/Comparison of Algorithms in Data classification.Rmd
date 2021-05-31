@@ -1,0 +1,965 @@
+---
+title: Comparison of Algorithms in Data classification
+author: Jiachen Zhang
+geometry: "left=1.5cm,right=1.5cm,top=1.6cm,bottom=2.5cm"
+output:
+  pdf_document:
+    keep_tex: true
+    number_sections: true
+header-includes:
+  \usepackage{float}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(MASS)
+library(caret)
+library(knitr)
+library(kableExtra)
+
+# Global options
+opts_chunk$set(message=FALSE,
+               warning=FALSE)
+```
+
+**Abstract**: Classification of binary and multi-class datasets to draw meaningful decisions is the key in today’s scientific world. This homework attempts to study and compare the performance of classification algorithms, including *logistic regression, support vector machine, random forest, linear discriminant analysis, k-nearest neighbors, naive Bayes and decision tree* with Blood Transfusion Service Center dataset. The performances of algorithms change when variables used to predict are removed or kept. Overall, k-nearest neighbors, random forest and decision tree perform better than other algorithms.
+
+**Keywords**: classification; evaluation parameters; comparison
+
+(The main body is about five pages)
+
+#Read the Data
+
+Read the data. The 'Made Donation in March 2007' is the variable to be predicted, so it is transformed to factor class. Note that there is no NA in the data.
+
+```{r echo=FALSE}
+data_all <- read.table("D:/data/transfusion.data", sep=",", header = TRUE)
+colnames(data_all) <- c("Months since Last Donation", "Number of Donations", 
+                        "Total Volume Donated (c.c.)", "Months since First Donation", 
+                        "Made Donation in March 2007")
+data_all$`Made Donation in March 2007` <- factor(data_all$`Made Donation in March 2007`)
+```
+
+#Data Exploration
+
+##Summary Statistics
+
+Variables are seperated into two categories. One category includes 'Made Donation in March 2007'. It is a categorical variable, and is the variable to be predicted. The other category includes the other four variables. They continuous variables, and are used to predicted 'Made Donation in March 2007'.
+
+The frequency table of 'Made Donation in March 2007' is as follows.
+
+```{r echo=FALSE}
+freq_df <- data.frame(table(data_all$`Made Donation in March 2007`))
+colnames(freq_df) <- c("Made donation", "Frequency")
+kable(freq_df, caption = "Frequency of persons who made donation", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+In the sample, there are 570 persons who did not made donation in March 2007, which is nearly four times as many as persons who made donation.
+
+Then caculate the summary statistics of other continuous variables by group. Here Group 0 includes persons who did not made donation in March, and Group 1 made donation.
+
+```{r echo=FALSE}
+# summary statistics of the data by group
+library(psych)
+options(digits = 2)
+summ_stat1 <- describeBy(data_all[,-5], group = data_all$`Made Donation in March 2007`)
+
+summ_stat <- rbind(summ_stat1$'0'[,1:5], summ_stat1$'1'[,1:5])
+library(kableExtra)
+kbl(summ_stat, caption = "Summary statistics of Group 0 and 1", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position")) %>%
+  pack_rows(index=c("Group 0" = 4, "Group 1" = 4))
+```
+
+Mean of 'Months since Last Donation' for Group 0 is 10.8, while for Group 1 is 5.5; mean of 'Number of Donations' for Group 0 is 4.8, while for Group 1 is 7.8; mean of 'Total Volume Donated (c.c.)' for Group 0 is 1200.4, while for Group 1 is 1949.4. These three variables seem to vary between the different groups.Mean of 'Months since First Donation' for Group 0 is 34.8, and for Group 1 is 32.7, they are quite close.
+
+Other statistics, such as median, standard deviation, for the two groups can also be compared in the similar way. The conclusion from the summary statistics table is consistent with the following boxplot.
+
+##Boxplot
+
+Draw boxplots of the four continuous variable grouped by 'Made Donation in March 2007' respectively, to show the difference of sample between Group 0 and Group 1.
+
+```{r, echo=FALSE, fig.cap='Boxplot', fig.align='center', out.height='55%', out.width='55%'}
+par(mar = rep(2, 4))
+colnames(data_all) <- c("Months_since_Last_Donation", "Number_of_Donations", 
+                        "Total_Volume_Donated_(c.c.)", "Months_since_First_Donation", 
+                        "Made_Donation_in_March_2007")
+par(mfrow = c(2,2))
+boxplot(Months_since_Last_Donation~Made_Donation_in_March_2007, data = data_all, xlab = "", ylab = "", main = "Months since Last Donation")
+
+boxplot(Number_of_Donations~Made_Donation_in_March_2007, data = data_all, xlab = "", ylab = "", main = "Number of Donations")
+
+boxplot(`Total_Volume_Donated_(c.c.)`~Made_Donation_in_March_2007, data = data_all, xlab = "", ylab = "", main = "Total Volume Donated (c.c.)")
+
+boxplot(Months_since_First_Donation~Made_Donation_in_March_2007, data = data_all, xlab = "", ylab = "", main = "Months since First Donation")
+```
+
+From the above four boxplot, we can see the differences between two groups of the median of 'Months since Last Donation', 'Number of Donations', 'Total Volume Donated (c.c.)' are more obvious. The time inverval between the last donation and the March 2007 donation tends to be shorter for persons who made donation in March 2007, and they tend to donate more times, and have more total volumn donated.
+
+However, the quantiles of 'Months since First Donation' look close from the boxplot, which is consistent with the conclusion from the summary statistics table.
+
+##Correlation Plot
+
+The correlation plot between the four continuous variables is as follows.
+
+```{r, echo=FALSE, fig.cap='Correlation plot', fig.align='center', out.height='50%', out.width='50%'}
+library(corrplot)
+par(mar = rep(1.1, 4))
+par(mfrow = c(1,1))
+corr <- cor(data_all[, c(1:4)])
+corrplot(corr, method="circle", type="lower",  sig.level = 0.05, insig = "blank", addCoef.col = "black")
+```
+
+Since Total Volume Donated (c.c.) have very high correlation with other variables, we are dropping the variable in the process of classification.
+
+```{r}
+data <- data_all[,-3]
+```
+
+
+#Model Building Preparations
+
+##Training and Testing Data Separation
+
+Separate the data into training data and testing data. Here 20% of data are taken as testing data.
+
+```{r}
+set.seed(8); library(caret)
+train_index <- createDataPartition(data_all$`Made_Donation_in_March_2007`, times = 1, p = 4/5, list = FALSE)
+```
+
+```{r echo=FALSE}
+don_train <- data[train_index[,1],]
+don_test <- data[-train_index[,1],]
+```
+
+
+##Evaluation Parameters
+
+Some evaluation parameters in data mining are accuracy, precision, recall, and F measure. Here TP - True Positive, TN - True Negative, FP - False Positive and FN - False Negative. 'Positive' represents the variable 'made donation in March 2007' equals to 1, because we generally assume it is more important to recognize the ones who made donation, and the positive often represents the minority group of 0 and 1. The four evaluation parameters are defined as follows.
+
+- Accuracy is defined as the number of accurately classified instance divided by a total number of instance in the dataset.$Accuracy=\frac{T P+T N}{T P+F P+T N+F N}$
+
+- Precision is the average probability of relevant retrieval.$Precision =\frac{T P}{T P+F P}$
+
+- The recall is defined as the average probability of complete retrieval.$Recall =\frac{T P}{T P+F N}$
+
+- F- Measure is the calculated by using both precision and recall.$F\ Measure =\frac{2 *(\text { Precision } * \text { Recall })}{\text { Precision*Recall }}$
+
+#Classification Algorithms
+
+Then we use seven classification algorithms to predict the variable "Made Donation in March 2007". The algorithms are *logistic regression, support vector machine, random forest, linear discriminant analysis, k-nearest neighbors, naive Bayes and decision tree*. 
+
+##Use 'Months since Last Donation', 'Number of Donations', 'Months since First Donation' to Classify
+
+###Formula and Steps of Classification Algorithms
+
+The formula is defined as follows.
+
+```{r}
+formu_don <- Made_Donation_in_March_2007 ~ 
+  Months_since_Last_Donation + Number_of_Donations + Months_since_First_Donation
+```
+
+In the process of every algorithm, the following steps are followed:
+
+(1)Fit the model with the train set;
+
+(2)Predict with the test set;
+
+(3)Compute confusing matrix, accuracy, precision, recall, F1 and auc.
+
+
+```{r echo=FALSE}
+###3.1 Logistic Regression
+# a data.frame created for the results 
+res_don <- data.frame(true = don_test$Made_Donation_in_March_2007)
+```
+
+
+```{r echo=FALSE}
+fit_logit <- glm(formu_don, family = 'binomial', data = don_train)
+pred_logit <- 
+  predict(fit_logit, newdata = don_test, type='response')[1:nrow(don_test)]
+```
+
+```{r echo=FALSE}
+res_don$logit <- pred_logit
+library(pROC)
+logit_mat <- confusionMatrix(factor(round(pred_logit)),don_test$Made_Donation_in_March_2007, positive='1')
+library(kableExtra)
+
+logit_acc <- logit_mat$overall[1]
+logit_preci <- logit_mat$byClass[5]
+logit_reca <- logit_mat$byClass[6]
+logit_F1 <- logit_mat$byClass[7]
+# roc curve
+logit_roc <- roc(round(pred_logit),as.numeric(don_test$Made_Donation_in_March_2007),plot=FALSE)
+
+logit_auc <- logit_roc$auc[1]
+
+logit_summ <- c(logit_acc, logit_preci, logit_reca, logit_F1, logit_auc)
+logit_df <- as.data.frame(logit_summ)
+rownames(logit_df)[5] <- c("AUC")
+colnames(logit_df) <- NULL
+```
+
+
+
+
+```{r echo=FALSE}
+###3.2 Support Vector Machine
+library(caTools)
+library(e1071)
+fit_svm <- svm(formula = formu_don,
+                 data = don_train)
+pred_svm <- predict(fit_svm, newdata = don_test[-4])
+```
+
+```{r echo=FALSE}
+res_don$svm <- pred_svm
+
+svm_mat <- confusionMatrix(pred_svm,don_test$Made_Donation_in_March_2007, positive='1')
+
+
+svm_acc <- svm_mat$overall[1]
+svm_preci <- svm_mat$byClass[5]
+svm_reca <- svm_mat$byClass[6]
+svm_F1 <- svm_mat$byClass[7]
+
+# roc curve
+svm_roc <- roc(round(as.numeric(pred_svm)), 
+               as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+svm_auc <- svm_roc$auc[1]
+
+svm_summ <- c(svm_acc, svm_preci, svm_reca, svm_F1, svm_auc)
+svm_df <- as.data.frame(svm_summ)
+rownames(svm_df)[5] <- c("AUC")
+colnames(svm_df) <- NULL
+options(digits = 5)
+#kable(t(svm_df), caption = "Prediction by support vector machine", booktabs = T) %>% 
+#  kable_styling(latex_options = c("hold_position"))
+```
+
+
+
+```{r echo=FALSE}
+###3.3 Random Forest
+library(randomForest)
+fit_rf <- randomForest(formu_don, data=don_train, ntree=128, mtry=2, importance=TRUE)
+pred_rf <- predict(fit_rf,don_test[-4])
+```
+
+```{r echo=FALSE}
+res_don$rf <- pred_rf
+rf_mat <- confusionMatrix(pred_rf,don_test$Made_Donation_in_March_2007, positive='1')
+
+rf_acc <- rf_mat$overall[1]
+rf_preci <- rf_mat$byClass[5]
+rf_reca <- rf_mat$byClass[6]
+rf_F1 <- rf_mat$byClass[7]
+
+# roc curve
+rf_roc <- pROC::roc(as.numeric(pred_rf),as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+rf_auc <- rf_roc$auc[1]
+
+rf_summ <- c(rf_acc, rf_preci, rf_reca, rf_F1, rf_auc)
+rf_df <- as.data.frame(rf_summ)
+rownames(rf_df)[5] <- c("AUC")
+colnames(rf_df) <- NULL
+options(digits = 5)
+#kable(t(rf_df), caption = "Prediction by random forest", booktabs = T) %>% 
+#  kable_styling(latex_options = c("hold_position"))
+```
+
+
+
+
+```{r echo=FALSE}
+###3.4 Linear discriminant analysis
+library(MASS)
+fit_lda <- lda(formu_don, data=don_train)
+pred_lda <- predict(fit_lda, don_test)
+```
+
+```{r echo=FALSE}
+res_don$lda <- pred_lda$class
+
+lda_mat <- confusionMatrix(pred_lda$class,don_test$Made_Donation_in_March_2007, positive='1')
+
+lda_acc <- lda_mat$overall[1]
+lda_preci <- lda_mat$byClass[5]
+lda_reca <- lda_mat$byClass[6]
+lda_F1 <- lda_mat$byClass[7]
+
+#ldahist(pred_lda$x[,1], don_test$`Made_Donation_in_March_2007`)
+
+# roc curve
+lda_roc <- roc(as.numeric(pred_lda$class),as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+lda_auc <- lda_roc$auc[1]
+
+lda_summ <- c(lda_acc, lda_preci, lda_reca, lda_F1, lda_auc)
+lda_df <- as.data.frame(lda_summ)
+
+rownames(lda_df)[5] <- c("AUC")
+colnames(lda_df) <- NULL
+options(digits = 5)
+#kable(t(lda_df), caption = "Prediction by linear discriminant analysis", booktabs = T) %>% 
+#  kable_styling(latex_options = c("hold_position"))
+```
+
+
+
+```{r echo=FALSE}
+###3.5 k-nearest neighbors
+library(ISLR)
+library(caret)
+set.seed(1)
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+fit_knn <- train(formu_don, data = don_train, method = "knn", trControl = ctrl, preProcess = c("center","scale"), tuneLength = 20)
+pred_knn <- predict(fit_knn, don_test)
+```
+
+```{r echo=FALSE}
+res_don$knn <- pred_knn
+
+knn_mat <- confusionMatrix(pred_knn,don_test$Made_Donation_in_March_2007, positive='1')
+
+
+knn_acc <- knn_mat$overall[1]
+knn_preci <- knn_mat$byClass[5]
+knn_reca <- knn_mat$byClass[6]
+knn_F1 <- knn_mat$byClass[7]
+
+# roc curve
+knn_roc <- pROC::roc(as.numeric(pred_knn), as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+knn_auc <- knn_roc$auc[1]
+
+knn_summ <- c(knn_acc, knn_preci, knn_reca, knn_F1, knn_auc)
+knn_df <- as.data.frame(knn_summ)
+
+rownames(knn_df)[5] <- c("AUC")
+colnames(knn_df) <- NULL
+options(digits = 5)
+#kable(t(knn_df), caption = "Prediction by k-nearest neighbors", booktabs = T) %>% 
+#  kable_styling(latex_options = c("hold_position"))
+```
+
+
+
+```{r echo=FALSE}
+###3.6 Naive Bayes
+library(e1071)
+fit_bayes <- naiveBayes(formu_don, data= don_train)
+pred_bayes <- predict(fit_bayes, don_test)
+```
+
+```{r echo=FALSE}
+res_don$bayes <- pred_bayes
+bayes_mat <- confusionMatrix(pred_bayes,don_test$Made_Donation_in_March_2007, positive='1')
+
+bayes_acc <- bayes_mat$overall[1]
+bayes_preci <- bayes_mat$byClass[5]
+bayes_reca <- bayes_mat$byClass[6]
+bayes_F1 <- bayes_mat$byClass[7]
+
+# roc curve
+bayes_roc <- pROC::roc(as.numeric(pred_bayes), as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+bayes_auc <- bayes_roc$auc[1]
+
+bayes_summ <- c(bayes_acc, bayes_preci, bayes_reca, bayes_F1, bayes_auc)
+bayes_df <- as.data.frame(bayes_summ)
+
+rownames(bayes_df)[5] <- c("AUC")
+colnames(bayes_df) <- NULL
+options(digits = 5)
+#kable(t(bayes_df), caption = "Prediction by naive Bayes", booktabs = T) %>% 
+#  kable_styling(latex_options = c("hold_position"))
+```
+
+
+```{r echo=FALSE}
+###3.7 Decision tree
+library(rpart)
+library(rpart.plot)
+fit_dec <- rpart(formu_don, data = don_train, method = 'class')
+pred_dec <-predict(fit_dec, don_test, type = 'class')
+
+res_don$dec <- pred_dec
+dec_mat <- confusionMatrix(pred_dec,don_test$Made_Donation_in_March_2007, positive='1')
+
+dec_acc <- dec_mat$overall[1]
+dec_preci <- dec_mat$byClass[5]
+dec_reca <- dec_mat$byClass[6]
+dec_F1 <- dec_mat$byClass[7]
+
+# roc curve
+dec_roc <- pROC::roc(as.numeric(pred_dec), as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+dec_auc <- dec_roc$auc[1]
+
+dec_summ <- c(dec_acc, dec_preci, dec_reca, dec_F1, dec_auc)
+dec_df <- as.data.frame(dec_summ)
+
+rownames(dec_df)[5] <- c("AUC")
+colnames(dec_df) <- NULL
+options(digits = 5)
+```
+
+
+###Comparison of Classification Algorithms
+
+Finally, compare confusing matrix and evaluation parameters (accuracy, precision, recall, F1, auc) of the seven algorithms, to decide which algorithm has the best performance.
+
+####Confusion Matrix
+
+```{r, echo=FALSE, results = 'asis'}
+confusing <- cbind(logit_mat$table, svm_mat$table, rf_mat$table, lda_mat$table, knn_mat$table, bayes_mat$table, dec_mat$table)
+
+kable(confusing, longtable = T, booktabs = T, caption = "Confusion matrix") %>%
+   add_header_above(c("Prediction" = 1, "logistic" = 2, "svm" = 2, "rf" = 2, "lda" = 2, " knn" = 2, "naiveBayes" = 2, "deci tree" = 2)) %>% 
+  add_header_above(c("", "Reference" = 14))
+```
+
+From the above confusing matrix, we can see that for all seven algorithms, the prediction of 0 class is better than 1 class. K-nearest neighbors and decision tree perform better relatively on prediction of 1 class.
+
+
+```{r, include=FALSE, fig.cap='ROC curve of seven algorithms', fig.align='center', out.width='90%'}
+####Draw ROC Curves
+#Draw ROC curves of the seven algorithms.
+par(mfrow = c(4,2))
+plot(logit_roc, auc.polygon=TRUE, max.auc.polygon=TRUE, grid=TRUE, print.auc=TRUE, show.thres=TRUE, ci=FALSE, main = "Logistic Regression")
+plot(svm_roc, auc.polygon=TRUE, max.auc.polygon=TRUE, grid=TRUE, print.auc=TRUE, show.thres=TRUE, ci=FALSE, main = "Support vector machine")
+plot(rf_roc, auc.polygon=TRUE, max.auc.polygon=TRUE, grid=TRUE, print.auc=TRUE, show.thres=TRUE, ci=FALSE, main = "Random forest")
+plot(lda_roc, auc.polygon=TRUE, max.auc.polygon=TRUE, grid=TRUE, print.auc=TRUE, show.thres=TRUE, ci=FALSE, main = "Linear discriminant analysis")
+plot(knn_roc, auc.polygon=TRUE, max.auc.polygon=TRUE, grid=TRUE, print.auc=TRUE, show.thres=TRUE, ci=FALSE, main = "k-nearest neighbors")
+plot(bayes_roc, auc.polygon=TRUE, max.auc.polygon=TRUE, grid=TRUE, print.auc=TRUE, show.thres=TRUE, ci=FALSE, main = "Naive Bayes")
+
+plot(dec_roc, auc.polygon=TRUE, max.auc.polygon=TRUE, grid=TRUE, print.auc=TRUE, show.thres=TRUE, ci=FALSE, main = "Decision tree")
+```
+
+####Compare by Evaluation Parameters
+
+The accuracy, precision, recall, F1 and auc of the seven algorithms are shown in the table below.
+
+```{r echo=FALSE}
+summ_class1 <- data.frame(logit_summ, svm_summ, rf_summ, lda_summ, knn_summ, bayes_summ, dec_summ)
+rownames(summ_class1)[5] <- c("AUC")
+colnames(summ_class1) <- c("logistic regression", "support vector machine", "random forest", "linear discriminant analysis", "k-nearest neighbors", "naive Bayes", "decision tree")
+options(digits = 5)
+kable(t(summ_class1), caption = "Comparison of classification algorithms (use three variables to classify)", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+The value of TP is low compared with TN, which can also been intui consistent with the confusing matrix. Because of the low TP, the precision and recall of the seven algorithms is not high overall.Except for linear discriminant analysis, the AUC of all algorithms are above 0.5. The auc of k-nearest neighbors is the highest, which is 0.703.
+
+Among the seven algorithms, k-nearest neighbors has the highest accuracy(78.523%), precision(60.000%), recall(25.714%), F1(0.36000), AUC(0.70299). Thus, we can conclude that k-nearest neighbors is the best algorithm in this case.
+
+However, it is worth mentioning that k-nearest neighbors is not always the best algorithm with this dataset. When the random seed is changed, the evaluation parameters of all algorithms change, and the rank of the algorithms will also be slightly different. Support vector machine, random forest, k-nearest neighbors, naive Bayes, and decision tree are all likely to be the best algorithm, depending on the concrete partition of train and test dataset.
+
+##Use Two Variables to Classify
+
+Before running the code of classification with two variables, my prediction is as follows:
+
+- When 'Months since First Donation' is dropped, the evaluation parameters of most algorithms may increase, because 'Months since First Donation' seems to be an interfere factor;
+
+- When 'Months since Last Donation' or 'Number of Donations' is dropped, the evaluation parameters of most algorithms may decrease, because the value of these two variables vary obviously between two groups.
+
+Overall, the result shown below is consistent with the prediction. 'Months since First Donation' and 'Months since Last Donation' are removed respectively, and the evaluation parameters (accuracy, precision, recall, F1 and auc) are calculated. Because the result of removing 'Number of Donations' is similar to removing 'Months since Last Donation', it is not shown in this homework due to the space.
+
+###Remove 'Months since First Donation' (irrelevant variable)
+
+```{r echo=FALSE}
+data <- data_all[,-c(3,4)]
+don_train <- data[train_index[,1],]
+don_test <- data[-train_index[,1],]
+# create a formula
+formu_don <- Made_Donation_in_March_2007 ~ 
+  Months_since_Last_Donation + Number_of_Donations
+```
+
+
+```{r echo=FALSE}
+###3.1 Logistic Regression
+par(mfrow = c(3,2))
+# a data.frame created for the results 
+res_don <- data.frame(true = don_test$Made_Donation_in_March_2007)
+
+fit_logit <- glm(formu_don, family = 'binomial', data = don_train)
+pred_logit <- 
+  predict(fit_logit, newdata = don_test, type='response')[1:nrow(don_test)]
+
+res_don$logit <- pred_logit
+library(pROC)
+logit_mat <- confusionMatrix(factor(round(pred_logit)),don_test$Made_Donation_in_March_2007, positive='1')
+library(kableExtra)
+
+
+#print(logit_mat$table)
+
+logit_acc <- logit_mat$overall[1]
+logit_preci <- logit_mat$byClass[5]
+logit_reca <- logit_mat$byClass[6]
+logit_F1 <- logit_mat$byClass[7]
+# roc curve
+logit_roc <- roc(round(pred_logit),as.numeric(don_test$Made_Donation_in_March_2007),plot=FALSE)
+
+logit_auc <- logit_roc$auc[1]
+
+logit_summ <- c(logit_acc, logit_preci, logit_reca, logit_F1, logit_auc)
+logit_df <- as.data.frame(logit_summ)
+rownames(logit_df)[5] <- c("AUC")
+colnames(logit_df) <- NULL
+```
+
+
+```{r echo=FALSE}
+###3.2 Support Vector Machine
+library(caTools)
+library(e1071)
+fit_svm <- svm(formula = formu_don,
+                 data = don_train)
+pred_svm <- predict(fit_svm, newdata = don_test[-4])
+
+res_don$svm <- pred_svm
+
+svm_mat <- confusionMatrix(pred_svm,don_test$Made_Donation_in_March_2007, positive='1')
+
+svm_acc <- svm_mat$overall[1]
+svm_preci <- svm_mat$byClass[5]
+svm_reca <- svm_mat$byClass[6]
+svm_F1 <- svm_mat$byClass[7]
+
+# roc curve
+svm_roc <- roc(round(as.numeric(pred_svm)), 
+               as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+svm_auc <- svm_roc$auc[1]
+
+svm_summ <- c(svm_acc, svm_preci, svm_reca, svm_F1, svm_auc)
+svm_df <- as.data.frame(svm_summ)
+rownames(svm_df)[5] <- c("AUC")
+colnames(svm_df) <- NULL
+options(digits = 5)
+#kable(t(svm_df), caption = "Prediction by support vector machine", booktabs = T) %>% 
+#  kable_styling(latex_options = c("hold_position"))
+
+###3.3 Random Forest
+library(randomForest)
+fit_rf <- randomForest(formu_don, data=don_train, ntree=128, mtry=2, importance=TRUE)
+pred_rf <- predict(fit_rf,don_test[-4])
+
+res_don$rf <- pred_rf
+rf_mat <- confusionMatrix(pred_rf,don_test$Made_Donation_in_March_2007, positive='1')
+
+rf_acc <- rf_mat$overall[1]
+rf_preci <- rf_mat$byClass[5]
+rf_reca <- rf_mat$byClass[6]
+rf_F1 <- rf_mat$byClass[7]
+
+# roc curve
+rf_roc <- pROC::roc(as.numeric(pred_rf),as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+rf_auc <- rf_roc$auc[1]
+
+rf_summ <- c(rf_acc, rf_preci, rf_reca, rf_F1, rf_auc)
+rf_df <- as.data.frame(rf_summ)
+rownames(rf_df)[5] <- c("AUC")
+colnames(rf_df) <- NULL
+
+```
+
+
+```{r echo=FALSE}
+###3.4 Linear discriminant analysis
+library(MASS)
+fit_lda <- lda(formu_don, data=don_train)
+pred_lda <- predict(fit_lda, don_test)
+
+res_don$lda <- pred_lda$class
+
+lda_mat <- confusionMatrix(pred_lda$class,don_test$Made_Donation_in_March_2007, positive='1')
+
+lda_acc <- lda_mat$overall[1]
+lda_preci <- lda_mat$byClass[5]
+lda_reca <- lda_mat$byClass[6]
+lda_F1 <- lda_mat$byClass[7]
+
+#ldahist(pred_lda$x[,1], don_test$`Made_Donation_in_March_2007`)
+
+# roc curve
+lda_roc <- roc(as.numeric(pred_lda$class),as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+lda_auc <- lda_roc$auc[1]
+
+lda_summ <- c(lda_acc, lda_preci, lda_reca, lda_F1, lda_auc)
+lda_df <- as.data.frame(lda_summ)
+
+rownames(lda_df)[5] <- c("AUC")
+colnames(lda_df) <- NULL
+```
+
+
+
+```{r echo=FALSE}
+###3.5 k-nearest neighbors
+library(ISLR)
+library(caret)
+set.seed(1)
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+fit_knn <- train(formu_don, data = don_train, method = "knn", trControl = ctrl, preProcess = c("center","scale"), tuneLength = 20)
+pred_knn <- predict(fit_knn, don_test)
+
+res_don$knn <- pred_knn
+
+knn_mat <- confusionMatrix(pred_knn,don_test$Made_Donation_in_March_2007, positive='1')
+
+knn_acc <- knn_mat$overall[1]
+knn_preci <- knn_mat$byClass[5]
+knn_reca <- knn_mat$byClass[6]
+knn_F1 <- knn_mat$byClass[7]
+
+# roc curve
+knn_roc <- pROC::roc(as.numeric(pred_knn), as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+knn_auc <- knn_roc$auc[1]
+
+knn_summ <- c(knn_acc, knn_preci, knn_reca, knn_F1, knn_auc)
+knn_df <- as.data.frame(knn_summ)
+
+rownames(knn_df)[5] <- c("AUC")
+colnames(knn_df) <- NULL
+```
+
+
+
+```{r echo=FALSE}
+###3.6 Naive Bayes
+library(e1071)
+fit_bayes <- naiveBayes(formu_don, data= don_train)
+pred_bayes <- predict(fit_bayes, don_test)
+
+res_don$bayes <- pred_bayes
+bayes_mat <- confusionMatrix(pred_bayes,don_test$Made_Donation_in_March_2007, positive='1')
+
+bayes_acc <- bayes_mat$overall[1]
+bayes_preci <- bayes_mat$byClass[5]
+bayes_reca <- bayes_mat$byClass[6]
+bayes_F1 <- bayes_mat$byClass[7]
+
+# roc curve
+bayes_roc <- pROC::roc(as.numeric(pred_bayes), as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+bayes_auc <- bayes_roc$auc[1]
+
+bayes_summ <- c(bayes_acc, bayes_preci, bayes_reca, bayes_F1, bayes_auc)
+bayes_df <- as.data.frame(bayes_summ)
+
+rownames(bayes_df)[5] <- c("AUC")
+colnames(bayes_df) <- NULL
+```
+
+
+```{r echo=FALSE}
+###3.7 Decision tree
+library(rpart)
+library(rpart.plot)
+fit_dec <- rpart(formu_don, data = don_train, method = 'class')
+pred_dec <-predict(fit_dec, don_test, type = 'class')
+
+res_don$dec <- pred_dec
+dec_mat <- confusionMatrix(pred_dec,don_test$Made_Donation_in_March_2007, positive='1')
+
+dec_acc <- dec_mat$overall[1]
+dec_preci <- dec_mat$byClass[5]
+dec_reca <- dec_mat$byClass[6]
+dec_F1 <- dec_mat$byClass[7]
+
+# roc curve
+dec_roc <- pROC::roc(as.numeric(pred_dec), as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+dec_auc <- dec_roc$auc[1]
+
+dec_summ <- c(dec_acc, dec_preci, dec_reca, dec_F1, dec_auc)
+dec_df <- as.data.frame(dec_summ)
+
+rownames(dec_df)[5] <- c("AUC")
+colnames(dec_df) <- NULL
+```
+
+```{r echo=FALSE}
+summ_class2 <- data.frame(logit_summ, svm_summ, rf_summ, lda_summ, knn_summ, bayes_summ, dec_summ)
+rownames(summ_class2)[5] <- c("AUC")
+colnames(summ_class2) <- c("logistic regression", "support vector machine", "random forest", "linear discriminant analysis", "k-nearest neighbors", "naive Bayes", "decision tree")
+options(digits = 5)
+kable(t(summ_class2), caption = "Comparison of classification algorithms (remove 'Months since First Donation'(irrelevant variable))", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+The evaluation parameters of logistic regression (all parameters), support vector machine (except for recall), random forest (all parameters), linear discriminant analysis (all parameters) increase, while k-nearest neighbors (all parameters) decrease and decision tree (all parameters) derease, naive Bayes (all parameters) stay the same. In this case, random forest and decision tree become the best algorithms. 
+
+Besides, it shows that dropping a seemingly 'useless' variable make the result of classification more precise most of the time, but it also depends on the specific algorithm.Note that the change depends on the partition of train and test dataset.
+
+(It is easier to compare the parameters by the combination of the result tables in appendix.)
+
+###Remove 'Months since Last Donation' (relevant variable)
+
+```{r echo=FALSE}
+data <- data_all[,-c(1,3)]
+don_train <- data[train_index[,1],]
+don_test <- data[-train_index[,1],]
+# create a formula
+formu_don <- Made_Donation_in_March_2007 ~ 
+  Months_since_First_Donation + Number_of_Donations
+```
+
+
+```{r echo=FALSE}
+###3.1 Logistic Regression
+par(mfrow = c(3,2))
+# a data.frame created for the results 
+res_don <- data.frame(true = don_test$Made_Donation_in_March_2007)
+
+fit_logit <- glm(formu_don, family = 'binomial', data = don_train)
+pred_logit <- 
+  predict(fit_logit, newdata = don_test, type='response')[1:nrow(don_test)]
+
+res_don$logit <- pred_logit
+library(pROC)
+logit_mat <- confusionMatrix(factor(round(pred_logit)),don_test$Made_Donation_in_March_2007, positive='1')
+library(kableExtra)
+
+
+#print(logit_mat$table)
+
+logit_acc <- logit_mat$overall[1]
+logit_preci <- logit_mat$byClass[5]
+logit_reca <- logit_mat$byClass[6]
+logit_F1 <- logit_mat$byClass[7]
+# roc curve
+logit_roc <- roc(round(pred_logit),as.numeric(don_test$Made_Donation_in_March_2007),plot=FALSE)
+
+logit_auc <- logit_roc$auc[1]
+
+logit_summ <- c(logit_acc, logit_preci, logit_reca, logit_F1, logit_auc)
+logit_df <- as.data.frame(logit_summ)
+rownames(logit_df)[5] <- c("AUC")
+colnames(logit_df) <- NULL
+```
+
+
+
+
+```{r echo=FALSE}
+###3.2 Support Vector Machine
+library(caTools)
+library(e1071)
+fit_svm <- svm(formula = formu_don,
+                 data = don_train)
+pred_svm <- predict(fit_svm, newdata = don_test[-4])
+
+res_don$svm <- pred_svm
+
+svm_mat <- confusionMatrix(pred_svm,don_test$Made_Donation_in_March_2007, positive='1')
+
+svm_acc <- svm_mat$overall[1]
+svm_preci <- svm_mat$byClass[5]
+svm_reca <- svm_mat$byClass[6]
+svm_F1 <- svm_mat$byClass[7]
+
+# roc curve
+svm_roc <- roc(round(as.numeric(pred_svm)), 
+               as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+svm_auc <- svm_roc$auc[1]
+
+svm_summ <- c(svm_acc, svm_preci, svm_reca, svm_F1, svm_auc)
+svm_df <- as.data.frame(svm_summ)
+rownames(svm_df)[5] <- c("AUC")
+colnames(svm_df) <- NULL
+options(digits = 5)
+#kable(t(svm_df), caption = "Prediction by support vector machine", booktabs = T) %>% 
+#  kable_styling(latex_options = c("hold_position"))
+
+###3.3 Random Forest
+library(randomForest)
+fit_rf <- randomForest(formu_don, data=don_train, ntree=128, mtry=2, importance=TRUE)
+pred_rf <- predict(fit_rf,don_test[-4])
+
+res_don$rf <- pred_rf
+rf_mat <- confusionMatrix(pred_rf,don_test$Made_Donation_in_March_2007, positive='1')
+
+rf_acc <- rf_mat$overall[1]
+rf_preci <- rf_mat$byClass[5]
+rf_reca <- rf_mat$byClass[6]
+rf_F1 <- rf_mat$byClass[7]
+
+# roc curve
+rf_roc <- pROC::roc(as.numeric(pred_rf),as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+rf_auc <- rf_roc$auc[1]
+
+rf_summ <- c(rf_acc, rf_preci, rf_reca, rf_F1, rf_auc)
+rf_df <- as.data.frame(rf_summ)
+rownames(rf_df)[5] <- c("AUC")
+colnames(rf_df) <- NULL
+
+```
+
+
+```{r echo=FALSE}
+###3.4 Linear discriminant analysis
+library(MASS)
+fit_lda <- lda(formu_don, data=don_train)
+pred_lda <- predict(fit_lda, don_test)
+
+res_don$lda <- pred_lda$class
+
+lda_mat <- confusionMatrix(pred_lda$class,don_test$Made_Donation_in_March_2007, positive='1')
+
+lda_acc <- lda_mat$overall[1]
+lda_preci <- lda_mat$byClass[5]
+lda_reca <- lda_mat$byClass[6]
+lda_F1 <- lda_mat$byClass[7]
+
+#ldahist(pred_lda$x[,1], don_test$`Made_Donation_in_March_2007`)
+
+# roc curve
+lda_roc <- roc(as.numeric(pred_lda$class),as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+lda_auc <- lda_roc$auc[1]
+
+lda_summ <- c(lda_acc, lda_preci, lda_reca, lda_F1, lda_auc)
+lda_df <- as.data.frame(lda_summ)
+
+rownames(lda_df)[5] <- c("AUC")
+colnames(lda_df) <- NULL
+```
+
+
+
+```{r echo=FALSE}
+###3.5 k-nearest neighbors
+library(ISLR)
+library(caret)
+set.seed(1)
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+fit_knn <- train(formu_don, data = don_train, method = "knn", trControl = ctrl, preProcess = c("center","scale"), tuneLength = 20)
+pred_knn <- predict(fit_knn, don_test)
+
+res_don$knn <- pred_knn
+
+knn_mat <- confusionMatrix(pred_knn,don_test$Made_Donation_in_March_2007, positive='1')
+
+knn_acc <- knn_mat$overall[1]
+knn_preci <- knn_mat$byClass[5]
+knn_reca <- knn_mat$byClass[6]
+knn_F1 <- knn_mat$byClass[7]
+
+# roc curve
+knn_roc <- pROC::roc(as.numeric(pred_knn), as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+knn_auc <- knn_roc$auc[1]
+
+knn_summ <- c(knn_acc, knn_preci, knn_reca, knn_F1, knn_auc)
+knn_df <- as.data.frame(knn_summ)
+
+rownames(knn_df)[5] <- c("AUC")
+colnames(knn_df) <- NULL
+```
+
+
+
+```{r echo=FALSE}
+###3.6 Naive Bayes
+library(e1071)
+fit_bayes <- naiveBayes(formu_don, data= don_train)
+pred_bayes <- predict(fit_bayes, don_test)
+
+res_don$bayes <- pred_bayes
+bayes_mat <- confusionMatrix(pred_bayes,don_test$Made_Donation_in_March_2007, positive='1')
+
+bayes_acc <- bayes_mat$overall[1]
+bayes_preci <- bayes_mat$byClass[5]
+bayes_reca <- bayes_mat$byClass[6]
+bayes_F1 <- bayes_mat$byClass[7]
+
+# roc curve
+bayes_roc <- pROC::roc(as.numeric(pred_bayes), as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+bayes_auc <- bayes_roc$auc[1]
+
+bayes_summ <- c(bayes_acc, bayes_preci, bayes_reca, bayes_F1, bayes_auc)
+bayes_df <- as.data.frame(bayes_summ)
+
+rownames(bayes_df)[5] <- c("AUC")
+colnames(bayes_df) <- NULL
+```
+
+
+```{r echo=FALSE}
+###3.7 Decision tree
+library(rpart)
+library(rpart.plot)
+fit_dec <- rpart(formu_don, data = don_train, method = 'class')
+pred_dec <-predict(fit_dec, don_test, type = 'class')
+
+res_don$dec <- pred_dec
+dec_mat <- confusionMatrix(pred_dec,don_test$Made_Donation_in_March_2007, positive='1')
+
+dec_acc <- dec_mat$overall[1]
+dec_preci <- dec_mat$byClass[5]
+dec_reca <- dec_mat$byClass[6]
+dec_F1 <- dec_mat$byClass[7]
+
+# roc curve
+dec_roc <- pROC::roc(as.numeric(pred_dec), as.numeric(don_test$Made_Donation_in_March_2007),ci=FALSE,plot=FALSE)
+dec_auc <- dec_roc$auc[1]
+
+dec_summ <- c(dec_acc, dec_preci, dec_reca, dec_F1, dec_auc)
+dec_df <- as.data.frame(dec_summ)
+
+rownames(dec_df)[5] <- c("AUC")
+colnames(dec_df) <- NULL
+```
+
+```{r echo=FALSE}
+summ_class3 <- data.frame(logit_summ, svm_summ, rf_summ, lda_summ, knn_summ, bayes_summ, dec_summ)
+rownames(summ_class3)[5] <- c("AUC")
+colnames(summ_class3) <- c("logistic regression", "support vector machine", "random forest", "linear discriminant analysis", "k-nearest neighbors", "naive Bayes", "decision tree")
+options(digits = 5)
+kable(t(summ_class3), caption = "Comparison of classification algorithms (remove 'Months since Last Donation'(relevant variable))", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+Note the equal value of some parameters in the above table is just a coincidence, because of the small sample size of the test dataset. Most parameters stay the same or decrease. Only some parameters of k-nearest neighbors and decision tree have a slight increase. In this case, decision tree become the best algorithm. Besides, this indicates that when a 'useful' variable is removed, the result of classification algorithms will be less precise most of the time.
+
+Again, note that the change depends on the partition of train and test dataset.
+
+(It is easier to compare the parameters by the combination of the result tables in appendix.)
+
+#Conclusions and Shortcomings
+
+The necessity of extracting the valuable information from raw data has arisen in many fields of life like medical area, business areas etc. In this homework, the comparison analysis of classifiers for the prediction of blood transfusion is performed. Status of donation is predicted using seven different classifiers. Experimental result shows that different classifiers behave differently on the same dataset.
+
+From the analysis, we observed that out of seven classifiers, k-nearest neighbors performed best when using three variables to classify, and decision tree and random forest are better when using two variables. Besides, the comparison between the result using three and two variables indicates that we can increase the preciseness by dropping the irrelevant variable and only keep the highly correlated variables.
+
+However, due to the small sample size of the dataset, there might be some coincidence, and the result of comparison may change when the algorithms are performed on other datasets. Also, the small number of variables also leads to the overall bad performance of the classification algorithms.
+
+#Reference
+
+[1] Ul Hassan, C. A., Khan, M. S. and Shah, M. A. (2018) ‘Comparison of Machine Learning Algorithms in Data classification’, 2018 24th International Conference on Automation and Computing (ICAC), Automation and Computing (ICAC), 2018 24th International Conference on, pp. 1–6. doi: 10.23919/IConAC.2018.8748995.
+
+[2] Aasim, O. (2019, October 11). Machine Learning Project 17 — Compare Classification Algorithms. Medium. https://towardsdatascience.com/machine-learning-project-17-compare-classification-algorithms-87cb50e1cb60
+
+[3] Blog, G. (2020, June 26). Best way to learn kNN Algorithm using R Programming. Analytics Vidhya. https://www.analyticsvidhya.com/blog/2015/08/learning-concept-knn-algorithms-programming/
+
+[4] Rungta, K. (2021, February 26). Decision Tree in R | Classification Tree & Code in R with Example. Guru99. https://www.guru99.com/r-decision-trees.html
+
+[5] S. (2020, September 20). Blood Donation Analysis. Kaggle. https://www.kaggle.com/shivan118/blood-donation-analysis
+
+#Appendix
+
+In order to compare the results, the combination of the three result tables is shown below.
+
+```{r echo=FALSE}
+summ_class <- rbind(t(summ_class1), t(summ_class2), t(summ_class3))
+library(kableExtra)
+kbl(summ_class, caption = "Comparison of classification algorithms", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position")) %>%
+  pack_rows(index=c("Use three variables to classify" = 7, "Remove 'Months since First Donation'(irrelevant variable)" = 7, "Remove 'Months since Last Donation'(relevant variable)" = 7))
+```
+
+
+

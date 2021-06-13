@@ -1,0 +1,655 @@
+---
+title: "PCA, K-Means and EFA Example with Breast Cancer Coimbra Data Set"
+author: "Jiachen Zhang"
+geometry: "left=0.9cm,right=0.9cm,top=0.97cm,bottom=1.47cm"
+output: 
+  pdf_document:
+    keep_tex: yes
+    latex_engine: xelatex
+    number_sections: yes
+    toc: yes
+header-includes:
+  \usepackage{float}
+  \usepackage{ctex}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(tinytex)
+library(MASS)
+library(kableExtra)
+library(tidyverse)
+library(readr)
+library(ROCR)
+library(PerformanceAnalytics)
+library(e1071)
+library(caret)
+library(gbm)
+library(corrplot)
+library(ggcorrplot)
+library(MASS)
+library(rpart)
+library(caTools)
+library(naivebayes)
+library(class)
+library(ISLR)
+library(glmnet)
+library(Hmisc)
+library(funModeling)
+library(pROC)
+library(randomForest)
+library(klaR)
+library(scales)
+library(cluster)
+library(factoextra)
+library(ClustOfVar)
+library(GGally)
+
+# Global options
+opts_chunk$set(message=FALSE,
+               warning=FALSE)
+options(digits = 3)
+```
+
+**Abstract**: Principle component analysis, K-Means, exploratory factor analysis are all unsupervised algorithms. In this homework, these algorithms are performed upon 9 variables concerning health, and the results are interpreted.  
+
+**Keywords**: Principle Component Analysis; K-Means; Exploratory Factor Analysis
+
+(The main body is about 8 pages)
+
+#Read the Data
+
+Read the data *dataR2.csv*. The classification variable is the variable to be predicted, so it is transformed to the factor variable. There is no missing values in the data.
+
+```{r echo=FALSE}
+data_all <- read.csv("D:/data/dataR2.csv", sep=",", header = TRUE)
+data_all$Classification <- factor(data_all$Classification)
+```
+
+##Data Information
+
+The data *dataR2.csv* contains 10 variables, and the sampl size is 116. The information of the variables is as follows:
+
+1. 9 quantitative variabless: Age(年龄) (years), BMI(身体质量指数) (kg/m2), Glucose(葡萄糖) (mg/dL), Insulin(胰岛素) (µU/mL), HOMA(空腹胰岛素), Leptin(瘦蛋白) (ng/mL), Adiponectin(脂肪连接蛋白) (µg/mL), Resistin(抵抗素) (ng/mL), MCP.1(单核细胞趋化蛋白) (pg/dL)
+
+2. 1 qualitative variable: Classification (Labels: 1=Healthy controls; 2=Patients)
+
+#Data Exploration
+
+##Summary Statistics
+
+The frequency table of 'Classification' is as follows. In the sample, there are 52 healthy persons and 64 patients. The summary statistics of the 9 continuous variables by group and the correlation plot are shown in Appendix.
+
+```{r echo=FALSE}
+freq_df <- data.frame(table(data_all$Classification))
+colnames(freq_df) <- c("Classification", "Frequency")
+kable(freq_df, caption = "Frequency table of the target variable", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+
+#PCA - Principle Component Analysis
+
+Use principle component analysis to reduce the number of dimensions by constructing principal components (PCs). In this case, there are 9 variables, which is actually not a big number, thus the principle component analysis might not be necessary. In practice, there is a tradeoff between the reduction of dimension and the loss of variation. 
+
+In this section, the principal components is computed and visualized, and then the appropriate number of principal components is chosen, and the value of the principal components for classification by decision tree.
+
+##Compute the Principal Components
+
+There are two general methods to perform PCA in R, which are spectral decomposition and singular value decomposition. The function `princomp()` uses the spectral decomposition approach, and the function `prcomp()` uses the singular value decomposition (SVD). SVD has slightly better numerical accuracy. Therefore, the function `prcomp()` is used here.
+
+```{r}
+pca_res <- prcomp(data_all[,-10], center = TRUE, scale = TRUE)
+```
+
+```{r echo=FALSE}
+kable(summary(pca_res)$importance, caption = "Importance of components", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+Each of the 9 principal components explains a percentage of the total variation in the dataset. That is to say, PC1 explains 34% of the total variance, which means that more than one-third of the information in the 9 variables can be encapsulated by the one principal component. PC2 explains 16.9% of the variance. 
+
+##Information of the PCA result
+
+The PCA object denoted as "pca_res" in the code contains the following information:
+
+```{r include=FALSE}
+#sdev: the standard deviations of the principal components
+pca_res$sdev
+```
+
+```{r include=FALSE}
+#center: the variable means (means that were substracted)
+kable(t(pca_res$center), caption = "The Mean of the variables", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+```{r include=FALSE}
+#scale: the variable standard deviations (the scaling applied to each variable)
+kable(t(pca_res$scale), caption = "The standard deviation of the variables", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+1. x: the values of each sample in terms of the principal components
+
+The value of the first 5 components are used for classification, and the details can be found in Appendix.
+
+```{r echo=FALSE}
+options(digits = 3)
+temp <- head(pca_res$x,4)
+temp <- cbind(c(1:4), temp)
+kable(temp, caption = "The value of the first 4 individuals in  terms of the principal components", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+2. rotation: the matrix of variable loadings (columns are eigenvectors)
+
+It is shown in the "The Interpretation of the Principal Components" section.
+
+##PCA visualization
+
+###Screeplot and Cumulative Variance Plot
+
+Use the screeplot cumulative variance plot to select the principal components to keep. The screeplot and cumulative variance plot are shown below.
+
+```{r, echo=FALSE, fig.cap='Screeplot and cumulative variance plot', fig.align='center', out.height='45%', out.width='45%'}
+#par(mar = rep(1.4, 4))
+par(mfrow=c(1,2))
+screeplot(pca_res, type = "l", npcs = 9, main = "Screeplot of the 9 PCs")
+abline(h = 1, col="red", lty=5)
+legend("topright", legend=c("Eigenvalue = 1"),
+       col=c("red"), lty=5, cex=0.6)
+
+cumpro <- cumsum(pca_res$sdev^2 / sum(pca_res$sdev^2))
+plot(cumpro[0:9], xlab = "PCs", ylab = "Amount of explained variance", main = "Cumulative variance plot")
+abline(v = 5, col="blue", lty=5)
+abline(h = 0.842, col="blue", lty=5)
+legend("topleft", legend=c("Cut-off at PC5"),
+       col=c("blue"), lty=5, cex=0.6)
+par(mfrow = c(1,1))
+```
+
+Use the two following rules to select the principal components:
+
+1. Kaiser rule: pick PCs with eigenvalues of at least 1.
+
+Since the data is standardized, an eigenvalues less than 1 would mean that the principal component actually explains less than a single explanatory variable, and the corresponding components are likely to be discarded.
+
+2. Proportion of variance plot: the selected PCs should be able to describe at least 80% of the variance.
+
+The plots show that the first 4 components has an Eigenvalue more than 1 and explains more than 70% of variance. However, as the first five components explains more than 80%, the first five components are kept.
+
+###Biplot
+
+The biplot merge an usual PCA score plot with a plot of loadings.  It includes the position of each sample in terms of PC1 and PC2 and how the initial variables map onto the two principal components. The `ggbiplot` package is used to plot biplots and the biplot is as follows. 
+
+```{r, echo=FALSE, fig.cap='Biplot', fig.align='center', out.height='50%', out.width='50%'}
+library(ggbiplot)
+library(ggfortify)
+par(mar = rep(0.5, 4))
+autoplot(pca_res, data = data_all, colour = 'Classification',
+         loadings = TRUE, loadings.colour = 'skyblue',
+         loadings.label = TRUE, loadings.label.size = 3) + theme_minimal()
+```
+
+The interpretation of the biplot in detail can be found in Appendix.
+
+###The Interpretation of the Principal Components
+
+The first five components are selected. The loading matrix below shows the connection between the components and the variables and interpretation of the principal components is based on finding which variables are most strongly correlated with each component.
+
+```{r echo=FALSE}
+kable(pca_res$rotation, caption = "Loading matrix", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+The first component increases with Insulin(胰岛素), HOMA(空腹胰岛素) and Glucose(葡萄糖). Because Insulin increases with Glucose in blood increases, the first component can be viewed as a measure of blood sugar.
+
+The second component increases with BMI(身体质量指数) and decreases with Adiponectin(脂肪连接蛋白), so the second component can be viewed as a measure of body shape.
+
+The third component increases with BMI(身体质量指数) and Leptin(瘦蛋白), and decreases with MCP.1(单核细胞趋化蛋白), so the third component can be viewed as a measure of health status concerning body fat. 
+
+The fourth component is strongly connected with Age(年龄), so the fourth component can be viewed as a measure of age.
+
+The fifth component increases with Adiponectin(脂肪连接蛋白) and Resistin(抵抗素), which are both secreted by fat cells, so the fifth component can be viewed as a measure of health status concerning dat cells. 
+
+
+
+#K-Means
+
+Clustering is a broad set of techniques for finding subgroups of observations within a data set. Clustering allows us to identify which observations are alike, and potentially categorize them. In this section, K-means clustering is used for splitting the dataset into a set of k groups. This is an unsupervised method, which implies that it seeks to find relationships between the n observations without being trained by a response variable. However, in this case, there is a response variable indicating the health of the individual, and the 9 variables are all connect to the response variable, so the result of clustering is compared with the response variable in the end of the section.
+
+```{r echo=FALSE}
+data_k <- scale(data_all[,-10])
+```
+
+##The Distance Matrix
+
+The classification of observations into groups requires some methods for computing the distance between each pair of observations. Here Euclidean distance is applied.
+
+```{r echo=FALSE, fig.cap='Distance matrix visualization', fig.align='center', out.height='38%', out.width='38%'}
+distance <- get_dist(data_k)
+par(mar = rep(0.5, 4))
+fviz_dist(distance, gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+```
+
+The function `fviz_dist` is used for visualizing the distance matrix, and a color closes to red represents a further distance. The plot of distance shows that some individuals are quite similiar, while others have large dissimilarities.
+
+##Compute K-Means Clustering
+
+Here the data is grouped into two clusters, specified by the parameter `centers = 2`. The kmeans function also has an nstart option that attempts multiple initial configurations and reports on the best one. For example, adding nstart = 10 will generate 10 initial configurations. 
+
+```{r}
+k_res <- kmeans(data_k, centers = 2, nstart = 10)
+```
+
+##Information of the K-Means Result
+
+The output of kmeans is a list includingh the following information:
+
+1. cluster: a vector of integers from 1 to the number of clusters, indicating the cluster to which each point is allocated
+
+```{r echo=FALSE}
+cat("For example, The first 6 individuals belong to", head(k_res$cluster, 6), "clusters")
+```
+
+2. centers: a matrix of cluster centers
+
+```{r echo=FALSE}
+kable(k_res$centers, caption = "Cluster centers", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+
+```{r include=FALSE}
+#totss: the total sum of squares
+k_res$totss
+```
+
+```{r include=FALSE}
+#withinss: vector of within-cluster sum of squares, one component per cluster
+k_res$withinss
+```
+
+```{r include=FALSE}
+#tot.withinss: the total within-cluster sum of squares, in other words, the sum of `withinss`
+k_res$tot.withinss
+```
+
+```{r include=FALSE}
+#betweenss: The between-cluster sum of squares, in other words, $totss-tot.withinss$
+k_res$betweenss
+```
+
+3. size: the number of points in each cluster
+
+```{r include=FALSE}
+k_res$size
+```
+
+There are 41 in the first cluster, 75 in the second cluster. Although the numbers of samples with value 1 and 2 of classification variable are quite close (52 and 64 respectively), there are significantly more samples in cluster 2 than in cluster 1.
+
+##K-Means Visualizetion
+
+View the k-means results by using `fviz_cluster`. The two clusters have a small overlap area.
+
+```{r echo=FALSE, fig.cap='Clustering by k-means', fig.align='center', out.height='36%', out.width='36%'}
+par(mar = rep(0.5, 4))
+fviz_cluster(k_res, data = data_k)
+```
+
+
+Using the methods of determining the optimal clusters (shown in Appendix), 2 clusters can be regarded as the optimal number of clusters.
+
+##Comparison of the Clustering Results and the Value of Classification Variable
+
+Compare the results of 2 clustering with the groups divided by the original classification variable. There are some equal values in the clustering results and the value of classification variable. This might indicate that the clustering result partly reflect the health status of the individual.
+
+```{r echo=FALSE}
+data_k <- data.frame(data_k, Clusters = k_res$cluster, Classification = data_all$Classification)
+Clusters = k_res$cluster
+Classification = data_all$Classification
+table(Clusters, Classification)
+#kable(as.data.frame(table(Clusters, Classification), caption = "Comparison of the Clustering Results and the Classification Variable", booktabs = T)) %>% kable_styling(latex_options = c("hold_position"))
+```
+
+#EFA - Exploratory Factor Analysis
+
+Exploratory factor analysis (EFA) is a method used to uncover the underlying structure of a relatively large set of variables. In this case, there are 9 variables and there is not any prior knowledge about the latent variables. Thus, in this section, the optimal number of factors is determined, and then the factors are interpreted.
+
+```{r echo=FALSE}
+data_fac <- data_all[ , -10]
+```
+
+According to the methods of determining the number of factors to extract (shown in Appendix), 4 factors are computed. 
+
+##Compute Factor Analysis with a Varimax Rotation
+
+Use `factanal` function for factor analysis. The function performs maximum-likelihood factor analysis on a covariance matrix. The number of factors to be fitted is specified by the argument `factors`. Here 
+
+```{r}
+fac_res <- factanal(data_fac, factors = 4, rotation = "varimax")
+```
+
+
+##Information of the Factor Analysis Result
+
+1. uniqueness: the proportion of variability, which can not be explained by a linear combination of the factors
+
+```{r echo=FALSE}
+kable(t(fac_res$uniquenesses), caption = "Uniqueness", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+A high uniqueness for a variable indicates that the factors do not account well for its variance. The uniqueness of age, Leptin, Adiponect and Resistin is relatively high. 
+
+
+2. communality: the fraction of the variable’s total variance explained by the factor
+
+```{r echo=FALSE}
+kable(t(1-fac_res$uniquenesses), caption = "Communality", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+3. loadings: the contribution of each original variable to the factor
+
+```{r echo=FALSE}
+fac_res$loadings
+```
+
+Notice there is no entry for certain variables, because R does not print loadings less than 0.1. The table beneath the loadings shows the proportion of variance explained by each factor. The row Cumulative Var gives the cumulative proportion of variance explained. The row Proportion Var gives the proportion of variance explained by each factor, and the row SS loadings gives the sum of squared loadings. According to Kaiser’s rule, a factor is worth keeping if the SS loading is greater than 1, thus, the optimal number of factors is 3 with Kaiser’s rule.
+
+##Visualization and Interpretation of the factors
+
+The loadings can be visualized as follows. 
+
+```{r echo=FALSE, fig.cap='Factor Analysis', fig.align='center', out.height='50%', out.width='50%'}
+library(sjPlot)
+library(GPArotation)
+par(mar = rep(0, 4))
+library(psych)
+fac_res1 <- fa(data_fac, nfactors = 4, fm="ml", rotate = "varimax")
+fa.diagram(fac_res1, main="")
+```
+
+
+The loadings in the plot is rounded. The plot shows that the first factor has large loadings on Insulin(胰岛素) and HOMA(空腹胰岛素), so the first factor represents the aspect of Insulin. The second factor has large loadings on BMI(身体质量指数) and Leptin(瘦蛋白), so the second factor can be viewed as the representation of the body shape. The third factor has large loadings on MCP.1(单核细胞趋化蛋白) and Resistin(抵抗素), so the third factor is connected with inflammation(炎症). The fourth factor has large loadings on Glucose(葡萄糖), so the fourth factor can be viewed as the representation of the blood sugar level(血糖).
+
+Note that Adiponectin(脂肪连接蛋白) and Age(年龄) are not well explained by the four factors. This is consistent with the high uniqueness of these two variables, which are 0.876554 and 0.891852 respectively.
+
+#Conclusions and Shortcomings
+
+In this homework, principal component analysis, k-means and exploratory factor analysis are performed upon the breast cancer Coimbra data set. Overall, the results are not so good: the classification using pca reduces the accuracy, the clustering result and the original classification variable are not a perfect match, and the age and adiponectin variables are not well explained by the factors. This might be because the number of variables and the sample size are not too large. But on the other hand, the results are acceptable. 
+
+#Reference
+
+[1]Team, B. (2018, September 18). How to read PCA biplots and scree plots - BioTuring Team. Medium. https://bioturing.medium.com/how-to-read-pca-biplots-and-scree-plots-186246aae063
+
+[2]K-means Cluster Analysis · UC Business Analytics R Programming Guide. (n.d.). University of Cincinnati. Retrieved May 29, 2021, from https://uc-r.github.io/kmeans_clustering
+
+[3]A Simple Example of Factor Analysis in R. (n.d.). Freie Universitaet Berlin. Retrieved May 29, 2021, from https://www.geo.fu-berlin.de/en/v/soga/Geodata-analysis/factor-analysis/A-simple-example-of-FA/index.html
+
+[4]Neto, J. (n.d.). Factor Analysis. Unknown. Retrieved May 29, 2021, from http://www.di.fc.ul.pt/~jpn/r/factoranalysis/factoranalysis.html
+
+[5]Intro - Basic Exploratory Factor Analysis | QuantDev Methodology. (n.d.). PennState. Retrieved May 29, 2021, from https://quantdev.ssri.psu.edu/tutorials/intro-basic-exploratory-factor-analysis
+
+[6]Gilles Raiche and David Magis (2020). nFactors: Parallel Analysis and Other Non Graphical Solutions to the Cattell Scree Test. R package version 2.4.1. https://CRAN.R-project.org/package=nFactors
+
+[7]11.4 - Interpretation of the Principal Components | STAT 505. (n.d.). PennState: Statistics Online Courses. Retrieved May 29, 2021, from https://online.stat.psu.edu/stat505/lesson/11/11.4
+
+[8]朱彦萍. (2017). 2型糖尿病患者血清抵抗素单核细胞趋化蛋白-1和c反应蛋白与颈总动脉内膜-中层厚度关系探讨及干预研究. 中国药物与临床(7).
+
+#Appendix
+
+##Some Summary Statistics
+
+###Summary Statistics of the 9 Continuous Variables by Group
+
+Caculate the summary statistics of the 9 continuous variables by group. The mean of the mean of age, BMI, leptin, adiponectin for Group 1 and Group 2 are relatively close. 
+
+```{r echo=FALSE}
+# summary statistics of the data by group
+library(psych)
+options(digits = 2)
+summ_stat1 <- describeBy(data_all[,-10], group = data_all$Classification)
+summ_stat <- rbind(data.frame(mean=summ_stat1$'1'[,1:5]$mean, sd=summ_stat1$'1'[,1:5]$sd, median=summ_stat1$'1'[,1:5]$median, min=summ_stat1$'1'[,1:5]$min, max=summ_stat1$'1'[,1:5]$max, range=summ_stat1$'1'[,1:5]$range),  data.frame(mean=summ_stat1$'2'[,1:5]$mean, sd=summ_stat1$'2'[,1:5]$sd, median=summ_stat1$'2'[,1:5]$median, min=summ_stat1$'2'[,1:5]$min, max=summ_stat1$'2'[,1:5]$max, range=summ_stat1$'2'[,1:5]$range))
+
+rownames(summ_stat) <- c(paste(rownames(summ_stat1$'1'), "1", sep=""), paste(rownames(summ_stat1$'1'), "2", sep=""))
+
+library(kableExtra)
+kbl(summ_stat, caption = "Summary statistics of Group 1 and 2", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position")) %>%
+  pack_rows(index=c("Group 1" = 9, "Group 2" = 9))
+```
+
+###Correlation Plot
+
+The correlation plot between the 9 continuous variables is as follows. The HOMA variable has a strong correlation with both Insulin and Glucose, and the other correlation coefficients are close to zero.
+
+```{r, echo=FALSE, fig.cap='Correlation plot', fig.align='center', out.height='45%', out.width='45%'}
+library(corrplot)
+par(mar = rep(0.5, 4))
+par(mfrow = c(1,1))
+corr <- cor(data_all[, -10])
+corrplot(corr, method="circle", type="lower",  sig.level = 0.05, insig = "blank", addCoef.col = "black")
+```
+
+##The Information of Biplot
+
+```{r, echo=FALSE, fig.cap='Biplot', fig.align='center', out.height='50%', out.width='50%'}
+library(ggbiplot)
+library(ggfortify)
+par(mar = rep(0.5, 4))
+autoplot(pca_res, data = data_all, colour = 'Classification',
+         loadings = TRUE, loadings.colour = 'skyblue',
+         loadings.label = TRUE, loadings.label.size = 3) + theme_minimal()
+```
+
+The following information can be concluded from the biplot:
+
+1. How the samples relate to one another in our PCA, in other words, which samples are similar and which are different:
+
+The sample points are in different colors according to the target variable. The samples of classfication 1 is likely to distributed in the top left in the plot.
+
+2. How each variable contributes to each principal component:
+
+The vectors are pinned at the origin of PCs (PC1 = 0 and PC2 = 0), and their project values on each PC show how much weight they have on that PC. In this case, Glucose, HOMA, and Insulin strongly influence PC1, while Adiponectin, BMI, Insulin and HOMA have more say in PC2.
+
+3. The correlation between the variables:
+
+The angles between the vectors show how variables correlate with each another. 
+
+- When two vectors are close, forming a small angle, the two variables they represent are positively correlated. Example: Insulin and HOMA.
+
+- When the angle between two vectors are close to 90°, they are not likely to be correlated. Example: Adiponectin and Glucose.
+
+- When the angle between two vectors are close to 180°, they are negative correlated. Example: Adiponectin and BMI.
+
+Note that PC1 and PC2 can only explain about 50% of the variance, so the correlation between the variables concluded from the biplot might not match the actual correlation well. For example, the correlation between Adiponectin and HOMA or Insulin is closer to zero than the correlation between Adiponectin and Glucose, but the angle of the latter is closer to 90°.
+
+##Use the First 5 Principal Components and the Original 9 variables Respectively for Classification
+
+According to the last homework, methods including logistic regression, support vector machine, random forest, linear discriminant analysis, k-nearest neighbors, naive Bayes and decision tree can all be used for classification. In this homework, the decision tree is applied.
+
+In this section, the first 5 principal components are used for classification, and then the original 9 variables are also used for a comparison. The code is not shown in the report due to the limited space.
+
+```{r echo=FALSE}
+###Use the First 5 Principal Components for Classification
+data <- data.frame(pca_res$x[,1:5], Classification=data_all$Classification)
+set.seed(8)
+library(caret)
+train_index <- createDataPartition(data_all$Classification, times = 1, p = 4/5, list = FALSE)
+don_train <- data[train_index[,1],]
+don_test <- data[-train_index[,1],]
+```
+
+
+```{r echo=FALSE}
+attach(data)
+formu_don <- Classification ~ 
+  PC1 + PC2 + PC3 + PC4 + PC5
+```
+
+```{r echo=FALSE}
+library(rpart)
+library(rpart.plot)
+fit_dec <- rpart(formu_don, data = don_train, method = 'class')
+pred_dec <-predict(fit_dec, don_test, type = 'class')
+
+dec_mat <- confusionMatrix(pred_dec,don_test$Classification, positive='2')
+
+dec_acc <- dec_mat$overall[1]
+dec_preci <- dec_mat$byClass[5]
+dec_reca <- dec_mat$byClass[6]
+dec_F1 <- dec_mat$byClass[7]
+
+# roc curve
+dec_roc <- pROC::roc(as.numeric(pred_dec), as.numeric(don_test$Classification),ci=FALSE,plot=FALSE)
+dec_auc <- dec_roc$auc[1]
+
+dec_summ <- c(dec_acc, dec_preci, dec_reca, dec_F1, dec_auc)
+dec_df <- as.data.frame(dec_summ)
+
+rownames(dec_df)[5] <- c("AUC")
+colnames(dec_df) <- NULL
+options(digits = 5)
+```
+
+```{r echo=FALSE}
+###Use the Original 9 Variables for Classification
+data <- data_all
+set.seed(8)
+library(caret)
+train_index <- createDataPartition(data_all$Classification, times = 1, p = 4/5, list = FALSE)
+don_train <- data[train_index[,1],]
+don_test <- data[-train_index[,1],]
+```
+
+```{r echo=FALSE}
+attach(data)
+formu_don <- Classification ~ 
+  Age + BMI + Glucose + Insulin + HOMA + Leptin + Adiponectin + Resistin + MCP.1
+```
+
+```{r echo=FALSE}
+library(rpart)
+library(rpart.plot)
+fit_dec <- rpart(formu_don, data = don_train, method = 'class')
+pred_dec <-predict(fit_dec, don_test, type = 'class')
+
+dec_mat <- confusionMatrix(pred_dec,don_test$Classification, positive='2')
+
+dec_acc <- dec_mat$overall[1]
+dec_preci <- dec_mat$byClass[5]
+dec_reca <- dec_mat$byClass[6]
+dec_F1 <- dec_mat$byClass[7]
+
+# roc curve
+dec_roc <- pROC::roc(as.numeric(pred_dec), as.numeric(don_test$Classification),ci=FALSE,plot=FALSE)
+dec_auc <- dec_roc$auc[1]
+
+dec_summ <- c(dec_acc, dec_preci, dec_reca, dec_F1, dec_auc)
+dec_df9 <- as.data.frame(dec_summ)
+
+rownames(dec_df9)[5] <- c("AUC")
+colnames(dec_df9) <- NULL
+options(digits = 5)
+```
+
+```{r echo=FALSE}
+###Comparison
+summ_class <- cbind(dec_df, dec_df9)
+colnames(summ_class) <- c("5 components", "9 original variables")
+library(kableExtra)
+kbl(summ_class, caption = "Comparison of classification with pca and original variables", booktabs = T) %>% 
+  kable_styling(latex_options = c("hold_position"))
+```
+
+The evaluation parameters of classification with the 5 principal components are all lower than with the 9 original variables. Remember that in the biplot, some points from different group are overlapped, and they are hard to be classified. Although the first 5 components keep more than 80% of the variance, the accuracy of classification is still reduced a lot. 
+
+##Determining Optimal Clusters
+
+###Visual Assessment
+
+Here because there are two levels in classification variables, the number of clusters is set to be 2. However, there might be different groups within the healthy individuals (Group1) and the patients (Group2), so in this section, several different numbers of clusters is used and the difference in the results is shown below.
+
+First, try the same K-Means process for 3, 4, and 5 clusters, and the results are shown in the figure.
+
+```{r echo=FALSE, fig.cap='K-Means with different number of clusters', fig.align='center', out.height='55%', out.width='55%'}
+par(mar = rep(0.5, 4))
+data_k <- scale(data_all[,-10])
+k2 <- kmeans(data_k, centers = 2, nstart = 10)
+k3 <- kmeans(data_k, centers = 3, nstart = 10)
+k4 <- kmeans(data_k, centers = 4, nstart = 10)
+k5 <- kmeans(data_k, centers = 5, nstart = 10)
+
+# plots to compare
+
+p1 <- fviz_cluster(k2, geom = "point", data = data_k) + ggtitle("k = 2")
+p2 <- fviz_cluster(k3, geom = "point",  data = data_k) + ggtitle("k = 3")
+p3 <- fviz_cluster(k4, geom = "point",  data = data_k) + ggtitle("k = 4")
+p4 <- fviz_cluster(k5, geom = "point",  data = data_k) + ggtitle("k = 5")
+
+library(gridExtra)
+grid.arrange(p1, p2, p3, p4, nrow = 2)
+```
+
+Although this visual assessment shows where true dilineations occur between clusters, it does not show what the optimal number of clusters is. 
+
+###The Optimal Number of Clusters
+
+The most popular methods for determining the optimal clusters are Elbow method and average Silhouette method, and they are tried below.
+
+Method 1: Elbow Method
+
+The process of the Elbow method is as follows:
+
+- Compute clustering algorithm (e.g., k-means clustering) for different values of k. For instance, by varying k from 1 to 10 clusters.
+
+- For each k, calculate the total within-cluster sum of square.
+
+- Plot the curve of wss according to the number of clusters k.
+
+- The location of a bend in the plot is generally considered as an indicator of the appropriate number of clusters.
+
+```{r echo=FALSE, fig.cap='Plot of elbow method', fig.align='center', out.height='42%', out.width='42%'}
+
+set.seed(123)
+par(mar = rep(0.5, 4))
+fviz_nbclust(data_k, kmeans, method = "wss")
+```
+
+However, there is not a ideal bend in the plot, so the optimal number of clusters cannot be determined by the elbow method. 
+
+Method 2: Average Silhouette Method
+
+The average silhouette method computes the average silhouette of observations for different values of number of clusters. The optimal number of clusters k is the one that maximizes the average silhouette over a range of possible values for number of clusters.
+
+```{r echo=FALSE, fig.cap='Plot of average Silhouette method', fig.align='center', out.height='42%', out.width='42%'}
+par(mar = rep(0.5, 4))
+fviz_nbclust(data_k, kmeans, method = "silhouette")
+```
+
+The results show that 2 clusters maximize the average silhouette values with 3 clusters coming in as second optimal number of clusters.
+
+In conclusion, 2 clusters can be regarded as the optimal number of clusters.
+
+##Determining the Number of Factors to Extract
+
+The `nScree` function returns an analysis of the number of factors to retain in an exploratory principal component or factor analysis. Different solutions are given, including the Kaiser rule, the parallel analysis, optimal coordinates and acceleration factor. Further details can be found in the description of package "nFactors" [6].
+
+```{r echo=FALSE}
+library(nFactors)
+#multiple methods for number of factors
+nScree(x=cor(data_fac), model="factors")
+```
+
+In this case, the optimal numbers of factors to extract are 2 with optimal coordinates solution, 1 with acceleration factor, 4 with the parallel analysis and 4 with the Kaiser rule. Because the Kaiser rule and parallel analysis are more widely used, in this case 4 factors are computed.
+
+```{r echo=FALSE, fig.cap='Solutions to Scree Test', fig.align='center', out.height='42%', out.width='42%'}
+par(mar = rep(2, 4))
+plot(nScree(x=cor(data_fac),model="factors"), main = "")
+```
+

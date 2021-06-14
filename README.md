@@ -26,3 +26,11 @@ Homework during the *Sampling Technique* lesson. Demonstrate how to sample from 
 
 Text analysis using R, including preprocess,  further emotion analysis.
 
+## 7. Classification
+
+Comparison of the performance of classification algorithms, including logistic regression, support vector machine, random forest, linear discriminant analysis, k-nearest neighbors, naive Bayes and decision tree with Blood Transfusion Service Center dataset.
+
+## 8. Clustering
+
+Principle component analysis, K-Means, exploratory factor analysis by R.
+
